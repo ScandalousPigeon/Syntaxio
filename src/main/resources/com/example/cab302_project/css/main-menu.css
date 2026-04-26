@@ -4,3 +4,43 @@
 
 .content-layer {
 }
+
+
+.profile-card {
+    -fx-background-color: #14192c;
+    -fx-background-radius: 14px;
+
+    -fx-border-color: #2b3553;
+    -fx-border-width: 1px;
+    -fx-border-radius: 14px;
+
+    -fx-padding: 12px 16px;
+    -fx-spacing: 14px;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 16, 0.2, 0, 4);
+}
+
+.profile-card:hover {
+    -fx-border-color: #00d6ff;
+    -fx-background-color: #171d33;
+}
+
+.profile-name {
+    -fx-text-fill: #f4f6ff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.profile-xp {
+    -fx-text-fill: #a0a7c0;
+    -fx-font-size: 12px;
+}
+
+.level-badge {
+    -fx-background-color: #00d694;
+    -fx-text-fill: #071022;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 2px 5px;
+}

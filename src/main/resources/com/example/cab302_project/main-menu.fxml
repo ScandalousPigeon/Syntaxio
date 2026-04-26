@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.Text?>
 
 <StackPane fx:id="rootPane" prefHeight="800.0" prefWidth="1200.0" stylesheets="@css/main-menu.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -21,28 +21,28 @@
                <center>
                   <VBox fx:id="mainContainer" prefHeight="721.0" prefWidth="1172.0" BorderPane.alignment="CENTER">
                      <children>
-                        <HBox prefHeight="135.0" prefWidth="1172.0">
+                        <HBox prefHeight="93.0" prefWidth="1172.0">
                            <children>
-                              <HBox fx:id="titleSection" prefHeight="135.0" prefWidth="592.0">
+                              <HBox fx:id="titleSection" prefHeight="103.0" prefWidth="780.0">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                                  <children>
-                                    <ImageView fitHeight="110.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="80.0" fitWidth="82.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@images/placeholder.png" />
                                        </image>
                                     </ImageView>
-                                    <VBox prefHeight="150.0" prefWidth="418.0">
+                                    <VBox prefHeight="83.0" prefWidth="277.0">
                                        <children>
-                                          <Label prefHeight="67.0" prefWidth="210.0" text="Syntaxio" textFill="#ffc700">
+                                          <Label prefHeight="49.0" prefWidth="221.0" text="Syntaxio" textFill="#ffc700">
                                              <font>
-                                                <Font size="51.0" />
+                                                <Font size="36.0" />
                                              </font>
                                           </Label>
-                                          <Label prefHeight="18.0" prefWidth="381.0" text="Learn to code with guidance" textFill="#ffe100">
+                                          <Label prefHeight="29.0" prefWidth="384.0" text="Learn to code with guidance" textFill="#b9b38f">
                                              <font>
-                                                <Font size="28.0" />
+                                                <Font size="18.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -55,18 +55,57 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <HBox fx:id="profileAndMenu" prefHeight="135.0" prefWidth="614.0">
+                              <HBox fx:id="profileAndMenu" prefHeight="103.0" prefWidth="610.0">
                                  <children>
-                                    <StackPane prefHeight="135.0" prefWidth="531.0" />
-                                    <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="48.0" prefWidth="65.0" text="Menu" />
+                                    <HBox alignment="CENTER" prefHeight="97.0" prefWidth="507.0">
+                                       <children>
+                                          <HBox prefHeight="97.0" prefWidth="447.0" styleClass="profile-card" stylesheets="@css/main-menu.css">
+                                             <children>
+                                                <StackPane prefHeight="71.0" prefWidth="84.0">
+                                                   <children>
+                                                      <ImageView fitHeight="71.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-card">
+                                                         <image>
+                                                            <Image url="@images/placeholderprofile.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label alignment="CENTER" prefHeight="23.0" prefWidth="24.0" styleClass="level-badge" text="12" StackPane.alignment="BOTTOM_RIGHT" />
+                                                   </children>
+                                                </StackPane>
+                                                <VBox prefHeight="33.0" prefWidth="155.0">
+                                                   <children>
+                                                      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Alex Chen" wrappingWidth="91.86600112915039">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Text fill="#ffc800" strokeType="OUTSIDE" strokeWidth="0.0" text="12 Day Streak" wrappingWidth="98.13000106811523" />
+                                                   </children>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                   <padding>
+                                                      <Insets left="15.0" top="20.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <VBox prefHeight="74.0" prefWidth="177.0">
+                                                   <children>
+                                                      <HBox prefHeight="18.0" prefWidth="167.0" />
+                                                      <Text fill="#b9a7a7" strokeType="OUTSIDE" strokeWidth="0.0" text="3840    /    4000  XP" textAlignment="CENTER" wrappingWidth="164.74399948120117" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="54.0" text="Menu" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </HBox>
                            </children>
                         </HBox>
                         <HBox prefHeight="396.0" prefWidth="1172.0">
                            <children>
-                              <VBox prefHeight="396.0" prefWidth="585.0" />
-                              <VBox prefHeight="396.0" prefWidth="587.0" />
+                              <VBox prefHeight="396.0" prefWidth="1175.0" />
+                              <VBox prefHeight="396.0" prefWidth="588.0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="243.0" prefWidth="1172.0" />
