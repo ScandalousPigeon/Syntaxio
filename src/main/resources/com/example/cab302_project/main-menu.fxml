@@ -3,11 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -15,7 +19,7 @@
 
 <StackPane fx:id="rootPane" prefHeight="800.0" prefWidth="1200.0" stylesheets="@css/main-menu.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="backgroundLayer" prefHeight="200.0" prefWidth="200.0" styleClass="background-layer">
+      <Pane fx:id="backgroundLayer" prefHeight="800.0" prefWidth="1200.0" styleClass="background-layer">
          <children>
             <BorderPane fx:id="contentLayer" layoutX="14.0" layoutY="13.0" prefHeight="774.0" prefWidth="1172.0" styleClass="content-layer" stylesheets="@css/main-menu.css">
                <center>
@@ -23,7 +27,7 @@
                      <children>
                         <HBox prefHeight="93.0" prefWidth="1172.0">
                            <children>
-                              <HBox fx:id="titleSection" prefHeight="103.0" prefWidth="780.0">
+                              <HBox fx:id="titleSection" prefHeight="100.0" prefWidth="647.0">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
@@ -57,9 +61,9 @@
                               </HBox>
                               <HBox fx:id="profileAndMenu" prefHeight="103.0" prefWidth="610.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="97.0" prefWidth="507.0">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="571.0">
                                        <children>
-                                          <HBox prefHeight="97.0" prefWidth="447.0" styleClass="profile-card" stylesheets="@css/main-menu.css">
+                                          <HBox prefHeight="100.0" prefWidth="497.0" styleClass="content-card" stylesheets="@css/main-menu.css">
                                              <children>
                                                 <StackPane prefHeight="71.0" prefWidth="84.0">
                                                    <children>
@@ -87,28 +91,81 @@
                                                       <Insets left="15.0" top="20.0" />
                                                    </padding>
                                                 </VBox>
-                                                <VBox prefHeight="74.0" prefWidth="177.0">
+                                                <VBox prefHeight="74.0" prefWidth="204.0">
                                                    <children>
                                                       <HBox prefHeight="18.0" prefWidth="167.0" />
-                                                      <Text fill="#b9a7a7" strokeType="OUTSIDE" strokeWidth="0.0" text="3840    /    4000  XP" textAlignment="CENTER" wrappingWidth="164.74399948120117" />
+                                                      <Text fill="#b9a7a7" strokeType="OUTSIDE" strokeWidth="0.0" text="3840    /    4000  XP" textAlignment="CENTER" wrappingWidth="199.74399948120117" />
+                                                      <ProgressBar prefWidth="200.0" progress="0.0" />
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </HBox>
-                                          <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="54.0" text="Menu" />
+                                          <HBox prefHeight="100.0" prefWidth="14.0" />
+                                          <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="52.0" text="Menu" />
                                        </children>
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
                                     </HBox>
                                  </children>
                               </HBox>
                            </children>
                         </HBox>
-                        <HBox prefHeight="396.0" prefWidth="1172.0">
+                        <HBox prefHeight="438.0" prefWidth="1172.0">
                            <children>
-                              <VBox prefHeight="396.0" prefWidth="1175.0" />
-                              <VBox prefHeight="396.0" prefWidth="588.0" />
+                              <VBox prefHeight="366.0" prefWidth="864.0">
+                                 <children>
+                                    <StackPane prefHeight="206.0" prefWidth="858.0" styleClass="in-progress-card" stylesheets="@css/main-menu.css" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Suggested Puzzles" wrappingWidth="317.7200012207031">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="5.0" top="5.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <GridPane hgap="10.0" prefHeight="181.0" prefWidth="858.0" stylesheets="@css/main-menu.css" vgap="10.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/main-menu.css" />
+                                                <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/main-menu.css" GridPane.rowIndex="1" />
+                                                <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/main-menu.css" GridPane.rowIndex="2" />
+                                                <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/main-menu.css" GridPane.columnIndex="1" />
+                                                <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/main-menu.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/main-menu.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </VBox>
+                                 </children></VBox>
+                              <VBox prefHeight="366.0" prefWidth="21.0" />
+                              <VBox prefHeight="366.0" prefWidth="283.0" styleClass="content-card" stylesheets="@css/main-menu.css">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Stats" wrappingWidth="139.04900360107422">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </padding></VBox>
                            </children>
+                           <padding>
+                              <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+                           </padding>
                         </HBox>
-                        <HBox prefHeight="243.0" prefWidth="1172.0" />
+                        <HBox prefHeight="243.0" prefWidth="1172.0" styleClass="content-card" stylesheets="@css/main-menu.css" />
                      </children>
                   </VBox>
                </center>

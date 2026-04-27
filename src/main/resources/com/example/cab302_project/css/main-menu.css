@@ -6,7 +6,7 @@
 }
 
 
-.profile-card {
+.content-card {
     -fx-background-color: #14192c;
     -fx-background-radius: 14px;
 
@@ -18,6 +18,20 @@
     -fx-spacing: 14px;
 
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 16, 0.2, 0, 4);
+}
+
+.in-progress-card {
+    -fx-background-color:
+      linear-gradient(to bottom right, rgba(58, 39, 30, 0.95), rgba(24, 25, 42, 0.95));
+    -fx-background-radius: 14px;
+
+    -fx-border-color: rgba(255, 153, 0, 0.45);
+    -fx-border-width: 1px;
+    -fx-border-radius: 14px;
+
+    -fx-padding: 26px;
+
+    -fx-effect: dropshadow(gaussian, rgba(255, 153, 0, 0.35), 24, 0.25, 0, 0);
 }
 
 .profile-card:hover {
