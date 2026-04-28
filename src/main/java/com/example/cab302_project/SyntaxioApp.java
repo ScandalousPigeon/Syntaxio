@@ -10,13 +10,12 @@ import java.io.IOException;
 public class SyntaxioApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SyntaxioApp.class.getResource("main-menu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SyntaxioApp.class.getResource("login-screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        stage.setTitle("Syntaxio");
         stage.setScene(scene);
-        stage.setResizable(true);
-        stage.setMinWidth(1200);
-        stage.setMinHeight(900);
+        stage.setMinHeight(700);
+        stage.setMinWidth(400);
         stage.show();
     }
 }
