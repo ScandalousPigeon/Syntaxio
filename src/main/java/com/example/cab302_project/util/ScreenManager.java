@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ScreenManager {
     // helper class to switch between screens
-    public static void switchScreen(ActionEvent event, String fxmlPath) throws IOException {
+    public static void switchScreen(ActionEvent event, String fxmlPath, double width, double height) throws IOException {
         Parent root = FXMLLoader.load(ScreenManager.class.getResource(fxmlPath));
 
         Stage stage = (Stage) ((Node) event.getSource())
@@ -18,5 +18,9 @@ public class ScreenManager {
                 .getWindow();
 
         stage.getScene().setRoot(root);
+        stage.getScene().setRoot(root);
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.centerOnScreen();
     }
 }

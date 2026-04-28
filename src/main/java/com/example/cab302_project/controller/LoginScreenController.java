@@ -17,12 +17,12 @@ public class LoginScreenController {
 
     @FXML
     private void handleLogIn(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/cab302_project/main-menu.fxml");
+        switchScreen(event, "/com/example/cab302_project/main-menu.fxml", 1200, 800);
     }
 
     @FXML
     private void handleSignUp(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/cab302_project/sign-up.fxml");
+        switchScreen(event, "/com/example/cab302_project/sign-up.fxml", 350, 800);
     }
 
 
