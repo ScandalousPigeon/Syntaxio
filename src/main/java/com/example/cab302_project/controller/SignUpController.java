@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static com.example.cab302_project.util.ScreenManager.switchScreen;
+
 public class SignUpController {
     private Hyperlink signInButton;
     private Button createAccountButton;
@@ -20,13 +22,5 @@ public class SignUpController {
         switchScreen(event, "/com/example/cab302_project/login-screen.fxml");
     }
 
-    private void switchScreen(ActionEvent event, String fxmlPath) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-        Stage stage = (Stage) ((Node) event.getSource())
-                .getScene()
-                .getWindow();
-
-        stage.getScene().setRoot(root);
-    }
 }
