@@ -14,8 +14,8 @@ public class SyntaxioApp extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Syntaxio");
         stage.setScene(scene);
-        stage.setMinHeight(700);
-        stage.setMinWidth(400);
+        stage.setMinHeight(650);
+        stage.setMinWidth(350);
         stage.show();
     }
 }
