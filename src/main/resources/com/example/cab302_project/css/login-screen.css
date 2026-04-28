@@ -1,0 +1,130 @@
+/* Headings */
+.login-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 21px;
+    -fx-font-weight: 400;
+}
+
+.login-subtitle {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13px;
+}
+
+/* Small field labels */
+.field-label {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* If you wrap icon + field inside an HBox */
+.input-box {
+    -fx-background-color: #080d2a;
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+    -fx-border-color: rgba(99, 102, 241, 0.18);
+    -fx-border-width: 1;
+
+    -fx-padding: 0 12 0 12;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+
+    -fx-pref-height: 40;
+    -fx-max-width: 265;
+}
+
+/* TextField inside the input HBox */
+.input-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #f8fafc;
+    -fx-prompt-text-fill: #8b91a7;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* Optional icon label inside input box */
+.input-icon {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 15px;
+}
+
+/* Remember me checkbox */
+.remember-checkbox {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13px;
+}
+
+.remember-checkbox .box {
+    -fx-background-color: transparent;
+    -fx-border-color: #9ca3af;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+}
+
+/* Forgot password text */
+.forgot-link {
+    -fx-text-fill: #f59e0b;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-underline: false;
+    -fx-border-color: transparent;
+}
+
+/* Sign in button */
+.signin-button {
+    -fx-background-color: #9f7218;
+    -fx-background-radius: 12;
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+    -fx-pref-height: 44;
+    -fx-max-width: 265;
+    -fx-cursor: hand;
+}
+
+.signin-button:hover {
+    -fx-background-color: #b8831d;
+}
+
+.signin-button:pressed {
+    -fx-background-color: #8a6214;
+}
+
+/* Demo mode box */
+.demo-box {
+    -fx-background-color: rgba(16, 185, 129, 0.12);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(16, 185, 129, 0.65);
+    -fx-border-width: 1;
+
+    -fx-padding: 12;
+    -fx-spacing: 6;
+    -fx-max-width: 265;
+}
+
+.demo-title {
+    -fx-text-fill: #10b981;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.demo-subtitle {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 10px;
+}
+
+/* Bottom sign up text */
+.signup-text {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 12px;
+}
+
+.signup-link {
+    -fx-text-fill: #f59e0b;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-underline: false;
+    -fx-border-color: transparent;
+}
