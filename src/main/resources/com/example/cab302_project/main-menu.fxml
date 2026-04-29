@@ -213,9 +213,9 @@
             </BorderPane>
          </content>
       </ScrollPane>
-      <VBox fx:id="popoutMenu" maxWidth="330.0" prefHeight="200.0" prefWidth="330.0" styleClass="pop-out-menu-background" stylesheets="@css/main-menu.css" translateX="330.0" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="popoutMenu" maxWidth="330.0" prefHeight="200.0" prefWidth="330.0" styleClass="pop-out-menu-background" stylesheets="@css/popout-menu.css" translateX="330.0" StackPane.alignment="CENTER_RIGHT">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menuHeader" stylesheets="@css/main-menu.css">
                <children>
                   <VBox prefHeight="100.0" prefWidth="308.0" spacing="10.0">
                      <children>
@@ -233,11 +233,63 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <Button fx:id="closeMenuButton" mnemonicParsing="false" onAction="#closeMenu" text="x" />
+                  <Button fx:id="closeMenuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeMenu" prefHeight="25.0" prefWidth="25.0" styleClass="menu-close-button" stylesheets="@css/main-menu.css" text="X" />
                </children>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets />
                </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="logoutButton" onMouseClicked="#handleLogOut" prefHeight="100.0" prefWidth="200.0" styleClass="menu-card" stylesheets="@css/popout-menu.css">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <children>
+                  <ImageView fitHeight="69.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/exitplaceholder.png" />
+                     </image>
+                  </ImageView>
+               </children>
             </HBox>
          </children></VBox>
    </children>

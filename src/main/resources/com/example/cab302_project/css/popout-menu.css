@@ -1,0 +1,77 @@
+.pop-out-menu-background {
+    -fx-background-color: #14192c;
+}
+
+.menuHeader {
+    -fx-background-color: #1e1d2a;
+    -fx-padding: 26 20 22 20;
+    -fx-border-color: transparent transparent #2a314a transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu-close-button {
+    -fx-background-color: #111528;
+    -fx-background-radius: 999;
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+
+    -fx-text-fill: #d1d5db;
+    -fx-font-size: 20px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.menu-close-button:hover {
+    -fx-background-color: #1a2038;
+    -fx-text-fill: white;
+}
+
+.menu-close-button:pressed {
+    -fx-background-color: #0c1020;
+}
+
+.menu-card {
+    -fx-background-color: #0e1328;
+    -fx-background-radius: 12;
+    -fx-padding: 14 16 14 16;
+    -fx-spacing: 14;
+    -fx-cursor: hand;
+}
+
+.menu-card:hover {
+    -fx-background-color: #151b34;
+}
+
+.menu-card:pressed {
+    -fx-background-color: #0a0f22;
+}
+
+.menu-card-icon-box {
+    -fx-background-color: #4a321d;
+    -fx-background-radius: 9;
+
+    -fx-min-width: 38;
+    -fx-min-height: 38;
+    -fx-pref-width: 38;
+    -fx-pref-height: 38;
+    -fx-max-width: 38;
+    -fx-max-height: 38;
+}
+
+.menu-card-icon {
+    -fx-text-fill: #f59e0b;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.menu-card-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+
+.menu-card-subtitle {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 12px;

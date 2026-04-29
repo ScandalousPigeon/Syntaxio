@@ -2,15 +2,25 @@ package com.example.cab302_project.controller;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.io.IOException;
+
+import static com.example.cab302_project.util.ScreenManager.switchScreen;
 
 public class MainMenuController {
 
     @FXML
     private VBox popoutMenu;
+
+    @FXML
+    private HBox logoutButton;
 
     //@FXML
     //private Region dimOverlay;
@@ -58,5 +68,10 @@ public class MainMenuController {
         //slideOut.setOnFinished(event -> dimOverlay.setVisible(false));
 
         slideOut.play();
+    }
+
+    @FXML
+    private void handleLogOut(MouseEvent event) throws IOException {
+        switchScreen(event, "/com/example/cab302_project/login-screen.fxml", 350, 650);
     }
 }
