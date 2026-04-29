@@ -36,3 +36,32 @@
     -fx-background-radius: 999px;
     -fx-padding: 2px 5px;
 }
+
+.hamburger-button {
+    -fx-background-color: #111827;
+    -fx-background-radius: 12;
+
+    -fx-border-color: #263047;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+
+    -fx-text-fill: #f59e0b;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.hamburger-button:hover {
+    -fx-background-color: #172033;
+    -fx-border-color: #38445f;
+}
+
+.hamburger-button:pressed {
+    -fx-background-color: #0b1020;
+}
+
+.pop-out-menu-background {
+    -fx-background-color: #14192c;
+}
