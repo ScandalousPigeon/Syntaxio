@@ -53,7 +53,7 @@ public class MainMenuController {
     private void closeMenu() {
         menuOpen = false;
         TranslateTransition slideOut = new TranslateTransition(Duration.millis(220), popoutMenu);
-        slideOut.setToX(-MENU_WIDTH);
+        slideOut.setToX(MENU_WIDTH);
 
         //slideOut.setOnFinished(event -> dimOverlay.setVisible(false));
 
