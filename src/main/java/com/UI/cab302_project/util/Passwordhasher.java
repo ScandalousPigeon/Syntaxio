@@ -1,4 +1,4 @@
-package com.example.cab302_project.util;
+package com.UI.cab302_project.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

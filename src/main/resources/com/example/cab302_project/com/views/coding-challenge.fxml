@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.codebuddy.ui.controllers.CodingChallengeController"
+      style="-fx-background-color: #1a1a2e;">
+
+    <!-- Top Bar -->
+    <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #16213e;">
+        <Button fx:id="backButton" text="← Dashboard" onAction="#onBack"
+                style="-fx-background-color: transparent; -fx-text-fill: #4ecdc4; -fx-font-size: 14px;"/>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Label fx:id="titleLabel" text="Challenge Title" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Label fx:id="difficultyLabel" text="EASY" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <!-- Main Content -->
+    <SplitPane dividerPositions="0.4" VBox.vgrow="ALWAYS" style="-fx-background-color: #1a1a2e;">
+        
+        <!-- Left Panel: Challenge Description -->
+        <VBox spacing="10" style="-fx-padding: 15;">
+            <Text text="Description" style="-fx-fill: #4ecdc4; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <TextArea fx:id="descriptionArea" editable="false" wrapText="true"
+                      style="-fx-background-color: #16213e; -fx-text-fill: #c8d6e5; -fx-font-size: 14px;"
+                      VBox.vgrow="ALWAYS"/>
+            
+            <Text text="Test Cases" style="-fx-fill: #4ecdc4; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <VBox fx:id="testResultsContainer" spacing="8"/>
+        </VBox>
+        
+        <!-- Right Panel: Code Editor -->
+        <VBox spacing="10" style="-fx-padding: 15;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Text text="Your Solution" style="-fx-fill: #4ecdc4; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="runButton" text="▶ Run Code" onAction="#onRun"
+                        style="-fx-background-color: #4ecdc4; -fx-background-radius: 5; -fx-padding: 5 15;"/>
+                <Button fx:id="submitButton" text="✓ Submit" onAction="#onSubmit"
+                        style="-fx-background-color: #2ecc71; -fx-background-radius: 5; -fx-padding: 5 15;" disable="true"/>
+                <ProgressIndicator fx:id="loadingIndicator" visible="false" style="-fx-scale-x: 0.5; -fx-scale-y: 0.5;"/>
+            </HBox>
+            
+            <TextArea fx:id="codeEditor" fontFamily="monospace" 
+                      style="-fx-background-color: #0f0f1a; -fx-text-fill: #4ecdc4; -fx-font-size: 13px;"
+                      VBox.vgrow="ALWAYS"/>
+            
+            <Text text="Output" style="-fx-fill: #4ecdc4; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <TextArea fx:id="outputArea" editable="false"
+                      style="-fx-background-color: #0f0f1a; -fx-text-fill: #c8d6e5; -fx-font-size: 12px;"
+                      prefHeight="120"/>
+        </VBox>
+    </SplitPane>
+</VBox>

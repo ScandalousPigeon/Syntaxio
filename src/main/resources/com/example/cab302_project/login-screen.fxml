@@ -6,6 +6,8 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="650.0" prefWidth="350.0" styleClass="root" stylesheets="@css/base.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cab302_project.controller.LoginScreenController">
+<AnchorPane prefHeight="650.0" prefWidth="350.0" styleClass="root" stylesheets="@css/base.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cab302_project.controller.LoginController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="121.0" layoutY="196.0" prefHeight="200.0" prefWidth="195.0" styleClass="background-layer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <stylesheets>
@@ -47,19 +49,28 @@
                   </Text>
                   <Text fill="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in to continue your coding journey" />
                   <Label text="Username:" textFill="WHITE" />
-                  <HBox maxWidth="289.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" VBox.vgrow="NEVER" />
+                  <HBox maxWidth="289.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" VBox.vgrow="NEVER">
+                     <children>
+                        <TextField fx:id="usernameField" maxHeight="Infinity" promptText="Enter username" styleClass="input-field" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <Label text="Password:" textFill="WHITE" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" />
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css">
+                     <children>
+                        <PasswordField fx:id="passwordField" maxHeight="Infinity" promptText="Enter password" styleClass="input-field" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="errorLabel" textFill="#ff4444" visible="false" />
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="296.0">
                      <children>
                         <CheckBox mnemonicParsing="false" styleClass="remember-checkbox" stylesheets="@css/login-screen.css" text="Remember me" textFill="#c6c6c6" />
                      </children>
                   </HBox>
-                  <Button fx:id="logInButton" minHeight="50.0" minWidth="290.0" mnemonicParsing="false" onAction="#handleLogIn" styleClass="signin-button" stylesheets="@css/login-screen.css" text="Sign in" />
+                  <Button fx:id="logInButton" minHeight="50.0" minWidth="290.0" mnemonicParsing="false" onAction="#handleLogin" styleClass="signin-button" stylesheets="@css/login-screen.css" text="Sign in" />
                   <HBox alignment="CENTER" prefHeight="48.0" prefWidth="296.0">
                      <children>
                         <Text fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account?" />
-                        <Hyperlink fx:id="signUpButton" onAction="#handleSignUp" text="Sign up" textFill="#ffba0c" />
+                        <Hyperlink fx:id="signUpButton" onAction="#handleSignup" text="Sign up" textFill="#ffba0c" />
                      </children>
                   </HBox>
                </children></VBox>

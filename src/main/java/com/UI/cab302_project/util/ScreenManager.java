@@ -1,4 +1,4 @@
-package com.example.cab302_project.util;
+package com.UI.cab302_project.util;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +19,6 @@ public class ScreenManager {
                 .getWindow();
 
         stage.getScene().setRoot(root);
-        stage.getScene().setRoot(root);
         stage.setWidth(width);
         stage.setHeight(height);
         stage.centerOnScreen();
@@ -32,7 +31,6 @@ public class ScreenManager {
                 .getScene()
                 .getWindow();
 
-        stage.getScene().setRoot(root);
         stage.getScene().setRoot(root);
         stage.setWidth(width);
         stage.setHeight(height);

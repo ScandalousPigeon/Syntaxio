@@ -1,4 +1,4 @@
-package com.example.cab302_project;
+package com.UI.cab302_project;
 
 import javafx.application.Application;
 

@@ -1,18 +1,17 @@
-package com.example.cab302_project.controller;
+package com.UI.cab302_project.controller;
 
+import com.Database.SessionManager;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import static com.UI.cab302_project.util.ScreenManager.switchScreen;
 
-import static com.example.cab302_project.util.ScreenManager.switchScreen;
+import java.io.IOException;
 
 public class MainMenuController {
 
@@ -26,8 +25,7 @@ public class MainMenuController {
     //private Region dimOverlay;
 
     private boolean menuOpen = false;
-
-    private static final double MENU_WIDTH = 330;
+    private TranslateTransition currentAnimation;
 
     @FXML
     private void initialize() {
@@ -52,26 +50,25 @@ public class MainMenuController {
 
     @FXML
     private void openMenu() {
-        //dimOverlay.setVisible(true);
+        if (currentAnimation != null) currentAnimation.stop();
         menuOpen = true;
-        TranslateTransition slideIn = new TranslateTransition(Duration.millis(220), popoutMenu);
-        slideIn.setToX(0);
-        slideIn.play();
+        currentAnimation = new TranslateTransition(Duration.millis(220), popoutMenu);
+        currentAnimation.setToX(0);
+        currentAnimation.play();
     }
 
     @FXML
     private void closeMenu() {
+        if (currentAnimation != null) currentAnimation.stop();
         menuOpen = false;
-        TranslateTransition slideOut = new TranslateTransition(Duration.millis(220), popoutMenu);
-        slideOut.setToX(MENU_WIDTH);
-
-        //slideOut.setOnFinished(event -> dimOverlay.setVisible(false));
-
-        slideOut.play();
+        currentAnimation = new TranslateTransition(Duration.millis(220), popoutMenu);
+        currentAnimation.setToX(popoutMenu.getWidth());
+        currentAnimation.play();
     }
 
     @FXML
     private void handleLogOut(MouseEvent event) throws IOException {
+        SessionManager.getInstance().logout();
         switchScreen(event, "/com/example/cab302_project/login-screen.fxml", 350, 650);
     }
 }
