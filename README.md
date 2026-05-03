@@ -76,3 +76,4 @@ The main goal of Syntaxio is to create a supportive environment where beginner p
 
 Rather than giving users complete answers, Syntaxio encourages them to think through problems, improve their solutions, and develop stronger programming skills over time.
 
+Figma High-Fidelity Prototype: [View Figma Prototype](https://www.figma.com/make/20TPNX8OU0opxXFGdUjTLN/Main-Menu-Design?t=N0885EH7eQrSB8F2-1)
