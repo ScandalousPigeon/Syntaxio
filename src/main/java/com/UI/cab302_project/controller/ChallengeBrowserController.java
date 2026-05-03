@@ -200,7 +200,7 @@ public class ChallengeBrowserController {
     private void startChallenge(ActionEvent event, String challengeId) {
         try {
             CodingChallengeController.setCurrentChallengeId(challengeId);
-            switchScreen(event, "/com/example/cab302_project/com/views/coding-challenge.fxml", 1200, 800);
+            switchScreen(event, "/com/example/cab302_project/coding-challenge.fxml", 1200, 800);
         } catch (IOException e) {
             System.err.println("Error loading challenge screen: " + e.getMessage());
         }
@@ -208,6 +208,6 @@ public class ChallengeBrowserController {
 
     @FXML
     private void onBackToDashboard(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/cab302_project/com/views/dashboard.fxml", 1200, 800);
+        switchScreen(event, "/com/example/cab302_project/dashboard.fxml", 1200, 800);
     }
 }

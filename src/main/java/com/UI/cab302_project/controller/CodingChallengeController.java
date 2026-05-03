@@ -159,7 +159,7 @@ public class CodingChallengeController {
                 successAlert.setContentText("Great work! Your solution has been saved.");
                 successAlert.showAndWait();
 
-                switchScreen(event, "/com/example/cab302_project/com/views/dashboard.fxml", 1200, 800);
+                switchScreen(event, "/com/example/cab302_project/dashboard.fxml", 1200, 800);
             } else {
                 showError("Failed to save solution. Please try again.");
             }
@@ -168,7 +168,7 @@ public class CodingChallengeController {
 
     @FXML
     private void onBack(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/cab302_project/com/views/dashboard.fxml", 1200, 800);
+        switchScreen(event, "/com/example/cab302_project/dashboard.fxml", 1200, 800);
     }
 
     private void showError(String message) {

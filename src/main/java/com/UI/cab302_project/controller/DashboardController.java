@@ -191,12 +191,12 @@ public class DashboardController {
         Button continueButton = new Button("▶ Continue Coding");
         continueButton.setStyle("-fx-background-color: #4ecdc4; -fx-background-radius: 8; -fx-padding: 10; -fx-font-weight: bold;");
         continueButton.setMaxWidth(Double.MAX_VALUE);
-        continueButton.setOnAction(e -> navigateTo(e, "/com/example/cab302_project/com/challenge-browser.fxml"));
+        continueButton.setOnAction(e -> navigateTo(e, "/com/example/cab302_project/challenge-browser.fxml"));
 
         Button browseButton = new Button("📚 Browse All Challenges");
         browseButton.setStyle("-fx-background-color: #16213e; -fx-background-radius: 8; -fx-padding: 10; -fx-text-fill: #4ecdc4;");
         browseButton.setMaxWidth(Double.MAX_VALUE);
-        browseButton.setOnAction(e -> navigateTo(e, "/com/example/cab302_project/com/challenge-browser.fxml"));
+        browseButton.setOnAction(e -> navigateTo(e, "/com/example/cab302_project/challenge-browser.fxml"));
 
         Button statsButton = new Button("📊 View Detailed Stats");
         statsButton.setStyle("-fx-background-color: #16213e; -fx-background-radius: 8; -fx-padding: 10; -fx-text-fill: #4ecdc4;");
