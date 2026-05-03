@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -52,12 +53,12 @@
                   <Label text="Password" textFill="WHITE" />
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css">
                      <children>
-                        <TextField fx:id="passwordField" promptText="Enter password" styleClass="input-field" stylesheets="@css/login-screen.css" />
+                        <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="input-field" stylesheets="@css/login-screen.css" />
                      </children></HBox>
                   <Label text="Confirm Password" textFill="WHITE" />
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css">
                      <children>
-                        <TextField fx:id="confirmPasswordField" promptText="Confirm password" styleClass="input-field" stylesheets="@css/login-screen.css" />
+                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" styleClass="input-field" stylesheets="@css/login-screen.css" />
                      </children></HBox>
                   <Label fx:id="errorLabel" textFill="RED" visible="false" />
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="296.0">
@@ -65,7 +66,7 @@
                         <CheckBox fx:id="termsCheckBox" mnemonicParsing="false" styleClass="remember-checkbox" stylesheets="@css/login-screen.css" text="I agree to the Terms of Service" textFill="#c6c6c6" />
                      </children>
                   </HBox>
-                  <Button fx:id="createAccountButton" minHeight="50.0" minWidth="290.0" mnemonicParsing="false" styleClass="signin-button" stylesheets="@css/login-screen.css" text="Create Account" />
+                  <Button fx:id="createAccountButton" minHeight="50.0" minWidth="290.0" mnemonicParsing="false" onAction="#handleCreateAccount" styleClass="signin-button" stylesheets="@css/login-screen.css" text="Create Account" />
                   <HBox alignment="CENTER" prefHeight="48.0" prefWidth="296.0">
                      <children>
                         <Text fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" />
