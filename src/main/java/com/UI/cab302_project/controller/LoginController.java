@@ -42,7 +42,7 @@ public class LoginController {
 
     @FXML
     private void handleSignup(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/cab302_project/sign-up.fxml", 350, 650);
+        switchScreen(event, "/com/example/cab302_project/sign-up.fxml", 350, 700);
     }
 
     private void showError(String message) {
