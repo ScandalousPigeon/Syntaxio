@@ -17,6 +17,4 @@ public class SignUpController {
     private void handleSignIn(ActionEvent event) throws IOException {
         switchScreen(event, "/com/example/cab302_project/login-screen.fxml", 350, 650);
     }
-
-
 }
