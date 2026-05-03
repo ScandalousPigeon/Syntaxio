@@ -1,6 +1,5 @@
-package com.Database;
+package com.UI.cab302_project.util;
 
-import com.UI.cab302_project.util.Passwordhasher;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,20 +7,35 @@ import static org.junit.jupiter.api.Assertions.*;
 class PasswordhasherTest {
 
     @Test
-    void samePasswordProducesSameHash() {
-        String password = "test123";
+    void hashPasswordShouldNotReturnPlainPassword() {
+        String password = "password123";
 
-        String hash1 = Passwordhasher.hashPassword(password);
-        String hash2 = Passwordhasher.hashPassword(password);
+        String hash = Passwordhasher.hashPassword(password);
 
-        assertEquals(hash1, hash2);
+        assertNotEquals(password, hash);
     }
 
     @Test
-    void differentPasswordsProduceDifferentHashes() {
-        String hash1 = Passwordhasher.hashPassword("password1");
-        String hash2 = Passwordhasher.hashPassword("password2");
+    void samePasswordShouldProduceSameHash() {
+        String password = "password123";
 
-        assertNotEquals(hash1, hash2);
+        assertEquals(
+                Passwordhasher.hashPassword(password),
+                Passwordhasher.hashPassword(password)
+        );
+    }
+
+    @Test
+    void verifyPasswordShouldReturnTrueForCorrectPassword() {
+        String hash = Passwordhasher.hashPassword("password123");
+
+        assertTrue(Passwordhasher.verifyPassword("password123", hash));
+    }
+
+    @Test
+    void verifyPasswordShouldReturnFalseForWrongPassword() {
+        String hash = Passwordhasher.hashPassword("password123");
+
+        assertFalse(Passwordhasher.verifyPassword("wrongpassword", hash));
     }
 }

@@ -1,0 +1,279 @@
+commit cff1acc1ce654a18014cc569f24d4722c96dd5e5
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 18:21:25 2026 +1000
+
+    Added test file for Passwordhasher
+
+commit b77966e16cb97deecbec5051cd4f4909bf5c615c
+Author: Leon Lee <152664431+ScandalousPigeon@users.noreply.github.com>
+Date:   Sun May 3 15:28:59 2026 +1000
+
+    Add link to Figma high-fidelity prototype
+
+commit a246d391788d172d5f3470b7d26655e2f4006ef6
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 14:30:16 2026 +1000
+
+    Refactored challenge-browser.fxml, coding-challenge.fxml, dashboard.fxml
+
+commit a9df81db377124f8edb8b43c3c2eea88acf74d5b
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 13:11:32 2026 +1000
+
+    Implemented signup functionality
+
+commit d07dcc6b0111c65b5938c11792382b6a9205e3d5
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 13:07:53 2026 +1000
+
+    Added signup screen elements
+
+commit 33adea05d19be835b92f40139dd64fdbe8c3337f
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 13:03:48 2026 +1000
+
+    Fixed signup
+
+commit 601d0acab7b2c0d14bdc9867b82de7195ee6e845
+Merge: 08ddccf 71b185b
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 13:00:25 2026 +1000
+
+    Merge branch 'signup' into 'main'
+
+commit 08ddccf538db02eae208addfbc9cd2ded5f0e935
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 12:49:58 2026 +1000
+
+    Revert commit
+    
+    This reverts commit 4eeef2f61ccb05baa0407324e2af152f87556304.
+
+commit 71b185b3298f41d2a2975e9d01c0996fdd94eebc
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 12:46:07 2026 +1000
+
+    Implemented a functioning signup system
+
+commit ccbe141fa6e8b8e75e6ba72cd168a6d301da225b
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 12:34:57 2026 +1000
+
+    Added necessary elements to signup screen
+
+commit 1b3386f019c83539771b79c5006b9d368adf4178
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 12:19:24 2026 +1000
+
+    Changed signup window sizing
+
+commit 75c8a8643e817fb3e8976311c6ec4f7d02c38a89
+Author: mimictrl <eno.owor@icloud.com>
+Date:   Sun May 3 12:04:12 2026 +1000
+
+    uu
+
+commit 4eeef2f61ccb05baa0407324e2af152f87556304
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 10:32:35 2026 +1000
+
+    Fixed another bug causing error on startup
+
+commit 089b7f7e27ec08c7a2bf5e90916e6e70944f8df7
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sun May 3 10:30:23 2026 +1000
+
+    Fixed bug causing error on startup
+
+commit 6dee207f96619bfd83b277b4f89c53d62e01666e
+Merge: 88f645b 1238fb5
+Author: Mimi Owor <eno.owor@icloud.com>
+Date:   Sun May 3 10:19:03 2026 +1000
+
+    Merge branch 'main' of https://github.com/ScandalousPigeon/CAB302_Project
+
+commit 1238fb5a62c8d2fcb62a1d82f3f4330279ee306e
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sat May 2 19:24:42 2026 +1000
+
+    Revert "Refactored folder structure" due to conflicts
+    
+    This reverts commit 991b1e741c3097513bf759f27ee59b300cf5e3a5.
+
+commit 88f645be0babc3f3a484d8f32bb9d50f0de45ec2
+Author: Mimi Owor <eno.owor@icloud.com>
+Date:   Sat May 2 19:11:50 2026 +1000
+
+    Finished and debugged
+
+commit 991b1e741c3097513bf759f27ee59b300cf5e3a5
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sat May 2 00:52:02 2026 +1000
+
+    Refactored folder structure
+
+commit a9e4c76d7db90fc0789e6abf44ed11309f0671eb
+Author: Mimi Owor <eno.owor@icloud.com>
+Date:   Thu Apr 30 17:13:48 2026 +1000
+
+    passwordhash and database files (unfinished)
+
+commit 20da59f8b6745e084607cf110c0a61dbabe3c1d7
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Thu Apr 30 01:43:36 2026 +1000
+
+    Added a functioning log out button
+
+commit 3f4a8e68ff76e86174a4c9fb21c6f4d07d2815c1
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Apr 29 23:15:36 2026 +1000
+
+    Added close pop-up button
+
+commit 5ccce6085642ae505a8f14663b084487e431e7a7
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Apr 29 22:02:08 2026 +1000
+
+    Added a functioning pop-out menu
+
+commit 83d198d964cb2af4fd4010ebc51eda7b771c1257
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Apr 29 19:28:29 2026 +1000
+
+    Introduced scrollability and pannability
+
+commit 803880b98c78e781ae688015cda308b21352a727
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Apr 29 16:32:35 2026 +1000
+
+    Dynamically centred the main menu layout on user resize
+
+commit 1c1c43a5ac1373fda6c6fcbcd0930ceb52ced5ad
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Apr 29 01:51:15 2026 +1000
+
+    Made the windows resize when switching screens
+
+commit d5e3b122adb81ccc855f5fac0b414cdd49737175
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Apr 29 00:57:10 2026 +1000
+
+    Created util.ScreenManager class to hold switchScreen method
+
+commit 4e5cb2f277ff0d1d16ff1f66304deb1783f780db
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 23:05:21 2026 +1000
+
+    Sign-up screen will now link back to login screen
+
+commit bd1d93619750bc2bdd1b65782bb9c1d54cc503d3
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 22:20:26 2026 +1000
+
+    Sign in and sign up links now change to their respective screens
+
+commit d9c1dd5cbe9c4bd774b7ff1e0bdeca9f4b53afcf
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 18:27:02 2026 +1000
+
+    Added signup screen
+
+commit 16c5fe2574d64af8ed9f374552c1a11fc42a0152
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 16:45:50 2026 +1000
+
+    Added some login screen elements
+
+commit a7da2f793d06758db7adc57b997e116de0bc4861
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 15:42:38 2026 +1000
+
+    Made SyntaxioApp launch the login screen on startup and added elements to login screen
+
+commit dadd38ad295dfbf657837c1d80ef1efb20cfd4d7
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 15:19:17 2026 +1000
+
+    Added new css file to contain global elements (such as background)
+
+commit ddc8f39c2a12c94d6317b37dfe6e764ed7f673bd
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 14:55:01 2026 +1000
+
+    Added some Controller files, and a new login-screen.fxml
+
+commit 1255d7768c94d3400a4be79a1b76d506a7567f1e
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Tue Apr 28 00:03:05 2026 +1000
+
+    Played with the sizing
+
+commit 23273f2dcdb3254b022c5768c318a9c7518f596c
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Mon Apr 27 18:49:24 2026 +1000
+
+    Styled in-progress card, added resizing to HelloApplication.
+
+commit bce5bc049214ff4212aab18d7900e454813b21e5
+Author: Leon Lee <152664431+ScandalousPigeon@users.noreply.github.com>
+Date:   Mon Apr 27 12:16:18 2026 +1000
+
+    Enhance README with detailed project information
+    
+    Expanded the README to provide a comprehensive overview of Syntaxio, including its goals, core features, AI features, user flow, and design goals.
+
+commit 843fae4184bfae17dbde52f7a61fe0c88dffb7f3
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Mon Apr 27 00:04:07 2026 +1000
+
+    Added profile card elements.
+
+commit 62f3259e7a7f9df590d057d0b54aa8ff4079c355
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sat Apr 25 23:47:31 2026 +1000
+
+    Added layout containers for main menu.
+
+commit efeea4a81fbec6d8c3c13c0e913fd1e3ef01ae29
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sat Apr 25 22:17:16 2026 +1000
+
+    Added logo.
+
+commit 70f0998c8a34166d6399a27771f366dc74573dbf
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Sat Apr 25 21:29:46 2026 +1000
+
+    Added background colour with SceneBuilder and css
+
+commit 357bd3a5839c3b17604363bc0ebd753584e2d105
+Author: diu88 <240802126@qq.com>
+Date:   Thu Mar 26 02:22:19 2026 +1000
+
+    Update .gitignore to include log and OS files
+
+commit 3178c54aa8fb9908b7671755cf3e43164b23fa90
+Author: Leon Lee <152664431+ScandalousPigeon@users.noreply.github.com>
+Date:   Thu Mar 26 02:14:52 2026 +1000
+
+    Update README to describe application purpose
+
+commit e8dff87fddebec3df6ad9cb4121700afd9c466f4
+Author: diu88 <240802126@qq.com>
+Date:   Thu Mar 26 02:12:02 2026 +1000
+
+    Create requirements.md with project specifications
+    
+    Added project requirements for the application including functional and non-functional requirements.
+
+commit 3030c919ff6489f5ddaf574eae6e15ef50528ba2
+Author: Leon Lee <152664431+ScandalousPigeon@users.noreply.github.com>
+Date:   Wed Mar 25 19:07:40 2026 +1000
+
+    Add initial content to README.md
+
+commit abf6398ab6a22fe55d4c8f6e528bbf262a2eaa89
+Author: ScandalousPigeon <951413eelnoel@gmail.com>
+Date:   Wed Mar 25 19:05:46 2026 +1000
+
+    initial commit
