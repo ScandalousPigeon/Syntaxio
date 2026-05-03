@@ -63,10 +63,10 @@
                   <Label fx:id="errorLabel" textFill="#f80000" visible="false" />
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="296.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" styleClass="remember-checkbox" stylesheets="@css/login-screen.css" text="I agree to the Terms of Service" textFill="#c6c6c6" />
+                        <CheckBox fx:id="termsCheckBox" mnemonicParsing="false" styleClass="remember-checkbox" stylesheets="@css/login-screen.css" text="I agree to the Terms of Service" textFill="#c6c6c6" />
                      </children>
                   </HBox>
-                  <Button fx:id="createAccountButton" minHeight="50.0" minWidth="290.0" mnemonicParsing="false" styleClass="signin-button" stylesheets="@css/login-screen.css" text="Create Account" />
+                  <Button fx:id="createAccountButton" minHeight="50.0" minWidth="290.0" mnemonicParsing="false" onAction="#handleCreateAccount" styleClass="signin-button" stylesheets="@css/login-screen.css" text="Create Account" />
                   <HBox alignment="CENTER" prefHeight="48.0" prefWidth="296.0">
                      <children>
                         <Text fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" />
