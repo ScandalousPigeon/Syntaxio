@@ -5,6 +5,8 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -44,11 +46,21 @@
                   </Text>
                   <Text fill="#c9c9c9" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign up to begin your coding journey" />
                   <Label text="Username" textFill="WHITE" />
-                  <HBox maxWidth="289.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" VBox.vgrow="NEVER" />
+                  <HBox maxWidth="289.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" VBox.vgrow="NEVER">
+                     <children>
+                        <TextField fx:id="usernameField" promptText="Enter username" styleClass="input-field" stylesheets="@css/login-screen.css" />
+                     </children></HBox>
                   <Label text="Password" textFill="WHITE" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" />
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css">
+                     <children>
+                        <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="input-field" stylesheets="@css/main-menu.css" />
+                     </children></HBox>
                   <Label text="Confirm Password" textFill="WHITE" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css" />
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="290.0" styleClass="input-box" stylesheets="@css/login-screen.css">
+                     <children>
+                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" styleClass="input-field" stylesheets="@css/main-menu.css" />
+                     </children></HBox>
+                  <Label fx:id="errorLabel" textFill="#f80000" visible="false" />
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="296.0">
                      <children>
                         <CheckBox mnemonicParsing="false" styleClass="remember-checkbox" stylesheets="@css/login-screen.css" text="I agree to the Terms of Service" textFill="#c6c6c6" />
