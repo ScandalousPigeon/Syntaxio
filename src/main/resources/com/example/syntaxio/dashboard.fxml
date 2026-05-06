@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane minHeight="1200.0" minWidth="1150.0" stylesheets="@css/base.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane minHeight="1200.0" minWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.syntaxio.ui.controller.DashboardController">
    <children>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1200.0" minHeight="0.0" minWidth="1200.0" prefViewportHeight="1200.0" prefViewportWidth="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <VBox alignment="TOP_CENTER" maxHeight="1200.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Back to Home" />
+                     </children>
+                  </VBox>
+               </children></VBox>
+         </content></ScrollPane>
    </children>
 </AnchorPane>
