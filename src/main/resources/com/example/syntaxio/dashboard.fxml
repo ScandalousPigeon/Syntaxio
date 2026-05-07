@@ -17,7 +17,7 @@
 
 <AnchorPane minHeight="1200.0" minWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.syntaxio.ui.controller.DashboardController">
    <children>
-      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1200.0" minHeight="0.0" minWidth="1200.0" prefViewportHeight="1200.0" prefViewportWidth="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1200.0" minHeight="0.0" minWidth="1200.0" prefViewportHeight="1200.0" prefViewportWidth="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
             <VBox alignment="TOP_CENTER" maxHeight="1200.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css">
                <children>
@@ -26,7 +26,7 @@
                         <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="144.0" styleClass="content-card" stylesheets="@css/base.css" text="← Back to Home" textFill="WHITE" />
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Dashboard">
                            <font>
-                              <Font size="31.0" />
+                              <Font size="28.0" />
                            </font>
                         </Text>
                         <Text fill="#d3d3d3" strokeType="OUTSIDE" strokeWidth="0.0" text="Track your progress and achievements">

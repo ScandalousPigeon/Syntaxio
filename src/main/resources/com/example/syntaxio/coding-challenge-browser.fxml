@@ -1,15 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 
 <AnchorPane prefHeight="1200.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.syntaxio.ui.controller.CodingChallengeController">
    <children>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <VBox prefHeight="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" />
+            <VBox prefHeight="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css">
+               <children>
+                  <VBox prefHeight="139.0" prefWidth="1160.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="content-card" stylesheets="@css/base.css" text="← Back to Home" textFill="WHITE" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Challenge Browser">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Browse and conquer coding challenges" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox prefHeight="110.0" prefWidth="1144.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" styleClass="search-bar" stylesheets="@css/coding-challenge-browser.css">
+                           <children>
+                              <Label prefHeight="42.0" prefWidth="23.0" styleClass="search-icon" stylesheets="@css/coding-challenge-browser.css" text="⌕" textFill="#949494">
+                                 <font>
+                                    <Font size="29.0" />
+                                 </font>
+                              </Label>
+                              <TextField prefHeight="22.0" prefWidth="1093.0" promptText="Search challenges..." styleClass="search-field" stylesheets="@css/coding-challenge-browser.css" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="37.0" prefWidth="1134.0" styleClass="filter-bar" stylesheets="@css/coding-challenge-browser.css">
+                           <children>
+                              <Label text="Difficulty:" textFill="#9a9a9a" />
+                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="All Levels">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="difficulty" />
+                                 </toggleGroup>
+                              </ToggleButton>
+                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Easy" toggleGroup="$difficulty" />
+                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Medium" toggleGroup="$difficulty" />
+                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Hard" toggleGroup="$difficulty" />
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <GridPane hgap="20.0" prefHeight="874.0" prefWidth="1144.0" VBox.vgrow="NEVER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="696.0" minWidth="10.0" prefWidth="281.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1069.0" minWidth="10.0" prefWidth="863.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <VBox fillWidth="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="215.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.halignment="LEFT" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+                           <children>
+                              <Label text="Categories" textFill="WHITE" />
+                           </children>
+                        </VBox>
+                        <GridPane hgap="10.0" stylesheets="@css/base.css" vgap="10.0" GridPane.columnIndex="1">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.columnIndex="1" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.rowIndex="1" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.rowIndex="2" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.rowIndex="3" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.rowIndex="4" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.rowIndex="5" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" styleClass="content-card" stylesheets="@css/base.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </children>
+                        </GridPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
          </content>
       </ScrollPane>
    </children>
