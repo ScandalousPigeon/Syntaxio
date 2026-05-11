@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.syntaxio.ui.controller.CodingChallengeController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.syntaxio.ui.controller.CodingChallengeController">
+   <children>
+      <BorderPane layoutX="68.0" layoutY="117.0" minHeight="1200.0" minWidth="1200.0" prefHeight="1200.0" prefWidth="1200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="topbar" stylesheets="@css/coding-challenge.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" styleClass="back-button" stylesheets="@css/coding-challenge.css" text="Back" />
+                  <VBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="91.0">
+                     <children>
+                        <Label text="Puzzle Name" textFill="WHITE" />
+                        <Label text="Difficulty" textFill="RED" />
+                     </children>
+                  </VBox>
+                  <Region prefHeight="70.0" prefWidth="699.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
+                     <children>
+                        <Label styleClass="timer-box" stylesheets="@css/coding-challenge.css" text="Time" textFill="WHITE" />
+                        <Button mnemonicParsing="false" styleClass="run-button" stylesheets="@css/coding-challenge.css" text="Run" />
+                        <Button mnemonicParsing="false" styleClass="submit-button" stylesheets="@css/coding-challenge.css" text="Submit" />
+                     </children>
+                  </HBox>
+               </children></HBox>
+         </top>
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>
