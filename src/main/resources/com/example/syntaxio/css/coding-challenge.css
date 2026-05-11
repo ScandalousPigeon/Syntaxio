@@ -87,3 +87,66 @@
     -fx-text-fill: #f59e0b;
     -fx-font-size: 13px;
 }
+
+.card {
+    -fx-background-color: #101529;
+    -fx-border-color: #262d46;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.tab-bar {
+    -fx-padding: 0 20 0 20;
+    -fx-spacing: 24;
+    -fx-alignment: center-left;
+    -fx-pref-height: 40;
+    -fx-border-color: transparent transparent #262d46 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+
+.tab-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+
+    -fx-text-fill: #8b93a7;
+    -fx-font-size: 13px;
+    -fx-padding: 0 0 0 0;
+
+    -fx-cursor: hand;
+}
+
+.tab-button:hover {
+    -fx-text-fill: #d1d5db;
+}
+
+.tab-button:selected {
+    -fx-text-fill: #f59e0b;
+    -fx-border-color: transparent transparent #f59e0b transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.description-content {
+    -fx-padding: 24 20 24 20;
+    -fx-spacing: 18;
+}
+
+.description-text {
+    -fx-text-fill: #f3f4f6;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 4;
+}
+
+
+.code-area {
+    -fx-background-color: #080d22;
+    -fx-control-inner-background: #080d22;
+    -fx-text-fill: #f8fafc;
+    -fx-font-family: "JetBrains Mono", "Consolas", monospace;
+    -fx-font-size: 13px;
+    -fx-highlight-fill: #1e293b;
+    -fx-highlight-text-fill: white;
+    -fx-border-color: transparent;
+}
