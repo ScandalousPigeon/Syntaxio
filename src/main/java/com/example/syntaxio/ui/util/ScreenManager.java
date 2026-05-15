@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class ScreenManager {
     // helper class to switch between screens
@@ -25,7 +26,13 @@ public class ScreenManager {
     }
 
     public static void switchScreen(MouseEvent event, String fxmlPath, double width, double height) throws IOException {
-        Parent root = FXMLLoader.load(ScreenManager.class.getResource(fxmlPath));
+        URL fxmlUrl = ScreenManager.class.getResource(fxmlPath);
+
+        if (fxmlUrl == null) {
+            throw new IllegalArgumentException("FXML file not found: " + fxmlPath);
+        }
+        
+        Parent root = FXMLLoader.load(fxmlUrl);
 
         Stage stage = (Stage) ((Node) event.getSource())
                 .getScene()

@@ -9,9 +9,7 @@ module com.example.syntaxio {
     exports com.example.syntaxio.ui;
     exports com.example.syntaxio.ui.controller;
     opens com.example.syntaxio.ui.controller to javafx.fxml;
-    exports com.Database;
-    exports com.Model;
-    exports com.example.syntaxio.ai;
-    exports com.example.syntaxio.model;
     exports com.example.syntaxio.database;
+    exports com.example.syntaxio.model;
+    exports com.example.syntaxio.ai;
 }

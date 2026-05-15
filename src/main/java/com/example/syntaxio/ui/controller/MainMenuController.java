@@ -19,6 +19,12 @@ public class MainMenuController {
     private VBox popoutMenu;
 
     @FXML
+    private HBox dashboardButton;
+
+    @FXML
+    private HBox challengeBrowserButton;
+
+    @FXML
     private HBox logoutButton;
 
     //@FXML
@@ -64,6 +70,16 @@ public class MainMenuController {
         currentAnimation = new TranslateTransition(Duration.millis(220), popoutMenu);
         currentAnimation.setToX(popoutMenu.getWidth());
         currentAnimation.play();
+    }
+
+    @FXML
+    private void handleDashboard(MouseEvent event) throws IOException {
+        switchScreen(event, "/com/example/syntaxio/dashboard.fxml", 1200, 1000);
+    }
+
+    @FXML
+    private void handleChallengeBrowser(MouseEvent event) throws IOException {
+        switchScreen(event, "/com/example/syntaxio/coding-challenge-browser.fxml", 1200, 1000);
     }
 
     @FXML
