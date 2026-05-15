@@ -36,6 +36,8 @@ public class ChallengeBrowserController {
     private FilteredList<Challenge> filteredChallenges;
     private List<String> completedChallengeIds;
 
+    // currently this class breaks the initialisation of the UI
+
     @FXML
     public void initialize() {
         challengeDAO = new SqliteChallengeDAO();

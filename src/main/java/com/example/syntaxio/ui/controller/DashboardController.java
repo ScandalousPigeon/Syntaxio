@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 import static com.example.syntaxio.ui.util.ScreenManager.switchScreen;
 
+// currently this class breaks the initialisation of the UI
+
 public class DashboardController {
     @FXML private Label welcomeLabel;
     @FXML private Label usernameLabel;
