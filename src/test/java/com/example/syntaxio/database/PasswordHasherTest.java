@@ -1,4 +1,4 @@
-package com.UI.cab302_project.util;
+package com.example.syntaxio.database;
 
 import com.example.syntaxio.ui.util.PasswordHasher;
 import org.junit.jupiter.api.Test;

@@ -8,7 +8,7 @@ public class SqliteConnection {
     private static Connection instance = null;
 
     private SqliteConnection() {
-        String url = "jdbc:sqlite:codebuddy.db";  // Database file name
+        String url = "jdbc:sqlite:codebuddy.db";  // database file name
         try {
             instance = DriverManager.getConnection(url);
             System.out.println("SQLite database connected successfully");
@@ -29,7 +29,7 @@ public class SqliteConnection {
         if (instance != null) {
             try {
                 instance.close();
-                System.out.println("Database connection closed");
+                System.out.println("database connection closed");
             } catch (SQLException e) {
                 System.err.println("Error closing connection: " + e.getMessage());
             } finally {
