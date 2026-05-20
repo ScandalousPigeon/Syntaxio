@@ -35,6 +35,6 @@ public class PuzzleGenerationService {
 
     private GeneratedPuzzle parseGeneratedPuzzle(String response) {
 
-        return new GeneratedPuzzle(response);
+        return new GeneratedPuzzle();
     }
 }

@@ -8,7 +8,7 @@ public class SqliteConnection {
     private static Connection instance = null;
 
     private SqliteConnection() {
-        String url = "jdbc:sqlite:codebuddy.db";  // database file name
+        String url = "jdbc:sqlite:syntaxio.db";  // database file name
         try {
             instance = DriverManager.getConnection(url);
             System.out.println("SQLite database connected successfully");
