@@ -1,5 +1,7 @@
 package com.example.syntaxio.ai;
 
+import com.example.syntaxio.ai.chat.MainMenuAssistant;
+import com.example.syntaxio.ai.client.LLMClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,64 +9,78 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainMenuAssistantTest {
 
     @Test
-    void sendMessageAddsUserMessageAndAIResponse() {
-        FakeAIService fakeAI = new FakeAIService("A stack is last-in, first-out data structure.");
-        MainMenuAssistant chat = new MainMenuAssistant(fakeAI);
+    void replyReturnsAIResponse() {
+        FakeLLMClient fakeLLM = new FakeLLMClient("A stack is a last-in, first-out data structure.");
+        MainMenuAssistant assistant = new MainMenuAssistant(fakeLLM);
 
-        chat.sendMessage("What is a stack?");
+        String response = assistant.reply("What is a stack?");
 
-        assertEquals(2, chat.getMessages().size());
-
-        assertEquals("USER", chat.getMessages().get(0).role());
-        assertEquals("What is a stack?", chat.getMessages().get(0).content());
-
-        assertEquals("AI", chat.getMessages().get(1).role());
-        assertEquals("A stack is last-in, first-out data structure.", chat.getMessages().get(1).content());
+        assertEquals("A stack is a last-in, first-out data structure.", response);
     }
 
     @Test
-    void blankMessageDoesNotCallAI() {
-        FakeAIService fakeAI = new FakeAIService("This should not be used.");
-        MainMenuAssistant chat = new MainMenuAssistant(fakeAI);
+    void replyCallsLLMClientOnce() {
+        FakeLLMClient fakeLLM = new FakeLLMClient("AI response");
+        MainMenuAssistant assistant = new MainMenuAssistant(fakeLLM);
 
-        chat.sendMessage("   ");
+        assistant.reply("Explain recursion");
 
-        assertEquals(0, chat.getMessages().size());
-        assertEquals(0, fakeAI.getCallCount());
+        assertEquals(1, fakeLLM.getCallCount());
     }
 
     @Test
-    void aiFailureResultsInFriendlyErrorMessage() {
-        FakeAIService fakeAI = new FakeAIService("unused");
-        fakeAI.setShouldFail(true);
+    void replyIncludesUserMessageInPrompt() {
+        FakeLLMClient fakeLLM = new FakeLLMClient("AI response");
+        MainMenuAssistant assistant = new MainMenuAssistant(fakeLLM);
 
-        MainMenuAssistant chat = new MainMenuAssistant(fakeAI);
+        assistant.reply("Explain arrays");
 
-        chat.sendMessage("Explain recursion");
-
-        assertEquals(2, chat.getMessages().size());
-        assertEquals("USER", chat.getMessages().get(0).role());
-        assertEquals("AI", chat.getMessages().get(1).role());
-        assertTrue(chat.getMessages().get(1).content().contains("Could not contact AI"));
+        assertTrue(fakeLLM.getLastPrompt().contains("Explain arrays"));
     }
 
-    private static class FakeAIService implements AIService {
+    @Test
+    void replyPromptMentionsSyntaxio() {
+        FakeLLMClient fakeLLM = new FakeLLMClient("AI response");
+        MainMenuAssistant assistant = new MainMenuAssistant(fakeLLM);
+
+        assistant.reply("Hello");
+
+        assertTrue(fakeLLM.getLastPrompt().contains("Syntaxio"));
+    }
+
+    @Test
+    void replyPromptIsBeginnerFriendly() {
+        FakeLLMClient fakeLLM = new FakeLLMClient("AI response");
+        MainMenuAssistant assistant = new MainMenuAssistant(fakeLLM);
+
+        assistant.reply("What is a loop?");
+
+        assertTrue(fakeLLM.getLastPrompt().contains("beginner-friendly"));
+    }
+
+    @Test
+    void replyPromptDoesNotAllowFullAssignmentSolutions() {
+        FakeLLMClient fakeLLM = new FakeLLMClient("AI response");
+        MainMenuAssistant assistant = new MainMenuAssistant(fakeLLM);
+
+        assistant.reply("Do my assignment");
+
+        assertTrue(fakeLLM.getLastPrompt().contains("Do not generate full assignment solutions"));
+    }
+
+    private static class FakeLLMClient implements LLMClient {
         private final String response;
-        private boolean shouldFail;
         private int callCount;
+        private String lastPrompt;
 
-        FakeAIService(String response) {
+        FakeLLMClient(String response) {
             this.response = response;
         }
 
         @Override
-        public String ask(String message) {
+        public String generate(String prompt) {
             callCount++;
-
-            if (shouldFail) {
-                throw new RuntimeException("AI failed");
-            }
-
+            lastPrompt = prompt;
             return response;
         }
 
@@ -72,8 +88,8 @@ class MainMenuAssistantTest {
             return callCount;
         }
 
-        void setShouldFail(boolean shouldFail) {
-            this.shouldFail = shouldFail;
+        String getLastPrompt() {
+            return lastPrompt;
         }
     }
 }

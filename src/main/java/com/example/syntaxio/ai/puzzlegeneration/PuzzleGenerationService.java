@@ -34,7 +34,40 @@ public class PuzzleGenerationService {
     }
 
     private GeneratedPuzzle parseGeneratedPuzzle(String response) {
+        GeneratedPuzzle puzzle = new GeneratedPuzzle();
 
-        return new GeneratedPuzzle();
+        puzzle.setTitle(extractSection(response, "TITLE:", "DESCRIPTION:"));
+        puzzle.setDescription(extractSection(response, "DESCRIPTION:", "STARTER_CODE:"));
+        puzzle.setStarterCode(extractSection(response, "STARTER_CODE:", "TEST_CASES:"));
+        puzzle.setTestCases(extractSection(response, "TEST_CASES:", "EXPECTED_SOLUTION_EXPLANATION:"));
+        puzzle.setExpectedSolutionExplanation(
+                extractSection(response, "EXPECTED_SOLUTION_EXPLANATION:", null)
+        );
+
+        return puzzle;
+    }
+
+    private String extractSection(String response, String startMarker, String endMarker) {
+        int startIndex = response.indexOf(startMarker);
+
+        if (startIndex == -1) {
+            return "";
+        }
+
+        startIndex += startMarker.length();
+
+        int endIndex;
+
+        if (endMarker == null) {
+            endIndex = response.length();
+        } else {
+            endIndex = response.indexOf(endMarker);
+
+            if (endIndex == -1) {
+                endIndex = response.length();
+            }
+        }
+
+        return response.substring(startIndex, endIndex).trim();
     }
 }
