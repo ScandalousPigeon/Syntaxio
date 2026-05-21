@@ -1,6 +1,5 @@
-package com.example.syntaxio.ai;
+package com.example.syntaxio.ai.chat;
 
-import com.example.syntaxio.ai.chat.MainMenuAssistant;
 import com.example.syntaxio.ai.client.LLMClient;
 import org.junit.jupiter.api.Test;
 
@@ -70,8 +69,8 @@ class MainMenuAssistantTest {
 
     private static class FakeLLMClient implements LLMClient {
         private final String response;
-        private int callCount;
         private String lastPrompt;
+        private int callCount;
 
         FakeLLMClient(String response) {
             this.response = response;
@@ -79,17 +78,17 @@ class MainMenuAssistantTest {
 
         @Override
         public String generate(String prompt) {
-            callCount++;
-            lastPrompt = prompt;
+            this.lastPrompt = prompt;
+            this.callCount++;
             return response;
-        }
-
-        int getCallCount() {
-            return callCount;
         }
 
         String getLastPrompt() {
             return lastPrompt;
+        }
+
+        int getCallCount() {
+            return callCount;
         }
     }
 }
