@@ -28,6 +28,7 @@ public class OllamaClient implements LLMClient {
     }
 
     OllamaClient(HttpClient httpClient, URI endpoint, String model, Duration timeout) {
+        // fake setup for tests
         this.httpClient = httpClient;
         this.endpoint = endpoint;
         this.model = model;
