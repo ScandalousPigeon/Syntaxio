@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="1200.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.syntaxio.ui.controller.CodingChallengeController">
+<AnchorPane prefHeight="1200.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.syntaxio.ui.controller.ChallengeBrowserController">
    <children>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="background-layer" stylesheets="@css/base.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
