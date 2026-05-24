@@ -1,5 +1,8 @@
 package com.example.syntaxio.ui.controller;
 
+import com.example.syntaxio.ai.client.OllamaClient;
+import com.example.syntaxio.ai.puzzlegeneration.GeneratedPuzzleChallengeService;
+import com.example.syntaxio.ai.puzzlegeneration.PuzzleGenerationService;
 import com.example.syntaxio.database.SqliteChallengeDAO;
 import com.example.syntaxio.database.SqliteSolutionDAO;
 import com.example.syntaxio.database.SessionManager;
@@ -29,25 +32,41 @@ public class ChallengeBrowserController {
     @FXML private ComboBox<String> statusFilter;
     @FXML private Label loadingLabel;
     @FXML private Label resultsCountLabel;
+    @FXML private TextField generationTopicField;
+    @FXML private ComboBox<String> generationDifficultyCombo;
+    @FXML private Button generatePuzzleButton;
+    @FXML private Label generationStatusLabel;
 
     private SqliteChallengeDAO challengeDAO;
     private SessionManager sessionManager;
+    private GeneratedPuzzleChallengeService generatedPuzzleChallengeService;
     private ObservableList<Challenge> allChallenges;
     private FilteredList<Challenge> filteredChallenges;
     private List<String> completedChallengeIds;
-
-    // currently this class breaks the initialisation of the UI
 
     @FXML
     public void initialize() {
         challengeDAO = new SqliteChallengeDAO();
         sessionManager = SessionManager.getInstance();
+        generatedPuzzleChallengeService = new GeneratedPuzzleChallengeService(
+                new PuzzleGenerationService(new OllamaClient()),
+                challengeDAO
+        );
 
-        difficultyFilter.setItems(FXCollections.observableArrayList("All", "EASY", "MEDIUM", "HARD"));
-        difficultyFilter.setValue("All");
+        if (difficultyFilter != null) {
+            difficultyFilter.setItems(FXCollections.observableArrayList("All", "EASY", "MEDIUM", "HARD"));
+            difficultyFilter.setValue("All");
+        }
 
-        statusFilter.setItems(FXCollections.observableArrayList("All", "Not Started", "Completed"));
-        statusFilter.setValue("All");
+        if (statusFilter != null) {
+            statusFilter.setItems(FXCollections.observableArrayList("All", "Not Started", "Completed"));
+            statusFilter.setValue("All");
+        }
+
+        if (generationDifficultyCombo != null) {
+            generationDifficultyCombo.setItems(FXCollections.observableArrayList("EASY", "MEDIUM", "HARD"));
+            generationDifficultyCombo.setValue("EASY");
+        }
 
         if (sessionManager.getCurrentUser() != null) {
             SqliteSolutionDAO solutionDAO = new SqliteSolutionDAO();
@@ -62,11 +81,57 @@ public class ChallengeBrowserController {
             completedChallengeIds = List.of();
         }
 
-        loadChallenges();
+        if (hasChallengeBrowserControls()) {
+            loadChallenges();
 
-        searchField.textProperty().addListener((obs, old, newVal) -> applyFilters());
-        difficultyFilter.valueProperty().addListener((obs, old, newVal) -> applyFilters());
-        statusFilter.valueProperty().addListener((obs, old, newVal) -> applyFilters());
+            searchField.textProperty().addListener((obs, old, newVal) -> applyFilters());
+            difficultyFilter.valueProperty().addListener((obs, old, newVal) -> applyFilters());
+            statusFilter.valueProperty().addListener((obs, old, newVal) -> applyFilters());
+        }
+    }
+
+    @FXML
+    private void onGeneratePuzzle(ActionEvent event) {
+        String topic = generationTopicField == null ? "" : generationTopicField.getText();
+        String difficulty = generationDifficultyCombo == null ? "EASY" : generationDifficultyCombo.getValue();
+
+        generatePuzzleAsync(event, topic, difficulty);
+    }
+
+    public Challenge generateAndSavePuzzle(String topic, String difficulty) {
+        return generatedPuzzleChallengeService.generateAndSaveChallenge(topic, difficulty);
+    }
+
+    private void generatePuzzleAsync(ActionEvent event, String topic, String difficulty) {
+        setGenerationInProgress(true, "Generating puzzle...");
+
+        Thread generationThread = new Thread(() -> {
+            try {
+                Challenge generatedChallenge = generateAndSavePuzzle(topic, difficulty);
+                Platform.runLater(() -> handleGeneratedChallenge(event, generatedChallenge));
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    setGenerationInProgress(false, "Generation failed: " + e.getMessage());
+                    showError("Puzzle generation failed: " + e.getMessage());
+                });
+            }
+        });
+
+        generationThread.setDaemon(true);
+        generationThread.start();
+    }
+
+    private void handleGeneratedChallenge(ActionEvent event, Challenge generatedChallenge) {
+        if (allChallenges != null) {
+            allChallenges.add(generatedChallenge);
+            applyFilters();
+        }
+
+        setGenerationInProgress(false, "Generated: " + generatedChallenge.getTitle());
+
+        if (event != null) {
+            startChallenge(event, generatedChallenge.getId());
+        }
     }
 
     private void loadChallenges() {
@@ -87,9 +152,9 @@ public class ChallengeBrowserController {
     private void applyFilters() {
         if (filteredChallenges == null) return;
 
-        String searchText = searchField.getText().toLowerCase();
-        String difficulty = difficultyFilter.getValue();
-        String status = statusFilter.getValue();
+        String searchText = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
+        String difficulty = difficultyFilter.getValue() == null ? "All" : difficultyFilter.getValue();
+        String status = statusFilter.getValue() == null ? "All" : statusFilter.getValue();
 
         Predicate<Challenge> predicate = challenge -> {
             if (!searchText.isEmpty()) {
@@ -115,6 +180,8 @@ public class ChallengeBrowserController {
     }
 
     private void displayChallenges() {
+        if (challengesContainer == null || resultsCountLabel == null) return;
+
         challengesContainer.getChildren().clear();
 
         if (filteredChallenges.isEmpty()) {
@@ -206,6 +273,33 @@ public class ChallengeBrowserController {
         } catch (IOException e) {
             System.err.println("Error loading challenge screen: " + e.getMessage());
         }
+    }
+
+    private void setGenerationInProgress(boolean inProgress, String statusText) {
+        if (generatePuzzleButton != null) {
+            generatePuzzleButton.setDisable(inProgress);
+        }
+
+        if (generationStatusLabel != null) {
+            generationStatusLabel.setText(statusText);
+        }
+    }
+
+    private boolean hasChallengeBrowserControls() {
+        return challengesContainer != null
+                && searchField != null
+                && difficultyFilter != null
+                && statusFilter != null
+                && loadingLabel != null
+                && resultsCountLabel != null;
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
