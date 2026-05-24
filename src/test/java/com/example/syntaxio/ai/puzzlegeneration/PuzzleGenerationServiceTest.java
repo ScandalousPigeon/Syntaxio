@@ -22,6 +22,38 @@ class PuzzleGenerationServiceTest {
     }
 
     @Test
+    void generatePuzzlePromptContainsRequiredOutputContract() {
+        FakeLLMClient fakeLLM = new FakeLLMClient(validLLMResponse());
+        PuzzleGenerationService service = new PuzzleGenerationService(fakeLLM);
+
+        service.generatePuzzle("strings", "MEDIUM");
+
+        String prompt = fakeLLM.getLastPrompt();
+
+        assertAll(
+                () -> assertTrue(prompt.contains("Return exactly the following format")),
+                () -> assertTrue(prompt.contains("TITLE:")),
+                () -> assertTrue(prompt.contains("DESCRIPTION:")),
+                () -> assertTrue(prompt.contains("DIFFICULTY:")),
+                () -> assertTrue(prompt.contains("STARTER_CODE:")),
+                () -> assertTrue(prompt.contains("TEST_1_DESCRIPTION:")),
+                () -> assertTrue(prompt.contains("TEST_1_INPUT:")),
+                () -> assertTrue(prompt.contains("TEST_1_EXPECTED:")),
+                () -> assertTrue(prompt.contains("TEST_2_DESCRIPTION:")),
+                () -> assertTrue(prompt.contains("TEST_2_INPUT:")),
+                () -> assertTrue(prompt.contains("TEST_2_EXPECTED:")),
+                () -> assertTrue(prompt.contains("TEST_3_DESCRIPTION:")),
+                () -> assertTrue(prompt.contains("TEST_3_INPUT:")),
+                () -> assertTrue(prompt.contains("TEST_3_EXPECTED:")),
+                () -> assertTrue(prompt.contains("MODEL_SOLUTION:")),
+                () -> assertTrue(prompt.contains("<EASY, MEDIUM, or HARD>")),
+                () -> assertTrue(prompt.contains("<Java method only, not a full class>")),
+                () -> assertTrue(prompt.contains("The puzzle should be suitable for beginner programmers")),
+                () -> assertTrue(prompt.contains("Make sure the model solution is correct"))
+        );
+    }
+
+    @Test
     void generatePuzzleParsesStructuredLLMResponseIntoGeneratedPuzzle() {
         FakeLLMClient fakeLLM = new FakeLLMClient(validLLMResponse());
         PuzzleGenerationService service = new PuzzleGenerationService(fakeLLM);
@@ -29,17 +61,36 @@ class PuzzleGenerationServiceTest {
         GeneratedPuzzle puzzle = service.generatePuzzle("arrays", "EASY");
 
         assertEquals("Count Positive Numbers", puzzle.getTitle());
+        assertEquals(
+                "Write a method that counts how many positive numbers are in an integer array.",
+                puzzle.getDescription()
+        );
         assertEquals("EASY", puzzle.getDifficulty());
-        assertTrue(puzzle.getDescription().contains("positive numbers"));
         assertTrue(puzzle.getStarterCode().contains("countPositive"));
+        assertTrue(puzzle.getStarterCode().contains("return 0;"));
         assertTrue(puzzle.getModelSolution().contains("for"));
+        assertTrue(puzzle.getModelSolution().contains("return count;"));
 
         assertEquals(3, puzzle.getTestCases().size());
 
-        TestCase firstTest = puzzle.getTestCases().get(0);
-        assertEquals("Mixed positive and negative numbers", firstTest.getDescription());
-        assertEquals("new int[]{1, -2, 3}", firstTest.getInput());
-        assertEquals("2", firstTest.getExpectedOutput());
+        assertTestCase(
+                puzzle.getTestCases().get(0),
+                "Mixed positive and negative numbers",
+                "new int[]{1, -2, 3}",
+                "2"
+        );
+        assertTestCase(
+                puzzle.getTestCases().get(1),
+                "No positive numbers",
+                "new int[]{-1, -2, 0}",
+                "0"
+        );
+        assertTestCase(
+                puzzle.getTestCases().get(2),
+                "All positive numbers",
+                "new int[]{4, 5, 6}",
+                "3"
+        );
     }
 
     @Test
@@ -51,6 +102,104 @@ class PuzzleGenerationServiceTest {
                 IllegalArgumentException.class,
                 () -> service.generatePuzzle("arrays", "EASY")
         );
+    }
+
+    @Test
+    void generatePuzzleThrowsExceptionWhenRequiredSectionIsMissing() {
+        String response = replaceRequired(
+                validLLMResponse(),
+                "TEST_2_EXPECTED:",
+                "TEST_2_EXPECTED_MISSING:"
+        );
+        FakeLLMClient fakeLLM = new FakeLLMClient(response);
+        PuzzleGenerationService service = new PuzzleGenerationService(fakeLLM);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> service.generatePuzzle("arrays", "EASY")
+        );
+
+        assertTrue(exception.getMessage().contains("Missing required section: TEST_2_EXPECTED:"));
+    }
+
+    @Test
+    void generatePuzzleThrowsExceptionWhenRequiredSectionIsEmpty() {
+        String response = replaceRequired(
+                validLLMResponse(),
+                "TITLE:\nCount Positive Numbers",
+                "TITLE:\n"
+        );
+        FakeLLMClient fakeLLM = new FakeLLMClient(response);
+        PuzzleGenerationService service = new PuzzleGenerationService(fakeLLM);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> service.generatePuzzle("arrays", "EASY")
+        );
+
+        assertTrue(exception.getMessage().contains("Section cannot be empty: TITLE:"));
+    }
+
+    @Test
+    void generatePuzzleTrimsWhitespaceAroundSectionContent() {
+        String response = replaceRequired(
+                validLLMResponse(),
+                "TITLE:\nCount Positive Numbers",
+                "TITLE:\n\n   Count Positive Numbers   \n"
+        );
+        FakeLLMClient fakeLLM = new FakeLLMClient(response);
+        PuzzleGenerationService service = new PuzzleGenerationService(fakeLLM);
+
+        GeneratedPuzzle puzzle = service.generatePuzzle("arrays", "EASY");
+
+        assertEquals("Count Positive Numbers", puzzle.getTitle());
+    }
+
+    @Test
+    void generatePuzzleThrowsExceptionWhenLLMResponseIsNull() {
+        FakeLLMClient fakeLLM = new FakeLLMClient(null);
+        PuzzleGenerationService service = new PuzzleGenerationService(fakeLLM);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> service.generatePuzzle("arrays", "EASY")
+        );
+
+        assertEquals("Could not parse generated puzzle response.", exception.getMessage());
+    }
+
+    @Test
+    void generatePuzzleDoesNotSwallowLLMClientFailures() {
+        RuntimeException failure = new RuntimeException("LLM unavailable");
+        PuzzleGenerationService service = new PuzzleGenerationService(prompt -> {
+            throw failure;
+        });
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> service.generatePuzzle("arrays", "EASY")
+        );
+
+        assertSame(failure, exception);
+    }
+
+    private static void assertTestCase(
+            TestCase testCase,
+            String expectedDescription,
+            String expectedInput,
+            String expectedOutput
+    ) {
+        assertAll(
+                () -> assertEquals(expectedDescription, testCase.getDescription()),
+                () -> assertEquals(expectedInput, testCase.getInput()),
+                () -> assertEquals(expectedOutput, testCase.getExpectedOutput())
+        );
+    }
+
+    private static String replaceRequired(String source, String target, String replacement) {
+        String updated = source.replace(target, replacement);
+        assertNotEquals(source, updated, "Test fixture replacement did not match source text.");
+        return updated;
     }
 
     private static String validLLMResponse() {
