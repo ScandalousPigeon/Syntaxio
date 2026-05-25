@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -141,7 +142,7 @@
                                           </VBox>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Suggested Puzzles" wrappingWidth="317.7200012207031">
                                              <font>
-                                                <Font size="15.0" />
+                                                <Font size="16.0" />
                                              </font>
                                              <VBox.margin>
                                                 <Insets bottom="5.0" left="5.0" top="5.0" />
@@ -193,11 +194,32 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="AI Assistant">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Text>
+                              <HBox prefHeight="48.0" prefWidth="1146.0">
+                                 <children>
+                                    <ImageView fitHeight="42.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="AI Assistant">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fill="#17d0e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="246.0" prefWidth="1146.0" styleClass="chat-box" stylesheets="@css/main-menu.css" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <VBox prefHeight="218.0" prefWidth="1121.0" styleClass="chat-content" stylesheets="@css/main-menu.css" />
+                                 </content>
+                              </ScrollPane>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" stylesheets="@css/main-menu.css">
+                                 <children>
+                                    <TextField prefHeight="40.0" prefWidth="1093.0" promptText="Ask me anything..." styleClass="chat-input" stylesheets="@css/main-menu.css" />
+                                    <Button maxHeight="54.0" maxWidth="47.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="47.0" styleClass="send-button" stylesheets="@css/main-menu.css" text="Send" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>

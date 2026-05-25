@@ -62,4 +62,110 @@
     -fx-background-color: #0b1020;
 }
 
+/* message display box */
+.chat-box {
+    -fx-background-color: #0f142b;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 12;
+}
+
+.chat-content {
+    -fx-background-color: #0f142b;
+    -fx-padding: 14;
+    -fx-spacing: 10;
+}
+
+/* scrollpane */
+.chat-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.chat-scroll > .viewport {
+    -fx-background-color: #0f142b;
+    -fx-background-radius: 12;
+}
+
+/* VBox that holds all messages */
+.message-list {
+    -fx-background-color: #0f142b;
+    -fx-padding: 12;
+    -fx-padding: 12;
+    -fx-spacing: 18;
+}
+
+/* Put bot messages inside an HBox with this class */
+.bot-message-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Put user messages inside an HBox with this class */
+.user-message-row {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* Bot bubble */
+.bot-bubble {
+    -fx-background-color: #232944;
+    -fx-background-radius: 999;
+    -fx-padding: 8 14 8 14;
+    -fx-text-fill: #e5e7eb;
+    -fx-font-size: 12px;
+}
+
+/* User bubble */
+.user-bubble {
+    -fx-background-color: #f5a400;
+    -fx-background-radius: 999;
+    -fx-padding: 8 14 8 14;
+    -fx-text-fill: #111827;
+    -fx-font-size: 12px;
+}
+
+/* Bottom row containing input + button */
+.chat-input-row {
+    -fx-spacing: 8;
+    -fx-alignment: CENTER;
+}
+
+/* Text input */
+.chat-input {
+    -fx-background-color: #141930;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #2a3150;
+    -fx-border-width: 1;
+    -fx-text-fill: #f8fafc;
+    -fx-prompt-text-fill: #8b91a8;
+    -fx-padding: 10 14 10 14;
+    -fx-font-size: 13px;
+}
+
+.chat-input:focused {
+    -fx-border-color: #16c99a;
+}
+
+/* Send button */
+.send-button {
+    -fx-background-color: #16c99a;
+    -fx-background-radius: 12;
+    -fx-text-fill: #06111f;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+    -fx-cursor: hand;
+}
+
+.send-button:hover {
+    -fx-background-color: #22e6b3;
+}
+
+.send-button:pressed {
+    -fx-background-color: #0fa77f;
 }
