@@ -5,6 +5,7 @@ module com.example.syntaxio {
     requires transitive java.sql;
     requires java.compiler;
     requires ollama4j;
+    requires org.slf4j;
 
     opens com.example.syntaxio.ui to javafx.fxml;
     exports com.example.syntaxio.ui;
