@@ -209,15 +209,15 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="246.0" prefWidth="1146.0" styleClass="chat-box" stylesheets="@css/main-menu.css" VBox.vgrow="ALWAYS">
+                              <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="246.0" prefWidth="1146.0" styleClass="chat-box" stylesheets="@css/main-menu.css" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox prefHeight="218.0" prefWidth="1121.0" styleClass="chat-content" stylesheets="@css/main-menu.css" />
+                                    <VBox fx:id="chatContent" prefHeight="218.0" prefWidth="1121.0" styleClass="chat-content" stylesheets="@css/main-menu.css" />
                                  </content>
                               </ScrollPane>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" stylesheets="@css/main-menu.css">
                                  <children>
-                                    <TextField prefHeight="40.0" prefWidth="1093.0" promptText="Ask me anything..." styleClass="chat-input" stylesheets="@css/main-menu.css" />
-                                    <Button maxHeight="54.0" maxWidth="47.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="47.0" styleClass="send-button" stylesheets="@css/main-menu.css" text="Send" />
+                                    <TextField fx:id="chatInput" onAction="#handleSendMessage" prefHeight="40.0" prefWidth="1093.0" promptText="Ask me anything..." styleClass="chat-input" stylesheets="@css/main-menu.css" />
+                                    <Button fx:id="sendButton" maxHeight="54.0" maxWidth="47.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="54.0" prefWidth="47.0" styleClass="send-button" stylesheets="@css/main-menu.css" text="Send" />
                                  </children>
                               </HBox>
                            </children>
