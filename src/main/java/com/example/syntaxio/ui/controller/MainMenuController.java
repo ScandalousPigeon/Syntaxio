@@ -112,7 +112,9 @@ public class MainMenuController {
         });
 
         replyTask.setOnFailed(event -> {
-            pendingBubble.setText("I couldn't reach the AI service. Make sure Ollama is running, then try again.");
+            pendingBubble.setText("I couldn't reach Ollama yet. It may still be starting, or "
+                    + OllamaClient.DEFAULT_MODEL
+                    + " may still be downloading. Make sure Ollama is installed if this keeps happening.");
             setChatControlsDisabled(false);
             scrollToLatestMessage();
         });

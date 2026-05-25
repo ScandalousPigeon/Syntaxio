@@ -9,8 +9,8 @@ import java.time.Duration;
 
 public class OllamaClient implements LLMClient {
 
-    private static final String DEFAULT_HOST = "http://localhost:11434";
-    private static final String DEFAULT_MODEL = "qwen2.5-coder:3b";
+    public static final String DEFAULT_HOST = "http://localhost:11434";
+    public static final String DEFAULT_MODEL = "qwen2.5-coder:3b";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
 
     private final OllamaGenerator ollama;
@@ -51,7 +51,7 @@ public class OllamaClient implements LLMClient {
         }
     }
 
-    private static String configuredHost() {
+    public static String configuredHost() {
         String configured = System.getProperty("syntaxio.ollama.host");
         if (configured == null || configured.isBlank()) {
             configured = System.getenv("OLLAMA_HOST");
@@ -66,7 +66,7 @@ public class OllamaClient implements LLMClient {
         return configured == null || configured.isBlank() ? DEFAULT_HOST : normalizeHost(configured);
     }
 
-    private static String configuredModel() {
+    public static String configuredModel() {
         String configured = System.getProperty("syntaxio.ollama.model");
         if (configured == null || configured.isBlank()) {
             configured = System.getenv("OLLAMA_MODEL");
