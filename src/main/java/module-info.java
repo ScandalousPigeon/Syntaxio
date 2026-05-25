@@ -4,7 +4,7 @@ module com.example.syntaxio {
     requires transitive javafx.graphics;
     requires transitive java.sql;
     requires java.compiler;
-    requires java.net.http;
+    requires ollama4j;
 
     opens com.example.syntaxio.ui to javafx.fxml;
     exports com.example.syntaxio.ui;
