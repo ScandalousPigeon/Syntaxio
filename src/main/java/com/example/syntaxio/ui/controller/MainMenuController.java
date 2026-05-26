@@ -5,6 +5,7 @@ import com.example.syntaxio.ai.client.OllamaClient;
 import com.example.syntaxio.database.SessionManager;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -22,7 +24,9 @@ import java.io.IOException;
 
 public class MainMenuController {
 
-    private static final double MAX_MESSAGE_WIDTH = 640.0;
+    private static final double MIN_MESSAGE_WIDTH = 220.0;
+    private static final double MAX_MESSAGE_WIDTH = 900.0;
+    private static final double MESSAGE_WIDTH_RATIO = 0.78;
 
     @FXML
     private VBox popoutMenu;
@@ -127,11 +131,24 @@ public class MainMenuController {
     private Label addMessageBubble(String message, boolean fromUser) {
         Label bubble = new Label(message);
         bubble.setWrapText(true);
-        bubble.setMaxWidth(MAX_MESSAGE_WIDTH);
+        bubble.setMinHeight(Region.USE_PREF_SIZE);
+        bubble.maxWidthProperty().bind(Bindings.createDoubleBinding(
+                () -> {
+                    double availableWidth = chatContent.getWidth() > 0
+                            ? chatContent.getWidth()
+                            : MAX_MESSAGE_WIDTH;
+                    return Math.max(
+                            MIN_MESSAGE_WIDTH,
+                            Math.min(MAX_MESSAGE_WIDTH, availableWidth * MESSAGE_WIDTH_RATIO)
+                    );
+                },
+                chatContent.widthProperty()
+        ));
         bubble.getStyleClass().add(fromUser ? "user-bubble" : "bot-bubble");
 
         HBox row = new HBox(bubble);
         row.setMaxWidth(Double.MAX_VALUE);
+        row.prefWidthProperty().bind(chatContent.widthProperty());
         row.getStyleClass().add(fromUser ? "user-message-row" : "bot-message-row");
 
         chatContent.getChildren().add(row);
