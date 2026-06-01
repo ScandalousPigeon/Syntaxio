@@ -8,6 +8,7 @@ import com.example.syntaxio.model.Solution;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -34,6 +35,8 @@ public class ChallengeBrowserController {
 
     private static final int CARD_COLUMNS = 2;
     private static final double CARD_HEIGHT = 100.0;
+    private static final double CATEGORY_PANEL_HEIGHT = 586.0;
+    private static final double DEFAULT_LAYOUT_HEIGHT = 874.0;
     private static final int DESCRIPTION_PREVIEW_LENGTH = 110;
     private static final String ALL_DIFFICULTIES = "All";
 
@@ -55,6 +58,7 @@ public class ChallengeBrowserController {
         sessionManager = SessionManager.getInstance();
         completedChallengeIds = loadCompletedChallengeIds();
 
+        configureChallengeGrid();
         configureDifficultyButtons();
 
         if (searchField != null) {
@@ -62,6 +66,15 @@ public class ChallengeBrowserController {
         }
 
         loadChallenges();
+    }
+
+    private void configureChallengeGrid() {
+        if (challengesGrid == null) {
+            return;
+        }
+
+        challengesGrid.setMinHeight(Region.USE_PREF_SIZE);
+        GridPane.setValignment(challengesGrid, VPos.TOP);
     }
 
     private Set<String> loadCompletedChallengeIds() {
@@ -153,14 +166,15 @@ public class ChallengeBrowserController {
         challengesGrid.getRowConstraints().clear();
 
         if (challenges.isEmpty()) {
-            addChallengeGridRows(1);
+            resizeChallengeLayout(1);
             HBox emptyCard = createEmptyCard();
             GridPane.setColumnSpan(emptyCard, CARD_COLUMNS);
             challengesGrid.getChildren().add(emptyCard);
             return;
         }
 
-        addChallengeGridRows((int) Math.ceil(challenges.size() / (double) CARD_COLUMNS));
+        int rowCount = (int) Math.ceil(challenges.size() / (double) CARD_COLUMNS);
+        resizeChallengeLayout(rowCount);
 
         for (int i = 0; i < challenges.size(); i++) {
             HBox card = createChallengeCard(challenges.get(i));
@@ -168,6 +182,39 @@ public class ChallengeBrowserController {
             GridPane.setRowIndex(card, i / CARD_COLUMNS);
             challengesGrid.getChildren().add(card);
         }
+    }
+
+    private void resizeChallengeLayout(int rowCount) {
+        double challengeGridHeight = calculateChallengeGridHeight(rowCount);
+
+        challengesGrid.setPrefHeight(challengeGridHeight);
+        challengesGrid.setMinHeight(challengeGridHeight);
+        addChallengeGridRows(rowCount);
+
+        if (challengesGrid.getParent() instanceof GridPane layoutGrid) {
+            double layoutHeight = Math.max(
+                    DEFAULT_LAYOUT_HEIGHT,
+                    Math.max(CATEGORY_PANEL_HEIGHT, challengeGridHeight)
+            );
+
+            layoutGrid.getRowConstraints().clear();
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setMinHeight(layoutHeight);
+            rowConstraints.setPrefHeight(layoutHeight);
+            layoutGrid.getRowConstraints().add(rowConstraints);
+
+            layoutGrid.setMinHeight(layoutHeight);
+            layoutGrid.setPrefHeight(layoutHeight);
+
+            if (layoutGrid.getParent() instanceof VBox contentRoot) {
+                contentRoot.setMinHeight(Region.USE_PREF_SIZE);
+                contentRoot.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            }
+        }
+    }
+
+    private double calculateChallengeGridHeight(int rowCount) {
+        return rowCount * CARD_HEIGHT + Math.max(0, rowCount - 1) * challengesGrid.getVgap();
     }
 
     private void addChallengeGridRows(int rowCount) {
