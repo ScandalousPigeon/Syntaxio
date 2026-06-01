@@ -1,4 +1,6 @@
-# Syntaxio
+# Syntaxio: CAB302 Project
+
+Group Members: Leon, Mimi, Xihan
 
 Syntaxio is a beginner-friendly coding application designed to help new programmers learn through guided problem solving rather than direct answers.
 
