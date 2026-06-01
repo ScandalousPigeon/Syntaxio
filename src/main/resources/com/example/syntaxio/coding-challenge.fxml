@@ -21,7 +21,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" styleClass="topbar" stylesheets="@css/coding-challenge.css" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBack" styleClass="back-button" stylesheets="@css/coding-challenge.css" text="Back" />
-                  <VBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="111.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="401.0">
                      <children>
                         <Label fx:id="titleLabel" text="Puzzle Name" textFill="WHITE">
                            <font>
@@ -31,13 +31,13 @@
                         <Label fx:id="difficultyLabel" text="Difficulty" textFill="RED" />
                      </children>
                   </VBox>
-                  <Region prefHeight="70.0" prefWidth="675.0" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="229.0" spacing="10.0">
+                  <Region prefHeight="70.0" prefWidth="356.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="366.0" spacing="10.0">
                      <children>
                         <ProgressIndicator fx:id="loadingIndicator" prefHeight="28.0" prefWidth="28.0" visible="false" />
-                        <Label styleClass="timer-box" stylesheets="@css/coding-challenge.css" text="Time" textFill="WHITE" />
-                        <Button fx:id="runButton" mnemonicParsing="false" onAction="#onRun" styleClass="run-button" stylesheets="@css/coding-challenge.css" text="Run" />
-                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmit" styleClass="submit-button" stylesheets="@css/coding-challenge.css" text="Submit" />
+                        <Label fx:id="timeIndicator" prefWidth="62.0" styleClass="timer-box" stylesheets="@css/coding-challenge.css" text="Time" textFill="WHITE" />
+                        <Button fx:id="runButton" mnemonicParsing="false" onAction="#onRun" prefHeight="32.0" prefWidth="64.0" styleClass="run-button" stylesheets="@css/coding-challenge.css" text="Run" />
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmit" prefHeight="32.0" prefWidth="117.0" styleClass="submit-button" stylesheets="@css/coding-challenge.css" text="Submit" />
                      </children>
                   </HBox>
                </children></HBox>
@@ -49,8 +49,8 @@
                      <children>
                         <HBox fx:id="descriptionTabs" prefHeight="47.0" prefWidth="583.0" styleClass="tab-bar" stylesheets="@css/coding-challenge.css">
                            <children>
-                              <ToggleButton mnemonicParsing="false" styleClass="tab-button" stylesheets="@css/coding-challenge.css" text="Description" />
-                              <ToggleButton mnemonicParsing="false" styleClass="tab-button" stylesheets="@css/coding-challenge.css" text="AI Assistant" />
+                              <ToggleButton fx:id="descriptionTab" mnemonicParsing="false" styleClass="tab-button" stylesheets="@css/coding-challenge.css" text="Description" />
+                              <ToggleButton fx:id="aiAssistantTab" mnemonicParsing="false" styleClass="tab-button" stylesheets="@css/coding-challenge.css" text="AI Assistant" />
                            </children>
                         </HBox>
                         <TextArea fx:id="descriptionArea" editable="false" prefHeight="705.0" prefWidth="543.0" styleClass="code-area" stylesheets="@css/coding-challenge.css" wrapText="true">

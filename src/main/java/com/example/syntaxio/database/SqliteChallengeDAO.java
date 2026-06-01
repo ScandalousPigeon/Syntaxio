@@ -58,67 +58,17 @@ public class SqliteChallengeDAO {
     }
 
     private void loadDefaultChallenges() {
-        if (!getAllChallenges().isEmpty()) return;
+        int addedCount = 0;
 
-        List<TestCase> testCases1 = List.of(
-            new TestCase("Array with positive numbers", "new int[]{1, 2, 3}", "6"),
-            new TestCase("Array with negative numbers", "new int[]{-1, -2, -3}", "-6"),
-            new TestCase("Empty array", "new int[]{}", "0"),
-            new TestCase("Array with one element", "new int[]{42}", "42")
-        );
+        for (Challenge challenge : DefaultChallenges.all()) {
+            if (getChallengeById(challenge.getId()) == null && addChallenge(challenge)) {
+                addedCount++;
+            }
+        }
 
-        Challenge challenge1 = new Challenge(
-            "ch-001",
-            "Sum of Array",
-            "Write a method that takes an array of integers and returns the sum of all elements.\n\n" +
-            "Method signature: `public int sumArray(int[] numbers)`",
-            "public int sumArray(int[] numbers) {\n    // Your code here\n    return 0;\n}",
-            "EASY",
-            testCases1,
-            "public int sumArray(int[] numbers) {\n    int sum = 0;\n    for (int num : numbers) {\n        sum += num;\n    }\n    return sum;\n}"
-        );
-
-        List<TestCase> testCases2 = List.of(
-            new TestCase("Normal array", "new int[]{3, 7, 2, 9, 1}", "9"),
-            new TestCase("All negative", "new int[]{-5, -2, -8, -1}", "-1"),
-            new TestCase("Single element", "new int[]{10}", "10")
-        );
-
-        Challenge challenge2 = new Challenge(
-            "ch-002",
-            "Find Maximum",
-            "Write a method that finds and returns the maximum value in an array of integers.\n\n" +
-            "Method signature: `public int findMax(int[] numbers)`\n\n" +
-            "Hint: If the array is empty, return Integer.MIN_VALUE",
-            "public int findMax(int[] numbers) {\n    if (numbers.length == 0) {\n        return Integer.MIN_VALUE;\n    }\n    // Your code here\n    return 0;\n}",
-            "MEDIUM",
-            testCases2,
-            "public int findMax(int[] numbers) {\n    if (numbers.length == 0) {\n        return Integer.MIN_VALUE;\n    }\n    int max = numbers[0];\n    for (int num : numbers) {\n        if (num > max) {\n            max = num;\n        }\n    }\n    return max;\n}"
-        );
-
-        List<TestCase> testCases3 = List.of(
-            new TestCase("Normal string", "\"hello\"", "olleh"),
-            new TestCase("Palindrome", "\"racecar\"", "racecar"),
-            new TestCase("Empty string", "\"\"", "")
-        );
-
-        Challenge challenge3 = new Challenge(
-            "ch-003",
-            "Reverse String",
-            "Write a method that reverses a string.\n\n" +
-            "Method signature: `public String reverseString(String input)`\n\n" +
-            "Example: `reverseString(\"hello\")` should return `\"olleh\"`",
-            "public String reverseString(String input) {\n    // Your code here\n    return \"\";\n}",
-            "MEDIUM",
-            testCases3,
-            "public String reverseString(String input) {\n    return new StringBuilder(input).reverse().toString();\n}"
-        );
-
-        addChallenge(challenge1);
-        addChallenge(challenge2);
-        addChallenge(challenge3);
-
-        System.out.println("Default challenges loaded");
+        if (addedCount > 0) {
+            System.out.println("Default challenges loaded: " + addedCount);
+        }
     }
 
     public boolean addChallenge(Challenge challenge) {
