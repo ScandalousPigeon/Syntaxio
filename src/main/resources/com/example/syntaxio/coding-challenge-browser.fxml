@@ -25,7 +25,7 @@
                <children>
                   <VBox prefHeight="139.0" prefWidth="1160.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="content-card" stylesheets="@css/base.css" text="← Back to Home" textFill="WHITE" />
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackToHome" styleClass="content-card" stylesheets="@css/base.css" text="← Back to Home" textFill="WHITE" />
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Challenge Browser">
                            <font>
                               <Font size="28.0" />
@@ -46,20 +46,20 @@
                                     <Font size="29.0" />
                                  </font>
                               </Label>
-                              <TextField prefHeight="22.0" prefWidth="1093.0" promptText="Search challenges..." styleClass="search-field" stylesheets="@css/coding-challenge-browser.css" />
+                              <TextField fx:id="searchField" prefHeight="22.0" prefWidth="1093.0" promptText="Search challenges..." styleClass="search-field" stylesheets="@css/coding-challenge-browser.css" />
                            </children>
                         </HBox>
                         <HBox prefHeight="37.0" prefWidth="1134.0" styleClass="filter-bar" stylesheets="@css/coding-challenge-browser.css">
                            <children>
                               <Label text="Difficulty:" textFill="#9a9a9a" />
-                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="All Levels">
+                              <ToggleButton fx:id="allDifficultyButton" mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="All Levels">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="difficulty" />
                                  </toggleGroup>
                               </ToggleButton>
-                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Easy" toggleGroup="$difficulty" />
-                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Medium" toggleGroup="$difficulty" />
-                              <ToggleButton mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Hard" toggleGroup="$difficulty" />
+                              <ToggleButton fx:id="easyDifficultyButton" mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Easy" toggleGroup="$difficulty" />
+                              <ToggleButton fx:id="mediumDifficultyButton" mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Medium" toggleGroup="$difficulty" />
+                              <ToggleButton fx:id="hardDifficultyButton" mnemonicParsing="false" styleClass="filter-pill" stylesheets="@css/coding-challenge-browser.css" text="Hard" toggleGroup="$difficulty" />
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" top="10.0" />
@@ -84,7 +84,7 @@
                               <Label text="Categories" textFill="WHITE" />
                            </children>
                         </VBox>
-                        <GridPane hgap="10.0" stylesheets="@css/base.css" vgap="10.0" GridPane.columnIndex="1">
+                        <GridPane fx:id="challengesGrid" hgap="10.0" stylesheets="@css/base.css" vgap="10.0" GridPane.columnIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

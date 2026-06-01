@@ -1,309 +1,307 @@
 package com.example.syntaxio.ui.controller;
 
-import com.example.syntaxio.ai.client.OllamaClient;
-import com.example.syntaxio.ai.puzzlegeneration.GeneratedPuzzleChallengeService;
-import com.example.syntaxio.ai.puzzlegeneration.PuzzleGenerationService;
+import com.example.syntaxio.database.SessionManager;
 import com.example.syntaxio.database.SqliteChallengeDAO;
 import com.example.syntaxio.database.SqliteSolutionDAO;
-import com.example.syntaxio.database.SessionManager;
 import com.example.syntaxio.model.Challenge;
 import com.example.syntaxio.model.Solution;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.syntaxio.ui.util.ScreenManager.switchScreen;
 
 public class ChallengeBrowserController {
-    @FXML private FlowPane challengesContainer;
+
+    private static final int CARD_COLUMNS = 2;
+    private static final double CARD_HEIGHT = 100.0;
+    private static final int DESCRIPTION_PREVIEW_LENGTH = 110;
+    private static final String ALL_DIFFICULTIES = "All";
+
     @FXML private TextField searchField;
-    @FXML private ComboBox<String> difficultyFilter;
-    @FXML private ComboBox<String> statusFilter;
-    @FXML private Label loadingLabel;
-    @FXML private Label resultsCountLabel;
-    @FXML private TextField generationTopicField;
-    @FXML private ComboBox<String> generationDifficultyCombo;
-    @FXML private Button generatePuzzleButton;
-    @FXML private Label generationStatusLabel;
+    @FXML private ToggleButton allDifficultyButton;
+    @FXML private ToggleButton easyDifficultyButton;
+    @FXML private ToggleButton mediumDifficultyButton;
+    @FXML private ToggleButton hardDifficultyButton;
+    @FXML private GridPane challengesGrid;
 
     private SqliteChallengeDAO challengeDAO;
     private SessionManager sessionManager;
-    private GeneratedPuzzleChallengeService generatedPuzzleChallengeService;
-    private ObservableList<Challenge> allChallenges;
-    private FilteredList<Challenge> filteredChallenges;
-    private List<String> completedChallengeIds;
+    private List<Challenge> allChallenges = List.of();
+    private Set<String> completedChallengeIds = Set.of();
 
     @FXML
     public void initialize() {
         challengeDAO = new SqliteChallengeDAO();
         sessionManager = SessionManager.getInstance();
-        generatedPuzzleChallengeService = new GeneratedPuzzleChallengeService(
-                new PuzzleGenerationService(new OllamaClient()),
-                challengeDAO
-        );
+        completedChallengeIds = loadCompletedChallengeIds();
 
-        if (difficultyFilter != null) {
-            difficultyFilter.setItems(FXCollections.observableArrayList("All", "EASY", "MEDIUM", "HARD"));
-            difficultyFilter.setValue("All");
+        configureDifficultyButtons();
+
+        if (searchField != null) {
+            searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilters());
         }
 
-        if (statusFilter != null) {
-            statusFilter.setItems(FXCollections.observableArrayList("All", "Not Started", "Completed"));
-            statusFilter.setValue("All");
+        loadChallenges();
+    }
+
+    private Set<String> loadCompletedChallengeIds() {
+        if (sessionManager.getCurrentUser() == null) {
+            return Set.of();
         }
 
-        if (generationDifficultyCombo != null) {
-            generationDifficultyCombo.setItems(FXCollections.observableArrayList("EASY", "MEDIUM", "HARD"));
-            generationDifficultyCombo.setValue("EASY");
-        }
-
-        if (sessionManager.getCurrentUser() != null) {
-            SqliteSolutionDAO solutionDAO = new SqliteSolutionDAO();
-            completedChallengeIds = solutionDAO
+        SqliteSolutionDAO solutionDAO = new SqliteSolutionDAO();
+        return solutionDAO
                 .getSolutionsByUserId(sessionManager.getCurrentUser().getId())
                 .stream()
                 .filter(Solution::isPassed)
                 .map(Solution::getChallengeId)
-                .distinct()
-                .collect(Collectors.toList());
-        } else {
-            completedChallengeIds = List.of();
-        }
-
-        if (hasChallengeBrowserControls()) {
-            loadChallenges();
-
-            searchField.textProperty().addListener((obs, old, newVal) -> applyFilters());
-            difficultyFilter.valueProperty().addListener((obs, old, newVal) -> applyFilters());
-            statusFilter.valueProperty().addListener((obs, old, newVal) -> applyFilters());
-        }
+                .collect(Collectors.toSet());
     }
 
-    @FXML
-    private void onGeneratePuzzle(ActionEvent event) {
-        String topic = generationTopicField == null ? "" : generationTopicField.getText();
-        String difficulty = generationDifficultyCombo == null ? "EASY" : generationDifficultyCombo.getValue();
-
-        generatePuzzleAsync(event, topic, difficulty);
-    }
-
-    public Challenge generateAndSavePuzzle(String topic, String difficulty) {
-        return generatedPuzzleChallengeService.generateAndSaveChallenge(topic, difficulty);
-    }
-
-    private void generatePuzzleAsync(ActionEvent event, String topic, String difficulty) {
-        setGenerationInProgress(true, "Generating puzzle...");
-
-        Thread generationThread = new Thread(() -> {
-            try {
-                Challenge generatedChallenge = generateAndSavePuzzle(topic, difficulty);
-                Platform.runLater(() -> handleGeneratedChallenge(event, generatedChallenge));
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    setGenerationInProgress(false, "Generation failed: " + e.getMessage());
-                    showError("Puzzle generation failed: " + e.getMessage());
-                });
-            }
-        });
-
-        generationThread.setDaemon(true);
-        generationThread.start();
-    }
-
-    private void handleGeneratedChallenge(ActionEvent event, Challenge generatedChallenge) {
-        if (allChallenges != null) {
-            allChallenges.add(generatedChallenge);
-            applyFilters();
-        }
-
-        setGenerationInProgress(false, "Generated: " + generatedChallenge.getTitle());
-
-        if (event != null) {
-            startChallenge(event, generatedChallenge.getId());
-        }
-    }
-
-    private void loadChallenges() {
-        loadingLabel.setVisible(true);
-        challengesContainer.getChildren().clear();
-
-        new Thread(() -> {
-            List<Challenge> challenges = challengeDAO.getAllChallenges();
-            Platform.runLater(() -> {
-                allChallenges = FXCollections.observableArrayList(challenges);
-                filteredChallenges = new FilteredList<>(allChallenges, p -> true);
-                applyFilters();
-                loadingLabel.setVisible(false);
-            });
-        }).start();
-    }
-
-    private void applyFilters() {
-        if (filteredChallenges == null) return;
-
-        String searchText = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
-        String difficulty = difficultyFilter.getValue() == null ? "All" : difficultyFilter.getValue();
-        String status = statusFilter.getValue() == null ? "All" : statusFilter.getValue();
-
-        Predicate<Challenge> predicate = challenge -> {
-            if (!searchText.isEmpty()) {
-                if (!challenge.getTitle().toLowerCase().contains(searchText) &&
-                    !challenge.getDescription().toLowerCase().contains(searchText)) {
-                    return false;
-                }
-            }
-
-            if (!difficulty.equals("All") && !challenge.getDifficulty().equals(difficulty)) {
-                return false;
-            }
-
-            boolean isCompleted = completedChallengeIds.contains(challenge.getId());
-            if (status.equals("Completed") && !isCompleted) return false;
-            if (status.equals("Not Started") && isCompleted) return false;
-
-            return true;
-        };
-
-        filteredChallenges.setPredicate(predicate);
-        displayChallenges();
-    }
-
-    private void displayChallenges() {
-        if (challengesContainer == null || resultsCountLabel == null) return;
-
-        challengesContainer.getChildren().clear();
-
-        if (filteredChallenges.isEmpty()) {
-            Label noResults = new Label("No challenges found. Try adjusting your filters.");
-            noResults.setStyle("-fx-text-fill: #c8d6e5;");
-            challengesContainer.getChildren().add(noResults);
-            resultsCountLabel.setText("0 challenges");
+    private void configureDifficultyButtons() {
+        if (allDifficultyButton == null
+                || easyDifficultyButton == null
+                || mediumDifficultyButton == null
+                || hardDifficultyButton == null) {
             return;
         }
 
-        resultsCountLabel.setText(filteredChallenges.size() + " challenges");
+        allDifficultyButton.setUserData(ALL_DIFFICULTIES);
+        easyDifficultyButton.setUserData("EASY");
+        mediumDifficultyButton.setUserData("MEDIUM");
+        hardDifficultyButton.setUserData("HARD");
 
-        for (Challenge challenge : filteredChallenges) {
-            VBox challengeCard = createChallengeCard(challenge);
-            challengesContainer.getChildren().add(challengeCard);
+        ToggleGroup group = allDifficultyButton.getToggleGroup();
+        if (group == null) {
+            group = new ToggleGroup();
+            allDifficultyButton.setToggleGroup(group);
+            easyDifficultyButton.setToggleGroup(group);
+            mediumDifficultyButton.setToggleGroup(group);
+            hardDifficultyButton.setToggleGroup(group);
+        }
+
+        ToggleGroup difficultyGroup = group;
+        difficultyGroup.selectToggle(allDifficultyButton);
+        difficultyGroup.selectedToggleProperty().addListener((obs, oldToggle, selectedToggle) -> {
+            if (selectedToggle == null) {
+                difficultyGroup.selectToggle(allDifficultyButton);
+                return;
+            }
+
+            applyFilters();
+        });
+    }
+
+    private void loadChallenges() {
+        allChallenges = challengeDAO.getAllChallenges();
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        if (challengesGrid == null) {
+            return;
+        }
+
+        String searchText = normalizeSearch(searchField == null ? "" : searchField.getText());
+        String selectedDifficulty = getSelectedDifficulty();
+
+        List<Challenge> filteredChallenges = allChallenges.stream()
+                .filter(challenge -> matchesSearch(challenge, searchText))
+                .filter(challenge -> matchesDifficulty(challenge, selectedDifficulty))
+                .toList();
+
+        displayChallenges(filteredChallenges);
+    }
+
+    private boolean matchesSearch(Challenge challenge, String searchText) {
+        if (searchText.isEmpty()) {
+            return true;
+        }
+
+        return containsIgnoreCase(challenge.getTitle(), searchText)
+                || containsIgnoreCase(challenge.getDescription(), searchText)
+                || containsIgnoreCase(challenge.getDifficulty(), searchText);
+    }
+
+    private boolean matchesDifficulty(Challenge challenge, String selectedDifficulty) {
+        return selectedDifficulty.equals(ALL_DIFFICULTIES)
+                || selectedDifficulty.equals(challenge.getDifficulty());
+    }
+
+    private void displayChallenges(List<Challenge> challenges) {
+        challengesGrid.getChildren().clear();
+        challengesGrid.getRowConstraints().clear();
+
+        if (challenges.isEmpty()) {
+            addChallengeGridRows(1);
+            HBox emptyCard = createEmptyCard();
+            GridPane.setColumnSpan(emptyCard, CARD_COLUMNS);
+            challengesGrid.getChildren().add(emptyCard);
+            return;
+        }
+
+        addChallengeGridRows((int) Math.ceil(challenges.size() / (double) CARD_COLUMNS));
+
+        for (int i = 0; i < challenges.size(); i++) {
+            HBox card = createChallengeCard(challenges.get(i));
+            GridPane.setColumnIndex(card, i % CARD_COLUMNS);
+            GridPane.setRowIndex(card, i / CARD_COLUMNS);
+            challengesGrid.getChildren().add(card);
         }
     }
 
-    private VBox createChallengeCard(Challenge challenge) {
-        boolean isCompleted = completedChallengeIds.contains(challenge.getId());
+    private void addChallengeGridRows(int rowCount) {
+        for (int i = 0; i < rowCount; i++) {
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setMinHeight(CARD_HEIGHT);
+            rowConstraints.setPrefHeight(CARD_HEIGHT);
+            challengesGrid.getRowConstraints().add(rowConstraints);
+        }
+    }
 
-        VBox card = new VBox(8);
-        card.setStyle("-fx-background-color: #16213e; -fx-background-radius: 10; -fx-padding: 15;");
-        card.setPrefWidth(350);
+    private HBox createChallengeCard(Challenge challenge) {
+        HBox card = new HBox();
+        card.getStyleClass().add("content-card");
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setMinHeight(CARD_HEIGHT);
+        card.setPrefHeight(CARD_HEIGHT);
+        card.setPrefWidth(200);
+        card.setMaxWidth(Double.MAX_VALUE);
+        card.setStyle("-fx-cursor: hand;");
+        card.setOnMouseClicked(event -> startChallenge(event, challenge.getId()));
 
-        HBox header = new HBox(10);
+        VBox body = new VBox(6);
+        body.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(body, Priority.ALWAYS);
+
+        HBox header = new HBox(8);
         header.setAlignment(Pos.CENTER_LEFT);
 
         Label titleLabel = new Label(challenge.getTitle());
-        titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
+        titleLabel.setWrapText(true);
+        titleLabel.setMaxWidth(Double.MAX_VALUE);
+        titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold;");
+        HBox.setHgrow(titleLabel, Priority.ALWAYS);
 
-        Label difficultyBadge = new Label(challenge.getDifficulty());
-        difficultyBadge.setStyle("-fx-background-color: " + challenge.getDifficultyColor() +
-                                 "; -fx-text-fill: #1a1a2e; -fx-font-weight: bold; -fx-padding: 2 8; -fx-background-radius: 10;");
+        Label difficultyLabel = new Label(challenge.getDifficulty());
+        difficultyLabel.setStyle("-fx-text-fill: " + challenge.getDifficultyColor()
+                + "; -fx-font-size: 12px; -fx-font-weight: bold;");
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        header.getChildren().addAll(titleLabel, difficultyLabel);
 
-        Label statusIcon = new Label(isCompleted ? "✓ Completed" : "○ Not Started");
-        statusIcon.setStyle("-fx-text-fill: " + (isCompleted ? "#2ecc71" : "#f39c12") + "; -fx-font-size: 12px;");
+        Label descriptionLabel = new Label(createDescriptionPreview(challenge.getDescription()));
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setStyle("-fx-text-fill: #c8d6e5; -fx-font-size: 12px;");
 
-        header.getChildren().addAll(titleLabel, difficultyBadge, spacer, statusIcon);
+        String status = completedChallengeIds.contains(challenge.getId()) ? "Completed" : "Not Started";
+        Label metadataLabel = new Label(challenge.getTestCases().size()
+                + " tests - " + getDifficultyPoints(challenge.getDifficulty())
+                + " - " + status);
+        metadataLabel.setStyle("-fx-text-fill: #8b91a8; -fx-font-size: 12px;");
 
-        String shortDesc = challenge.getDescription().length() > 100 ?
-                           challenge.getDescription().substring(0, 100) + "..." :
-                           challenge.getDescription();
-        Label descLabel = new Label(shortDesc);
-        descLabel.setStyle("-fx-text-fill: #c8d6e5; -fx-wrap-text: true;");
-        descLabel.setMaxWidth(320);
-
-        HBox statsRow = new HBox(15);
-        Label testCountLabel = new Label("📋 " + challenge.getTestCases().size() + " tests");
-        testCountLabel.setStyle("-fx-text-fill: #4ecdc4; -fx-font-size: 12px;");
-
-        Label difficultyPointsLabel = new Label(getDifficultyPoints(challenge.getDifficulty()));
-        difficultyPointsLabel.setStyle("-fx-text-fill: #ffbe76; -fx-font-size: 12px;");
-
-        statsRow.getChildren().addAll(testCountLabel, difficultyPointsLabel);
-
-        Button startButton = new Button(isCompleted ? "Review Again" : "Start Challenge");
-        startButton.setStyle("-fx-background-color: #4ecdc4; -fx-background-radius: 5; -fx-padding: 5 15; -fx-font-weight: bold;");
-        startButton.setOnAction(e -> startChallenge(e, challenge.getId()));
-
-        HBox buttonRow = new HBox();
-        buttonRow.setAlignment(Pos.CENTER_RIGHT);
-        buttonRow.getChildren().add(startButton);
-
-        card.getChildren().addAll(header, descLabel, statsRow, buttonRow);
-
-        card.setOnMouseEntered(e -> card.setStyle("-fx-background-color: #1a2a4e; -fx-background-radius: 10; -fx-padding: 15;"));
-        card.setOnMouseExited(e -> card.setStyle("-fx-background-color: #16213e; -fx-background-radius: 10; -fx-padding: 15;"));
+        body.getChildren().addAll(header, descriptionLabel, metadataLabel);
+        card.getChildren().add(body);
 
         return card;
     }
 
-    private String getDifficultyPoints(String difficulty) {
-        switch (difficulty) {
-            case "EASY": return "⭐ 10 points";
-            case "MEDIUM": return "⭐⭐ 25 points";
-            case "HARD": return "⭐⭐⭐ 50 points";
-            default: return "0 points";
-        }
+    private HBox createEmptyCard() {
+        HBox card = new HBox();
+        card.getStyleClass().add("content-card");
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setMinHeight(CARD_HEIGHT);
+        card.setPrefHeight(CARD_HEIGHT);
+        card.setMaxWidth(Double.MAX_VALUE);
+
+        Label message = new Label("No challenges found. Try a different search or difficulty.");
+        message.setWrapText(true);
+        message.setStyle("-fx-text-fill: #c8d6e5; -fx-font-size: 14px;");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        card.getChildren().addAll(message, spacer);
+
+        return card;
     }
 
-    private void startChallenge(ActionEvent event, String challengeId) {
+    private String getSelectedDifficulty() {
+        if (allDifficultyButton == null || allDifficultyButton.getToggleGroup() == null) {
+            return ALL_DIFFICULTIES;
+        }
+
+        Toggle selectedToggle = allDifficultyButton.getToggleGroup().getSelectedToggle();
+        if (selectedToggle == null || selectedToggle.getUserData() == null) {
+            return ALL_DIFFICULTIES;
+        }
+
+        return selectedToggle.getUserData().toString();
+    }
+
+    private String getDifficultyPoints(String difficulty) {
+        return switch (difficulty) {
+            case "EASY" -> "10 points";
+            case "MEDIUM" -> "25 points";
+            case "HARD" -> "50 points";
+            default -> "0 points";
+        };
+    }
+
+    private String createDescriptionPreview(String description) {
+        String preview = description == null ? "" : description.replaceAll("\\s+", " ").trim();
+        if (preview.length() <= DESCRIPTION_PREVIEW_LENGTH) {
+            return preview;
+        }
+
+        return preview.substring(0, DESCRIPTION_PREVIEW_LENGTH - 3) + "...";
+    }
+
+    private String normalizeSearch(String searchText) {
+        return searchText == null ? "" : searchText.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private boolean containsIgnoreCase(String value, String searchText) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(searchText);
+    }
+
+    private void startChallenge(MouseEvent event, String challengeId) {
         try {
             CodingChallengeController.setCurrentChallengeId(challengeId);
             switchScreen(event, "/com/example/syntaxio/coding-challenge.fxml", 1200, 800);
         } catch (IOException e) {
-            System.err.println("Error loading challenge screen: " + e.getMessage());
+            showError("Could not open challenge: " + e.getMessage());
         }
     }
 
-    private void setGenerationInProgress(boolean inProgress, String statusText) {
-        if (generatePuzzleButton != null) {
-            generatePuzzleButton.setDisable(inProgress);
-        }
-
-        if (generationStatusLabel != null) {
-            generationStatusLabel.setText(statusText);
-        }
-    }
-
-    private boolean hasChallengeBrowserControls() {
-        return challengesContainer != null
-                && searchField != null
-                && difficultyFilter != null
-                && statusFilter != null
-                && loadingLabel != null
-                && resultsCountLabel != null;
+    @FXML
+    private void onBackToHome(ActionEvent event) throws IOException {
+        switchScreen(event, "/com/example/syntaxio/main-menu.fxml", 1200, 1150);
     }
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+        alert.setTitle("Challenge Browser");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    @FXML
-    private void onBackToDashboard(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/syntaxio/dashboard.fxml", 1200, 800);
     }
 }
