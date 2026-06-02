@@ -32,6 +32,11 @@ public class SignUpController {
         if (errorLabel != null) {
             errorLabel.setVisible(false);
         }
+
+        createAccountButton.setDefaultButton(true);
+        usernameField.setOnAction(event -> createAccountButton.fire());
+        passwordField.setOnAction(event -> createAccountButton.fire());
+        confirmPasswordField.setOnAction(event -> createAccountButton.fire());
     }
 
     @FXML

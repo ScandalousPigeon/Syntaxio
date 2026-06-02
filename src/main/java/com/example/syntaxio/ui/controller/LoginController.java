@@ -12,6 +12,7 @@ import java.io.IOException;
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    @FXML private Button logInButton;
     @FXML private Label errorLabel;
 
     private SessionManager sessionManager;
@@ -20,6 +21,9 @@ public class LoginController {
     public void initialize() {
         sessionManager = SessionManager.getInstance();
         errorLabel.setVisible(false);
+        logInButton.setDefaultButton(true);
+        usernameField.setOnAction(event -> logInButton.fire());
+        passwordField.setOnAction(event -> logInButton.fire());
     }
 
     @FXML
