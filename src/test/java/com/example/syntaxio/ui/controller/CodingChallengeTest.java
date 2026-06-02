@@ -3,10 +3,12 @@ package com.example.syntaxio.ui.controller;
 import com.example.syntaxio.database.SqliteChallengeDAO;
 import com.example.syntaxio.model.Challenge;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
@@ -27,7 +29,8 @@ class CodingChallengeTest {
         assertAll(
                 () -> assertTopbarButton(fxml, "backButton", "Back", "#onBack"),
                 () -> assertTopbarButton(fxml, "runButton", "Run", "#onRun"),
-                () -> assertTopbarButton(fxml, "submitButton", "Submit", "#onSubmit")
+                () -> assertTopbarButton(fxml, "submitButton", "Submit", "#onSubmit"),
+                () -> assertTimerLabel(fxml)
         );
     }
 
@@ -82,6 +85,23 @@ class CodingChallengeTest {
         );
     }
 
+    @Test
+    void timerFormatsElapsedSecondsAsStopwatchTime() {
+        assertAll(
+                () -> assertEquals("00:00", CodingChallengeController.formatElapsedTime(0)),
+                () -> assertEquals("00:09", CodingChallengeController.formatElapsedTime(9)),
+                () -> assertEquals("01:05", CodingChallengeController.formatElapsedTime(65)),
+                () -> assertEquals("12:34", CodingChallengeController.formatElapsedTime(754))
+        );
+    }
+
+    @Test
+    void controllerKeepsTimerDisplayInjected() throws NoSuchFieldException {
+        Field field = CodingChallengeController.class.getDeclaredField("timeIndicator");
+
+        assertEquals(Label.class, field.getType());
+    }
+
     private static void assertTopbarButton(
             String fxml,
             String fxId,
@@ -98,6 +118,18 @@ class CodingChallengeTest {
                         fxId + " should call " + onAction),
                 () -> assertTrue(buttonTag.contains("mnemonicParsing=\"false\""),
                         fxId + " should not use keyboard mnemonics")
+        );
+    }
+
+    private static void assertTimerLabel(String fxml) {
+        String timerTag = openingTagFor(fxml, "timeIndicator");
+
+        assertAll(
+                () -> assertTrue(timerTag.startsWith("<Label "), "timeIndicator should be a Label"),
+                () -> assertTrue(timerTag.contains("text=\"00:00\""),
+                        "Timer should display 00:00 before the stopwatch starts"),
+                () -> assertTrue(timerTag.contains("styleClass=\"timer-box\""),
+                        "Timer should keep the topbar timer styling")
         );
     }
 

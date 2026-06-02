@@ -128,17 +128,16 @@
     -fx-border-width: 0 0 2 0;
 }
 
-.description-content {
-    -fx-padding: 24 20 24 20;
-    -fx-spacing: 18;
+.description-area {
+    -fx-background-color: #080d22;
+    -fx-control-inner-background: #080d22;
+    -fx-text-fill: #f8fafc;
+    -fx-font-family: "JetBrains Mono", "Consolas", monospace;
+    -fx-font-size: 16px;
+    -fx-highlight-fill: #1e293b;
+    -fx-highlight-text-fill: white;
+    -fx-border-color: transparent;
 }
-
-.description-text {
-    -fx-text-fill: #f3f4f6;
-    -fx-font-size: 14px;
-    -fx-line-spacing: 4;
-}
-
 
 .code-area {
     -fx-background-color: #080d22;

@@ -7,16 +7,19 @@ import com.example.syntaxio.model.Challenge;
 import com.example.syntaxio.model.Solution;
 import com.example.syntaxio.model.TestCase;
 import com.example.syntaxio.runner.CodeExecutor;
+import com.example.syntaxio.ui.util.ScreenManager;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
-
-import com.example.syntaxio.ui.util.ScreenManager;
 
 public class CodingChallengeController {
 
@@ -48,12 +51,15 @@ public class CodingChallengeController {
     @FXML private Button backButton;
     @FXML private VBox testResultsContainer;
     @FXML private ProgressIndicator loadingIndicator;
+    @FXML private Label timeIndicator;
 
     private SqliteChallengeDAO challengeDAO;
     private SqliteSolutionDAO solutionDAO;
     private SessionManager sessionManager;
     private Challenge currentChallenge;
     private ScreenSwitcher screenSwitcher = ScreenManager::switchScreen;
+    private Timeline stopwatch;
+    private int elapsedSeconds;
 
     void setScreenSwitcher(ScreenSwitcher screenSwitcher) {
         this.screenSwitcher = screenSwitcher;
@@ -74,6 +80,7 @@ public class CodingChallengeController {
         currentChallenge = challengeDAO.getChallengeById(challengeId);
         if (currentChallenge != null) {
             displayChallenge();
+            startStopwatch();
         } else {
             showError("Challenge not found!");
         }
@@ -88,6 +95,36 @@ public class CodingChallengeController {
 
         testResultsContainer.getChildren().clear();
         outputArea.clear();
+    }
+
+    private void startStopwatch() {
+        stopStopwatch();
+        elapsedSeconds = 0;
+        updateTimerLabel();
+
+        stopwatch = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            elapsedSeconds++;
+            updateTimerLabel();
+        }));
+        stopwatch.setCycleCount(Animation.INDEFINITE);
+        stopwatch.play();
+    }
+
+    private void stopStopwatch() {
+        if (stopwatch != null) {
+            stopwatch.stop();
+            stopwatch = null;
+        }
+    }
+
+    private void updateTimerLabel() {
+        timeIndicator.setText(formatElapsedTime(elapsedSeconds));
+    }
+
+    static String formatElapsedTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     @FXML
@@ -176,6 +213,7 @@ public class CodingChallengeController {
                 successAlert.setContentText("Great work! Your solution has been saved.");
                 successAlert.showAndWait();
 
+                stopStopwatch();
                 screenSwitcher.switchScreen(event, DASHBOARD_FXML, DASHBOARD_WIDTH, DASHBOARD_HEIGHT);
             } else {
                 showError("Failed to save solution. Please try again.");
@@ -185,6 +223,7 @@ public class CodingChallengeController {
 
     @FXML
     private void onBack(ActionEvent event) throws IOException {
+        stopStopwatch();
         screenSwitcher.switchScreen(event, MAIN_MENU_FXML, MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT);
     }
 

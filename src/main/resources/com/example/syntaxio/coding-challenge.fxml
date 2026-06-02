@@ -35,7 +35,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="366.0" spacing="10.0">
                      <children>
                         <ProgressIndicator fx:id="loadingIndicator" prefHeight="28.0" prefWidth="28.0" visible="false" />
-                        <Label fx:id="timeIndicator" prefWidth="62.0" styleClass="timer-box" stylesheets="@css/coding-challenge.css" text="Time" textFill="WHITE" />
+                        <Label fx:id="timeIndicator" prefWidth="85.0" styleClass="timer-box" stylesheets="@css/coding-challenge.css" text="00:00" textFill="WHITE" />
                         <Button fx:id="runButton" mnemonicParsing="false" onAction="#onRun" prefHeight="32.0" prefWidth="64.0" styleClass="run-button" stylesheets="@css/coding-challenge.css" text="Run" />
                         <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmit" prefHeight="32.0" prefWidth="117.0" styleClass="submit-button" stylesheets="@css/coding-challenge.css" text="Submit" />
                      </children>
@@ -53,7 +53,7 @@
                               <ToggleButton fx:id="aiAssistantTab" mnemonicParsing="false" styleClass="tab-button" stylesheets="@css/coding-challenge.css" text="AI Assistant" />
                            </children>
                         </HBox>
-                        <TextArea fx:id="descriptionArea" editable="false" prefHeight="705.0" prefWidth="543.0" styleClass="code-area" stylesheets="@css/coding-challenge.css" wrapText="true">
+                        <TextArea fx:id="descriptionArea" editable="false" prefHeight="705.0" prefWidth="543.0" styleClass="description-area" stylesheets="@css/coding-challenge.css" wrapText="true">
                            <VBox.margin>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </VBox.margin>
