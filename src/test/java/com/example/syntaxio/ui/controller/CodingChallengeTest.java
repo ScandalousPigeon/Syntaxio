@@ -1,5 +1,7 @@
 package com.example.syntaxio.ui.controller;
 
+import com.example.syntaxio.database.SqliteChallengeDAO;
+import com.example.syntaxio.model.Challenge;
 import javafx.event.ActionEvent;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,6 +52,33 @@ class CodingChallengeTest {
                 () -> assertEquals("/com/example/syntaxio/main-menu.fxml", screenSwitcher.fxmlPath),
                 () -> assertEquals(1200, screenSwitcher.width),
                 () -> assertEquals(1150, screenSwitcher.height)
+        );
+    }
+
+    @Test
+    void selectedChallengeDescriptionCanBeLoadedFromDatabase() {
+        SqliteChallengeDAO challengeDAO = new SqliteChallengeDAO();
+
+        Challenge challenge = challengeDAO.getChallengeById("ch-001");
+
+        assertAll(
+                () -> assertNotNull(challenge),
+                () -> assertFalse(challenge.getDescription().isBlank()),
+                () -> assertTrue(challenge.getDescription().contains("Method signature"))
+        );
+    }
+
+    @Test
+    void descriptionTabKeepsDatabaseDescriptionDisplayArea() throws IOException {
+        String fxml = readResource(CODING_CHALLENGE_FXML);
+        String descriptionTab = openingTagFor(fxml, "descriptionTab");
+        String descriptionArea = openingTagFor(fxml, "descriptionArea");
+
+        assertAll(
+                () -> assertTrue(descriptionTab.contains("text=\"Description\"")),
+                () -> assertTrue(descriptionArea.startsWith("<TextArea ")),
+                () -> assertTrue(descriptionArea.contains("editable=\"false\"")),
+                () -> assertTrue(descriptionArea.contains("wrapText=\"true\""))
         );
     }
 
