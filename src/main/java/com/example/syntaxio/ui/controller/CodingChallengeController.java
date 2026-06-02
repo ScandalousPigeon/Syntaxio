@@ -16,14 +16,26 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.syntaxio.ui.util.ScreenManager.switchScreen;
+import com.example.syntaxio.ui.util.ScreenManager;
 
 public class CodingChallengeController {
+
+    static final String MAIN_MENU_FXML = "/com/example/syntaxio/main-menu.fxml";
+    static final double MAIN_MENU_WIDTH = 1200;
+    static final double MAIN_MENU_HEIGHT = 1150;
+    static final String DASHBOARD_FXML = "/com/example/syntaxio/dashboard.fxml";
+    static final double DASHBOARD_WIDTH = 1200;
+    static final double DASHBOARD_HEIGHT = 800;
 
     private static String currentChallengeId = "ch-001";
 
     public static void setCurrentChallengeId(String id) {
         currentChallengeId = id;
+    }
+
+    @FunctionalInterface
+    interface ScreenSwitcher {
+        void switchScreen(ActionEvent event, String fxmlPath, double width, double height) throws IOException;
     }
 
     @FXML private Label titleLabel;
@@ -41,6 +53,11 @@ public class CodingChallengeController {
     private SqliteSolutionDAO solutionDAO;
     private SessionManager sessionManager;
     private Challenge currentChallenge;
+    private ScreenSwitcher screenSwitcher = ScreenManager::switchScreen;
+
+    void setScreenSwitcher(ScreenSwitcher screenSwitcher) {
+        this.screenSwitcher = screenSwitcher;
+    }
 
     @FXML
     public void initialize() {
@@ -159,7 +176,7 @@ public class CodingChallengeController {
                 successAlert.setContentText("Great work! Your solution has been saved.");
                 successAlert.showAndWait();
 
-                switchScreen(event, "/com/example/syntaxio/dashboard.fxml", 1200, 800);
+                screenSwitcher.switchScreen(event, DASHBOARD_FXML, DASHBOARD_WIDTH, DASHBOARD_HEIGHT);
             } else {
                 showError("Failed to save solution. Please try again.");
             }
@@ -168,7 +185,7 @@ public class CodingChallengeController {
 
     @FXML
     private void onBack(ActionEvent event) throws IOException {
-        switchScreen(event, "/com/example/syntaxio/dashboard.fxml", 1200, 800);
+        screenSwitcher.switchScreen(event, MAIN_MENU_FXML, MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT);
     }
 
     private void showError(String message) {
