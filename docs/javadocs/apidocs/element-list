@@ -1,0 +1,10 @@
+com.example.syntaxio.ai
+com.example.syntaxio.ai.chat
+com.example.syntaxio.ai.client
+com.example.syntaxio.ai.puzzlegeneration
+com.example.syntaxio.database
+com.example.syntaxio.model
+com.example.syntaxio.runner
+com.example.syntaxio.ui
+com.example.syntaxio.ui.controller
+com.example.syntaxio.ui.util
