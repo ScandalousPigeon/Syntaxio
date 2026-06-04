@@ -13,6 +13,103 @@ import java.util.Optional;
 import java.util.Set;
 
 public class SqliteUserDAO {
+    private static final String EMPTY_JSON = "{}";
+    private static final String EMPTY_JSON_ARRAY = "[]";
+    private static final ColumnDefinition[] PROGRESS_STAT_COLUMNS = {
+            new ColumnDefinition("total_challenges_completed", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("total_challenges_attempted", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("total_unfinished_challenges", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("completion_percentage", "REAL DEFAULT 0.0"),
+            new ColumnDefinition("first_completed_challenge_date", "TEXT"),
+            new ColumnDefinition("most_recent_completed_challenge_date", "TEXT"),
+            new ColumnDefinition("total_attempts", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("attempts_per_challenge", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("average_attempts_before_completion", "REAL DEFAULT 0.0"),
+            new ColumnDefinition("failed_attempts", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("successful_attempts", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("most_attempted_challenge", "TEXT"),
+            new ColumnDefinition("total_time_spent_coding", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("time_spent_per_challenge", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("average_completion_time", "REAL DEFAULT 0.0"),
+            new ColumnDefinition("fastest_completion_time", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("slowest_completion_time", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("time_spent_by_difficulty", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("time_spent_today", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("time_spent_this_week", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("time_spent_this_month", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("challenges_completed_per_topic", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("average_score_per_topic", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("weakest_topic", "TEXT"),
+            new ColumnDefinition("strongest_topic", "TEXT"),
+            new ColumnDefinition("topic_improvement_over_time", "TEXT DEFAULT '[]'"),
+            new ColumnDefinition("easy_challenges_completed", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("medium_challenges_completed", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("hard_challenges_completed", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("current_recommended_difficulty", "TEXT DEFAULT 'EASY'"),
+            new ColumnDefinition("highest_difficulty_completed", "TEXT"),
+            new ColumnDefinition("difficulty_success_rate", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("error_tracking", "TEXT DEFAULT '{}'"),
+            new ColumnDefinition("last_login_date", "TEXT"),
+            new ColumnDefinition("total_login_count", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("days_active", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("current_activity_streak", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("longest_activity_streak", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("challenges_completed_today", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("challenges_completed_this_week", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("number_of_coding_sessions", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("average_session_length", "REAL DEFAULT 0.0"),
+            new ColumnDefinition("longest_session", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("shortest_session", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("last_session_duration", "INTEGER DEFAULT 0"),
+            new ColumnDefinition("challenges_attempted_per_session", "TEXT DEFAULT '[]'")
+    };
+    private static final String[] ZERO_INTEGER_COLUMNS = {
+            "total_challenges_completed",
+            "total_challenges_attempted",
+            "total_unfinished_challenges",
+            "total_attempts",
+            "failed_attempts",
+            "successful_attempts",
+            "total_time_spent_coding",
+            "fastest_completion_time",
+            "slowest_completion_time",
+            "time_spent_today",
+            "time_spent_this_week",
+            "time_spent_this_month",
+            "easy_challenges_completed",
+            "medium_challenges_completed",
+            "hard_challenges_completed",
+            "total_login_count",
+            "days_active",
+            "current_activity_streak",
+            "longest_activity_streak",
+            "challenges_completed_today",
+            "challenges_completed_this_week",
+            "number_of_coding_sessions",
+            "longest_session",
+            "shortest_session",
+            "last_session_duration"
+    };
+    private static final String[] ZERO_REAL_COLUMNS = {
+            "completion_percentage",
+            "average_attempts_before_completion",
+            "average_completion_time",
+            "average_session_length"
+    };
+    private static final String[] EMPTY_JSON_COLUMNS = {
+            "attempts_per_challenge",
+            "time_spent_per_challenge",
+            "time_spent_by_difficulty",
+            "challenges_completed_per_topic",
+            "average_score_per_topic",
+            "difficulty_success_rate",
+            "error_tracking"
+    };
+    private static final String[] EMPTY_JSON_ARRAY_COLUMNS = {
+            "topic_improvement_over_time",
+            "challenges_attempted_per_session"
+    };
+
     private Connection connection;
     private Set<String> userColumns = new HashSet<>();
     
@@ -23,19 +120,7 @@ public class SqliteUserDAO {
     
     // Create users table if it doesn't exist
     private void createTable() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
-                password_hash TEXT NOT NULL,
-                created_at TEXT NOT NULL,
-                last_login_at TEXT NOT NULL,
-                updated_at TEXT NOT NULL,
-                login_count INTEGER DEFAULT 0,
-                totalHintsUsed INTEGER DEFAULT 0,
-                totalChallengesCompleted INTEGER DEFAULT 0
-            )
-            """;
+        String sql = createUserTableSql();
         
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
@@ -59,8 +144,11 @@ public class SqliteUserDAO {
         addColumnValue(columns, values, "lastLoginAt", formatDateTime(user.getLastLoginAt()));
         addColumnValue(columns, values, "updated_at", formatDateTime(user.getUpdatedAt()));
         addColumnValue(columns, values, "login_count", user.getLoginCount());
+        addColumnValue(columns, values, "total_login_count", user.getLoginCount());
+        addColumnValue(columns, values, "last_login_date", formatDate(user.getLastLoginAt()));
         addColumnValue(columns, values, "totalHintsUsed", user.getTotalHintsUsed());
         addColumnValue(columns, values, "totalChallengesCompleted", user.getTotalChallengesCompleted());
+        addColumnValue(columns, values, "total_challenges_completed", user.getTotalChallengesCompleted());
 
         String sql = "INSERT INTO users (" + String.join(", ", columns)
                 + ") VALUES (" + placeholders(columns.size()) + ")";
@@ -149,8 +237,11 @@ public class SqliteUserDAO {
         addAssignmentValue(assignments, values, "lastLoginAt", formatDateTime(user.getLastLoginAt()));
         addAssignmentValue(assignments, values, "updated_at", formatDateTime(user.getUpdatedAt()));
         addAssignmentValue(assignments, values, "login_count", user.getLoginCount());
+        addAssignmentValue(assignments, values, "total_login_count", user.getLoginCount());
+        addAssignmentValue(assignments, values, "last_login_date", formatDate(user.getLastLoginAt()));
         addAssignmentValue(assignments, values, "totalHintsUsed", user.getTotalHintsUsed());
         addAssignmentValue(assignments, values, "totalChallengesCompleted", user.getTotalChallengesCompleted());
+        addAssignmentValue(assignments, values, "total_challenges_completed", user.getTotalChallengesCompleted());
 
         if (assignments.isEmpty()) {
             return false;
@@ -176,7 +267,9 @@ public class SqliteUserDAO {
         List<Object> values = new ArrayList<>();
         addAssignmentValue(assignments, values, "last_login_at", formatDateTime(loginTime));
         addAssignmentValue(assignments, values, "lastLoginAt", formatDateTime(loginTime));
+        addAssignmentValue(assignments, values, "last_login_date", formatDate(loginTime));
         addRawAssignment(assignments, "login_count", "COALESCE(login_count, 0) + 1");
+        addRawAssignment(assignments, "total_login_count", "COALESCE(total_login_count, 0) + 1");
 
         if (assignments.isEmpty()) {
             return false;
@@ -244,6 +337,11 @@ public class SqliteUserDAO {
         LocalDateTime createdAt = parseDateTime(getString(rs, "created_at", "createdAt"), LocalDateTime.now());
         LocalDateTime lastLoginAt = parseDateTime(getString(rs, "last_login_at", "lastLoginAt"), createdAt);
         LocalDateTime updatedAt = parseDateTime(getString(rs, "updated_at", null), lastLoginAt);
+        int loginCount = Math.max(getInt(rs, "login_count", 0), getInt(rs, "total_login_count", 0));
+        int completedChallenges = Math.max(
+                getInt(rs, "totalChallengesCompleted", 0),
+                getInt(rs, "total_challenges_completed", 0)
+        );
 
         return new User(
             rs.getInt("id"),
@@ -252,9 +350,9 @@ public class SqliteUserDAO {
             createdAt,
             lastLoginAt,
             updatedAt,
-            getInt(rs, "login_count", 0),
+            loginCount,
             rs.getInt("totalHintsUsed"),
-            rs.getInt("totalChallengesCompleted")
+            completedChallenges
         );
     }
     
@@ -273,6 +371,33 @@ public class SqliteUserDAO {
         return 0;
     }
 
+    private String createUserTableSql() {
+        StringBuilder sql = new StringBuilder("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                last_login_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                login_count INTEGER DEFAULT 0,
+                totalHintsUsed INTEGER DEFAULT 0,
+                totalChallengesCompleted INTEGER DEFAULT 0""");
+
+        for (ColumnDefinition column : PROGRESS_STAT_COLUMNS) {
+            sql.append(",\n                ")
+                    .append(column.name())
+                    .append(" ")
+                    .append(column.definition());
+        }
+
+        sql.append("""
+
+            )
+            """);
+        return sql.toString();
+    }
+
     private void ensureUserColumns() throws SQLException {
         refreshUserColumns();
         addColumnIfMissing("password_hash", "TEXT");
@@ -280,6 +405,9 @@ public class SqliteUserDAO {
         addColumnIfMissing("last_login_at", "TEXT");
         addColumnIfMissing("updated_at", "TEXT");
         addColumnIfMissing("login_count", "INTEGER DEFAULT 0");
+        for (ColumnDefinition column : PROGRESS_STAT_COLUMNS) {
+            addColumnIfMissing(column.name(), column.definition());
+        }
         refreshUserColumns();
         backfillNewUserColumns();
     }
@@ -335,6 +463,97 @@ public class SqliteUserDAO {
         if (columnExists("login_count")) {
             executeUpdate("UPDATE users SET login_count = 0 WHERE login_count IS NULL");
         }
+
+        backfillProgressStatDefaults();
+        syncProgressStatAliases();
+    }
+
+    private void backfillProgressStatDefaults() throws SQLException {
+        for (String columnName : ZERO_INTEGER_COLUMNS) {
+            backfillNullNumber(columnName, 0);
+        }
+
+        for (String columnName : ZERO_REAL_COLUMNS) {
+            backfillNullNumber(columnName, 0.0);
+        }
+
+        for (String columnName : EMPTY_JSON_COLUMNS) {
+            backfillNullText(columnName, EMPTY_JSON);
+        }
+
+        for (String columnName : EMPTY_JSON_ARRAY_COLUMNS) {
+            backfillNullText(columnName, EMPTY_JSON_ARRAY);
+        }
+
+        backfillNullText("current_recommended_difficulty", "EASY");
+        backfillLastLoginDate();
+    }
+
+    private void syncProgressStatAliases() throws SQLException {
+        syncIntegerColumnPair("login_count", "total_login_count");
+        syncIntegerColumnPair("totalChallengesCompleted", "total_challenges_completed");
+    }
+
+    private void syncIntegerColumnPair(String firstColumn, String secondColumn) throws SQLException {
+        if (!columnExists(firstColumn) || !columnExists(secondColumn)) {
+            return;
+        }
+
+        String maxExpression = "MAX(COALESCE(" + firstColumn + ", 0), COALESCE(" + secondColumn + ", 0))";
+        executeUpdate("UPDATE users SET " + firstColumn + " = " + maxExpression);
+        executeUpdate("UPDATE users SET " + secondColumn + " = " + maxExpression);
+    }
+
+    private void backfillLastLoginDate() throws SQLException {
+        if (!columnExists("last_login_date")) {
+            return;
+        }
+
+        if (columnExists("last_login_at")) {
+            executeUpdate("""
+                    UPDATE users
+                    SET last_login_date = substr(last_login_at, 1, 10)
+                    WHERE (last_login_date IS NULL OR last_login_date = '')
+                      AND last_login_at IS NOT NULL
+                    """);
+        }
+
+        if (columnExists("lastLoginAt")) {
+            executeUpdate("""
+                    UPDATE users
+                    SET last_login_date = substr(lastLoginAt, 1, 10)
+                    WHERE (last_login_date IS NULL OR last_login_date = '')
+                      AND lastLoginAt IS NOT NULL
+                    """);
+        }
+    }
+
+    private void backfillNullNumber(String columnName, Number value) throws SQLException {
+        if (!columnExists(columnName)) {
+            return;
+        }
+
+        try (PreparedStatement pstmt = connection.prepareStatement(
+                "UPDATE users SET " + columnName + " = ? WHERE " + columnName + " IS NULL")) {
+            if (value instanceof Double || value instanceof Float) {
+                pstmt.setDouble(1, value.doubleValue());
+            } else {
+                pstmt.setLong(1, value.longValue());
+            }
+            pstmt.executeUpdate();
+        }
+    }
+
+    private void backfillNullText(String columnName, String value) throws SQLException {
+        if (!columnExists(columnName)) {
+            return;
+        }
+
+        try (PreparedStatement pstmt = connection.prepareStatement(
+                "UPDATE users SET " + columnName + " = ? WHERE " + columnName + " IS NULL")) {
+            pstmt.setString(1, value);
+            pstmt.executeUpdate();
+        }
     }
 
     private void backfillNullTimestamp(String columnName, String value) throws SQLException {
@@ -383,8 +602,14 @@ public class SqliteUserDAO {
     private void bindValues(PreparedStatement pstmt, List<Object> values) throws SQLException {
         for (int i = 0; i < values.size(); i++) {
             Object value = values.get(i);
-            if (value instanceof Integer) {
+            if (value == null) {
+                pstmt.setObject(i + 1, null);
+            } else if (value instanceof Integer) {
                 pstmt.setInt(i + 1, (Integer) value);
+            } else if (value instanceof Long) {
+                pstmt.setLong(i + 1, (Long) value);
+            } else if (value instanceof Double || value instanceof Float) {
+                pstmt.setDouble(i + 1, ((Number) value).doubleValue());
             } else {
                 pstmt.setString(i + 1, (String) value);
             }
@@ -437,5 +662,12 @@ public class SqliteUserDAO {
 
     private String formatDateTime(LocalDateTime dateTime) {
         return (dateTime != null ? dateTime : LocalDateTime.now()).toString();
+    }
+
+    private String formatDate(LocalDateTime dateTime) {
+        return (dateTime != null ? dateTime : LocalDateTime.now()).toLocalDate().toString();
+    }
+
+    private record ColumnDefinition(String name, String definition) {
     }
 }

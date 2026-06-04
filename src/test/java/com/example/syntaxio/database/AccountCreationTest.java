@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AccountCreationTest {
@@ -52,7 +53,8 @@ class AccountCreationTest {
 
         try (Connection connection = SqliteConnection.getInstance();
              PreparedStatement statement = connection.prepareStatement("""
-                     SELECT username, password_hash, created_at, last_login_at, updated_at, login_count
+                     SELECT username, password_hash, created_at, last_login_at, updated_at,
+                            login_count, last_login_date, total_login_count, total_challenges_completed
                      FROM users
                      WHERE username = ?
                      """)) {
@@ -67,6 +69,9 @@ class AccountCreationTest {
                 String lastLoginAtValue = resultSet.getString("last_login_at");
                 String updatedAtValue = resultSet.getString("updated_at");
                 int loginCount = resultSet.getInt("login_count");
+                String lastLoginDate = resultSet.getString("last_login_date");
+                int totalLoginCount = resultSet.getInt("total_login_count");
+                int totalChallengesCompleted = resultSet.getInt("total_challenges_completed");
 
                 LocalDateTime createdAt = parseDateTime(createdAtValue);
                 LocalDateTime lastLoginAt = parseDateTime(lastLoginAtValue);
@@ -81,9 +86,114 @@ class AccountCreationTest {
                         () -> assertFalse(updatedAtValue.isBlank()),
                         () -> assertEquals(createdAt, lastLoginAt),
                         () -> assertEquals(createdAt, updatedAt),
-                        () -> assertEquals(0, loginCount)
+                        () -> assertEquals(createdAt.toLocalDate().toString(), lastLoginDate),
+                        () -> assertEquals(0, loginCount),
+                        () -> assertEquals(0, totalLoginCount),
+                        () -> assertEquals(0, totalChallengesCompleted)
                 );
             }
+        }
+    }
+
+    @Test
+    void signupInitializesProgressStatisticsWithDefaults() throws SQLException {
+        SessionManager sessionManager = SessionManager.getInstance();
+
+        assertTrue(sessionManager.signup(USERNAME, PASSWORD));
+
+        try (Connection connection = SqliteConnection.getInstance();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username = ?")) {
+            statement.setString(1, USERNAME);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                assertTrue(resultSet.next(), "Expected a row for the newly created account");
+
+                assertIntegerColumnsEqualZero(resultSet,
+                        "total_challenges_completed",
+                        "total_challenges_attempted",
+                        "total_unfinished_challenges",
+                        "total_attempts",
+                        "failed_attempts",
+                        "successful_attempts",
+                        "total_time_spent_coding",
+                        "fastest_completion_time",
+                        "slowest_completion_time",
+                        "time_spent_today",
+                        "time_spent_this_week",
+                        "time_spent_this_month",
+                        "easy_challenges_completed",
+                        "medium_challenges_completed",
+                        "hard_challenges_completed",
+                        "total_login_count",
+                        "days_active",
+                        "current_activity_streak",
+                        "longest_activity_streak",
+                        "challenges_completed_today",
+                        "challenges_completed_this_week",
+                        "number_of_coding_sessions",
+                        "longest_session",
+                        "shortest_session",
+                        "last_session_duration"
+                );
+
+                assertRealColumnsEqualZero(resultSet,
+                        "completion_percentage",
+                        "average_attempts_before_completion",
+                        "average_completion_time",
+                        "average_session_length"
+                );
+
+                assertTextColumnsEqual(resultSet, "{}",
+                        "attempts_per_challenge",
+                        "time_spent_per_challenge",
+                        "time_spent_by_difficulty",
+                        "challenges_completed_per_topic",
+                        "average_score_per_topic",
+                        "difficulty_success_rate",
+                        "error_tracking"
+                );
+
+                assertTextColumnsEqual(resultSet, "[]",
+                        "topic_improvement_over_time",
+                        "challenges_attempted_per_session"
+                );
+
+                assertNullColumns(resultSet,
+                        "first_completed_challenge_date",
+                        "most_recent_completed_challenge_date",
+                        "most_attempted_challenge",
+                        "weakest_topic",
+                        "strongest_topic",
+                        "highest_difficulty_completed"
+                );
+
+                assertEquals("EASY", resultSet.getString("current_recommended_difficulty"));
+            }
+        }
+    }
+
+    private void assertIntegerColumnsEqualZero(ResultSet resultSet, String... columnNames) throws SQLException {
+        for (String columnName : columnNames) {
+            assertEquals(0, resultSet.getInt(columnName), "Expected zero for " + columnName);
+        }
+    }
+
+    private void assertRealColumnsEqualZero(ResultSet resultSet, String... columnNames) throws SQLException {
+        for (String columnName : columnNames) {
+            assertEquals(0.0, resultSet.getDouble(columnName), "Expected zero for " + columnName);
+        }
+    }
+
+    private void assertTextColumnsEqual(ResultSet resultSet, String expectedValue, String... columnNames)
+            throws SQLException {
+        for (String columnName : columnNames) {
+            assertEquals(expectedValue, resultSet.getString(columnName), "Unexpected value for " + columnName);
+        }
+    }
+
+    private void assertNullColumns(ResultSet resultSet, String... columnNames) throws SQLException {
+        for (String columnName : columnNames) {
+            assertNull(resultSet.getString(columnName), "Expected null for " + columnName);
         }
     }
 
