@@ -8,15 +8,20 @@ public class User {
     private String passwordHash;
     private LocalDateTime createdAt;
     private LocalDateTime lastLoginAt;
+    private LocalDateTime updatedAt;
+    private int loginCount;
     private int totalHintsUsed;
     private int totalChallengesCompleted;  
     
     // Constructor for NEW user (without ID - database generates it)
     public User(String username, String passwordHash) {
+        LocalDateTime now = LocalDateTime.now();
         this.username = username;
         this.passwordHash = passwordHash;
-        this.createdAt = LocalDateTime.now();
-        this.lastLoginAt = LocalDateTime.now();
+        this.createdAt = now;
+        this.lastLoginAt = now;
+        this.updatedAt = now;
+        this.loginCount = 0;
         this.totalHintsUsed = 0;
         this.totalChallengesCompleted = 0;
     }
@@ -25,11 +30,22 @@ public class User {
     public User(int id, String username, String passwordHash, 
                 LocalDateTime createdAt, LocalDateTime lastLoginAt,
                 int totalHintsUsed, int totalChallengesCompleted) {
+        this(id, username, passwordHash, createdAt, lastLoginAt, lastLoginAt, 0,
+                totalHintsUsed, totalChallengesCompleted);
+    }
+
+    // Constructor for LOADING from database (with account audit fields)
+    public User(int id, String username, String passwordHash,
+                LocalDateTime createdAt, LocalDateTime lastLoginAt,
+                LocalDateTime updatedAt, int loginCount,
+                int totalHintsUsed, int totalChallengesCompleted) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
         this.createdAt = createdAt;
         this.lastLoginAt = lastLoginAt;
+        this.updatedAt = updatedAt;
+        this.loginCount = loginCount;
         this.totalHintsUsed = totalHintsUsed;
         this.totalChallengesCompleted = totalChallengesCompleted;
     }
@@ -49,6 +65,12 @@ public class User {
     
     public LocalDateTime getLastLoginAt() { return lastLoginAt; }
     public void setLastLoginAt(LocalDateTime lastLoginAt) { this.lastLoginAt = lastLoginAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public int getLoginCount() { return loginCount; }
+    public void setLoginCount(int loginCount) { this.loginCount = loginCount; }
     
     public int getTotalHintsUsed() { return totalHintsUsed; }
     public void setTotalHintsUsed(int totalHintsUsed) { this.totalHintsUsed = totalHintsUsed; }
