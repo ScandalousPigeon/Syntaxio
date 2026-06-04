@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SqliteConnection {
+    public static final String DATABASE_PATH_PROPERTY = "syntaxio.database.path";
     private static Connection instance = null;
 
     private SqliteConnection() {
-        String url = "jdbc:sqlite:syntaxio.db";  // database file name
+        String databasePath = System.getProperty(DATABASE_PATH_PROPERTY, "syntaxio.db");
+        String url = "jdbc:sqlite:" + databasePath;  // database file name
         try {
             instance = DriverManager.getConnection(url);
             System.out.println("SQLite database connected successfully");

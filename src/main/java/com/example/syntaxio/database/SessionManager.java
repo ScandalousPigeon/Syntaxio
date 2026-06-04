@@ -20,6 +20,10 @@ public class SessionManager {
         }
         return instance;
     }
+
+    static void resetForTesting() {
+        instance = null;
+    }
     
     public boolean login(String username, String password) {
         if (userDAO.verifyLogin(username, password)) {
