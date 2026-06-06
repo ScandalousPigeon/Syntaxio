@@ -12,6 +12,40 @@
     -fx-effect: dropshadow(gaussian, rgba(255, 153, 0, 0.35), 24, 0.25, 0, 0);
 }
 
+.suggested-puzzle-card {
+    -fx-cursor: hand;
+}
+
+.suggested-puzzle-card:hover {
+    -fx-background-color: #171d33;
+    -fx-border-color: #ffc770;
+}
+
+.suggested-puzzle-empty-card {
+    -fx-padding: 18px;
+}
+
+.suggested-puzzle-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.suggested-puzzle-difficulty {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.suggested-puzzle-description {
+    -fx-text-fill: #c8d6e5;
+    -fx-font-size: 12px;
+}
+
+.suggested-puzzle-meta {
+    -fx-text-fill: #8b91a8;
+    -fx-font-size: 11px;
+}
+
 .profile-card:hover {
     -fx-border-color: #00d6ff;
     -fx-background-color: #171d33;
