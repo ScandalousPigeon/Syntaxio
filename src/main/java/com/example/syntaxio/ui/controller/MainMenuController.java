@@ -21,7 +21,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import static com.example.syntaxio.ui.util.ScreenManager.switchScreen;
@@ -41,6 +43,9 @@ public class MainMenuController {
 
     @FXML
     private VBox popoutMenu;
+
+    @FXML
+    private StackPane rootPane;
 
     @FXML
     private HBox dashboardButton;
@@ -77,6 +82,7 @@ public class MainMenuController {
     @FXML
     private void initialize() {
         //dimOverlay.setVisible(false);
+        Platform.runLater(this::maximizeMainMenuWindow);
 
         // hide it so it doesn't flash on screen
         popoutMenu.setVisible(false);
@@ -101,6 +107,16 @@ public class MainMenuController {
         );
 
         loadSuggestedPuzzles();
+    }
+
+    private void maximizeMainMenuWindow() {
+        if (rootPane == null
+                || rootPane.getScene() == null
+                || !(rootPane.getScene().getWindow() instanceof Stage stage)) {
+            return;
+        }
+
+        stage.setMaximized(true);
     }
 
     private void loadSuggestedPuzzles() {

@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 class MainMenuControllerTest {
 
@@ -43,6 +44,17 @@ class MainMenuControllerTest {
         assertAll(
                 () -> assertTrue(fxml.contains("fx:id=\"suggestedPuzzlesGrid\"")),
                 () -> assertEquals(GridPane.class, field.getType())
+        );
+    }
+
+    @Test
+    void mainMenuFXMLKeepsRootPaneWiredForWindowMaximize() throws IOException, NoSuchFieldException {
+        String fxml = readResource("/com/example/syntaxio/main-menu.fxml");
+        Field field = MainMenuController.class.getDeclaredField("rootPane");
+
+        assertAll(
+                () -> assertTrue(fxml.contains("fx:id=\"rootPane\"")),
+                () -> assertEquals(StackPane.class, field.getType())
         );
     }
 
