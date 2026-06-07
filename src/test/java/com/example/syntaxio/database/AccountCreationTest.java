@@ -172,6 +172,29 @@ class AccountCreationTest {
         }
     }
 
+    @Test
+    void userDaoLoadsCurrentActivityStreakFromDatabase() throws SQLException {
+        SessionManager sessionManager = SessionManager.getInstance();
+
+        assertTrue(sessionManager.signup(USERNAME, PASSWORD));
+
+        Connection connection = SqliteConnection.getInstance();
+        try (PreparedStatement statement = connection.prepareStatement("""
+                     UPDATE users
+                     SET current_activity_streak = ?
+                     WHERE username = ?
+                     """)) {
+            statement.setInt(1, 5);
+            statement.setString(2, USERNAME);
+            assertEquals(1, statement.executeUpdate());
+        }
+
+        var loadedUser = sessionManager.getUserDAO().findUserByUsername(USERNAME);
+
+        assertTrue(loadedUser.isPresent());
+        assertEquals(5, loadedUser.orElseThrow().getCurrentActivityStreak());
+    }
+
     private void assertIntegerColumnsEqualZero(ResultSet resultSet, String... columnNames) throws SQLException {
         for (String columnName : columnNames) {
             assertEquals(0, resultSet.getInt(columnName), "Expected zero for " + columnName);

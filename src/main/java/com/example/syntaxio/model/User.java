@@ -11,7 +11,8 @@ public class User {
     private LocalDateTime updatedAt;
     private int loginCount;
     private int totalHintsUsed;
-    private int totalChallengesCompleted;  
+    private int totalChallengesCompleted;
+    private int currentActivityStreak;
     
     // Constructor for NEW user (without ID - database generates it)
     public User(String username, String passwordHash) {
@@ -24,6 +25,7 @@ public class User {
         this.loginCount = 0;
         this.totalHintsUsed = 0;
         this.totalChallengesCompleted = 0;
+        this.currentActivityStreak = 0;
     }
     
     // Constructor for LOADING from database (with ID)
@@ -31,7 +33,7 @@ public class User {
                 LocalDateTime createdAt, LocalDateTime lastLoginAt,
                 int totalHintsUsed, int totalChallengesCompleted) {
         this(id, username, passwordHash, createdAt, lastLoginAt, lastLoginAt, 0,
-                totalHintsUsed, totalChallengesCompleted);
+                totalHintsUsed, totalChallengesCompleted, 0);
     }
 
     // Constructor for LOADING from database (with account audit fields)
@@ -39,6 +41,16 @@ public class User {
                 LocalDateTime createdAt, LocalDateTime lastLoginAt,
                 LocalDateTime updatedAt, int loginCount,
                 int totalHintsUsed, int totalChallengesCompleted) {
+        this(id, username, passwordHash, createdAt, lastLoginAt, updatedAt, loginCount,
+                totalHintsUsed, totalChallengesCompleted, 0);
+    }
+
+    // Constructor for LOADING from database (with progress summary fields)
+    public User(int id, String username, String passwordHash,
+                LocalDateTime createdAt, LocalDateTime lastLoginAt,
+                LocalDateTime updatedAt, int loginCount,
+                int totalHintsUsed, int totalChallengesCompleted,
+                int currentActivityStreak) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -48,6 +60,7 @@ public class User {
         this.loginCount = loginCount;
         this.totalHintsUsed = totalHintsUsed;
         this.totalChallengesCompleted = totalChallengesCompleted;
+        this.currentActivityStreak = currentActivityStreak;
     }
     
     // Getters and Setters
@@ -78,6 +91,11 @@ public class User {
     public int getTotalChallengesCompleted() { return totalChallengesCompleted; }
     public void setTotalChallengesCompleted(int totalChallengesCompleted) { 
         this.totalChallengesCompleted = totalChallengesCompleted; 
+    }
+
+    public int getCurrentActivityStreak() { return currentActivityStreak; }
+    public void setCurrentActivityStreak(int currentActivityStreak) {
+        this.currentActivityStreak = currentActivityStreak;
     }
     
     // Helper methods

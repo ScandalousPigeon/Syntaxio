@@ -13,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 class MainMenuControllerTest {
 
@@ -55,6 +58,32 @@ class MainMenuControllerTest {
         assertAll(
                 () -> assertTrue(fxml.contains("fx:id=\"rootPane\"")),
                 () -> assertEquals(StackPane.class, field.getType())
+        );
+    }
+
+    @Test
+    void mainMenuFXMLKeepsProfileCardWiredToController() throws IOException, NoSuchFieldException {
+        String fxml = readResource("/com/example/syntaxio/main-menu.fxml");
+
+        assertAll(
+                () -> assertTrue(fxml.contains("fx:id=\"profileLevelBadge\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"profileUsernameText\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"profileStreakText\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"profileXpText\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"profileXpProgressBar\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"menuLevelText\"")),
+                () -> assertEquals(Label.class,
+                        MainMenuController.class.getDeclaredField("profileLevelBadge").getType()),
+                () -> assertEquals(Text.class,
+                        MainMenuController.class.getDeclaredField("profileUsernameText").getType()),
+                () -> assertEquals(Text.class,
+                        MainMenuController.class.getDeclaredField("profileStreakText").getType()),
+                () -> assertEquals(Text.class,
+                        MainMenuController.class.getDeclaredField("profileXpText").getType()),
+                () -> assertEquals(ProgressBar.class,
+                        MainMenuController.class.getDeclaredField("profileXpProgressBar").getType()),
+                () -> assertEquals(Text.class,
+                        MainMenuController.class.getDeclaredField("menuLevelText").getType())
         );
     }
 

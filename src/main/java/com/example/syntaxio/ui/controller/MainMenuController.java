@@ -5,6 +5,7 @@ import com.example.syntaxio.ai.client.OllamaClient;
 import com.example.syntaxio.database.SessionManager;
 import com.example.syntaxio.database.SqliteChallengeDAO;
 import com.example.syntaxio.model.Challenge;
+import com.example.syntaxio.model.User;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -14,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +25,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -30,6 +33,7 @@ import static com.example.syntaxio.ui.util.ScreenManager.switchScreen;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class MainMenuController {
 
@@ -40,6 +44,8 @@ public class MainMenuController {
     private static final int SUGGESTED_PUZZLE_COLUMNS = 2;
     private static final int SUGGESTED_DESCRIPTION_LIMIT = 90;
     private static final double SUGGESTED_CARD_HEIGHT = 100.0;
+    private static final int XP_PER_COMPLETED_CHALLENGE = 100;
+    private static final int XP_PER_LEVEL = 1000;
 
     @FXML
     private VBox popoutMenu;
@@ -71,10 +77,29 @@ public class MainMenuController {
     @FXML
     private GridPane suggestedPuzzlesGrid;
 
+    @FXML
+    private Label profileLevelBadge;
+
+    @FXML
+    private Text profileUsernameText;
+
+    @FXML
+    private Text profileStreakText;
+
+    @FXML
+    private Text profileXpText;
+
+    @FXML
+    private ProgressBar profileXpProgressBar;
+
+    @FXML
+    private Text menuLevelText;
+
     //@FXML
     //private Region dimOverlay;
 
     private final MainMenuAssistant assistant = new MainMenuAssistant(new OllamaClient());
+    private SessionManager sessionManager;
     private SqliteChallengeDAO challengeDAO;
     private boolean menuOpen = false;
     private TranslateTransition currentAnimation;
@@ -82,6 +107,8 @@ public class MainMenuController {
     @FXML
     private void initialize() {
         //dimOverlay.setVisible(false);
+        sessionManager = SessionManager.getInstance();
+        loadProfileCard();
         Platform.runLater(this::maximizeMainMenuWindow);
 
         // hide it so it doesn't flash on screen
@@ -107,6 +134,62 @@ public class MainMenuController {
         );
 
         loadSuggestedPuzzles();
+    }
+
+    private void loadProfileCard() {
+        sessionManager.refreshCurrentUser();
+        renderProfileCard(sessionManager.getCurrentUser());
+    }
+
+    private void renderProfileCard(User user) {
+        if (user == null) {
+            setText(profileUsernameText, "Guest");
+            setText(profileStreakText, "0 Day Streak");
+            setText(profileXpText, "0 / " + XP_PER_LEVEL + " XP");
+            setText(menuLevelText, "Explorer Level 1");
+            setLabelText(profileLevelBadge, "1");
+            setProgress(profileXpProgressBar, 0);
+            return;
+        }
+
+        int completedChallenges = Math.max(0, user.getTotalChallengesCompleted());
+        int totalXp = completedChallenges * XP_PER_COMPLETED_CHALLENGE;
+        int level = calculateLevel(totalXp);
+        int nextLevelXp = level * XP_PER_LEVEL;
+        int streak = Math.max(0, user.getCurrentActivityStreak());
+
+        setText(profileUsernameText, user.getUsername());
+        setText(profileStreakText, String.format(Locale.ENGLISH,
+                "%d Day%s Streak",
+                streak,
+                streak == 1 ? "" : "s"
+        ));
+        setText(profileXpText, totalXp + " / " + nextLevelXp + " XP");
+        setText(menuLevelText, "Explorer Level " + level);
+        setLabelText(profileLevelBadge, String.valueOf(level));
+        setProgress(profileXpProgressBar, totalXp / (double) nextLevelXp);
+    }
+
+    private int calculateLevel(int totalXp) {
+        return Math.max(1, totalXp / XP_PER_LEVEL + 1);
+    }
+
+    private void setText(Text text, String value) {
+        if (text != null) {
+            text.setText(value);
+        }
+    }
+
+    private void setLabelText(Label label, String value) {
+        if (label != null) {
+            label.setText(value);
+        }
+    }
+
+    private void setProgress(ProgressBar progressBar, double value) {
+        if (progressBar != null) {
+            progressBar.setProgress(Math.max(0, Math.min(1, value)));
+        }
     }
 
     private void maximizeMainMenuWindow() {

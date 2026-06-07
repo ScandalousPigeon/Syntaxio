@@ -149,6 +149,7 @@ public class SqliteUserDAO {
         addColumnValue(columns, values, "totalHintsUsed", user.getTotalHintsUsed());
         addColumnValue(columns, values, "totalChallengesCompleted", user.getTotalChallengesCompleted());
         addColumnValue(columns, values, "total_challenges_completed", user.getTotalChallengesCompleted());
+        addColumnValue(columns, values, "current_activity_streak", user.getCurrentActivityStreak());
 
         String sql = "INSERT INTO users (" + String.join(", ", columns)
                 + ") VALUES (" + placeholders(columns.size()) + ")";
@@ -242,6 +243,7 @@ public class SqliteUserDAO {
         addAssignmentValue(assignments, values, "totalHintsUsed", user.getTotalHintsUsed());
         addAssignmentValue(assignments, values, "totalChallengesCompleted", user.getTotalChallengesCompleted());
         addAssignmentValue(assignments, values, "total_challenges_completed", user.getTotalChallengesCompleted());
+        addAssignmentValue(assignments, values, "current_activity_streak", user.getCurrentActivityStreak());
 
         if (assignments.isEmpty()) {
             return false;
@@ -352,7 +354,8 @@ public class SqliteUserDAO {
             updatedAt,
             loginCount,
             rs.getInt("totalHintsUsed"),
-            completedChallenges
+            completedChallenges,
+            getInt(rs, "current_activity_streak", 0)
         );
     }
     

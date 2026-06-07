@@ -72,17 +72,17 @@
                                                       <Image url="@images/placeholderprofile.png" />
                                                    </image>
                                                 </ImageView>
-                                                <Label alignment="CENTER" prefHeight="23.0" prefWidth="24.0" styleClass="level-badge" text="12" StackPane.alignment="BOTTOM_RIGHT" />
+                                                <Label fx:id="profileLevelBadge" alignment="CENTER" prefHeight="23.0" prefWidth="24.0" styleClass="level-badge" text="1" StackPane.alignment="BOTTOM_RIGHT" />
                                              </children>
                                           </StackPane>
                                           <VBox prefHeight="33.0" prefWidth="155.0">
                                              <children>
-                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Alex Chen" wrappingWidth="91.86600112915039">
+                                                <Text fx:id="profileUsernameText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" wrappingWidth="91.86600112915039">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fill="#ffc800" strokeType="OUTSIDE" strokeWidth="0.0" text="12 Day Streak" wrappingWidth="98.13000106811523" />
+                                                <Text fx:id="profileStreakText" fill="#ffc800" strokeType="OUTSIDE" strokeWidth="0.0" text="0 Day Streak" wrappingWidth="98.13000106811523" />
                                              </children>
                                              <opaqueInsets>
                                                 <Insets />
@@ -94,8 +94,8 @@
                                           <VBox prefHeight="74.0" prefWidth="204.0">
                                              <children>
                                                 <HBox prefHeight="18.0" prefWidth="167.0" />
-                                                <Text fill="#b9a7a7" strokeType="OUTSIDE" strokeWidth="0.0" text="3840    /    4000  XP" textAlignment="CENTER" wrappingWidth="199.74399948120117" />
-                                                <ProgressBar prefWidth="200.0" progress="0.0" />
+                                                <Text fx:id="profileXpText" fill="#b9a7a7" strokeType="OUTSIDE" strokeWidth="0.0" text="0 / 1000 XP" textAlignment="CENTER" wrappingWidth="199.74399948120117" />
+                                                <ProgressBar fx:id="profileXpProgressBar" prefWidth="200.0" progress="0.0" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -238,7 +238,7 @@
                               <Font size="21.0" />
                            </font>
                         </Text>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Explorer Level 12" />
+                        <Text fx:id="menuLevelText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Explorer Level 1" />
                      </children>
                      <opaqueInsets>
                         <Insets />
