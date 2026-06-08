@@ -2,10 +2,13 @@ package com.example.syntaxio.ui.controller;
 
 import com.example.syntaxio.database.SessionManager;
 import com.example.syntaxio.database.SqliteChallengeDAO;
+import com.example.syntaxio.database.SqliteInProgressChallengeDAO;
 import com.example.syntaxio.database.SqliteSolutionDAO;
 import com.example.syntaxio.model.Challenge;
+import com.example.syntaxio.model.InProgressChallenge;
 import com.example.syntaxio.model.Solution;
 import com.example.syntaxio.model.TestCase;
+import com.example.syntaxio.model.User;
 import com.example.syntaxio.runner.CodeExecutor;
 import com.example.syntaxio.ui.util.ScreenManager;
 import javafx.animation.Animation;
@@ -20,6 +23,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class CodingChallengeController {
 
@@ -55,6 +59,7 @@ public class CodingChallengeController {
 
     private SqliteChallengeDAO challengeDAO;
     private SqliteSolutionDAO solutionDAO;
+    private SqliteInProgressChallengeDAO inProgressChallengeDAO;
     private SessionManager sessionManager;
     private Challenge currentChallenge;
     private ScreenSwitcher screenSwitcher = ScreenManager::switchScreen;
@@ -69,6 +74,7 @@ public class CodingChallengeController {
     public void initialize() {
         challengeDAO = new SqliteChallengeDAO();
         solutionDAO = new SqliteSolutionDAO();
+        inProgressChallengeDAO = new SqliteInProgressChallengeDAO();
         sessionManager = SessionManager.getInstance();
 
         loadingIndicator.setVisible(false);
@@ -91,10 +97,11 @@ public class CodingChallengeController {
         difficultyLabel.setText(currentChallenge.getDifficulty());
         difficultyLabel.setStyle("-fx-text-fill: " + currentChallenge.getDifficultyColor() + ";");
         descriptionArea.setText(currentChallenge.getDescription());
-        codeEditor.setText(currentChallenge.getStarterCode());
+        codeEditor.setText(loadDraftCode().orElse(currentChallenge.getStarterCode()));
 
         testResultsContainer.getChildren().clear();
         outputArea.clear();
+        saveCurrentProgress();
     }
 
     private void startStopwatch() {
@@ -204,6 +211,7 @@ public class CodingChallengeController {
             boolean saved = solutionDAO.addSolution(userId, solution);
 
             if (saved) {
+                removeCurrentProgress(userId);
                 sessionManager.getCurrentUser().incrementChallengesCompleted();
                 sessionManager.getUserDAO().updateUser(sessionManager.getCurrentUser());
 
@@ -223,8 +231,40 @@ public class CodingChallengeController {
 
     @FXML
     private void onBack(ActionEvent event) throws IOException {
+        saveCurrentProgress();
         stopStopwatch();
         screenSwitcher.switchScreen(event, MAIN_MENU_FXML, MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT);
+    }
+
+    private Optional<String> loadDraftCode() {
+        User currentUser = sessionManager.getCurrentUser();
+        if (currentUser == null || currentChallenge == null) {
+            return Optional.empty();
+        }
+
+        return inProgressChallengeDAO
+                .getInProgressForUserAndChallenge(currentUser.getId(), currentChallenge.getId())
+                .map(InProgressChallenge::getDraftCode)
+                .filter(draftCode -> !draftCode.isBlank());
+    }
+
+    private void saveCurrentProgress() {
+        User currentUser = sessionManager == null ? null : sessionManager.getCurrentUser();
+        if (currentUser == null || currentChallenge == null || codeEditor == null || inProgressChallengeDAO == null) {
+            return;
+        }
+
+        inProgressChallengeDAO.saveOrUpdateInProgress(
+                currentUser.getId(),
+                currentChallenge.getId(),
+                codeEditor.getText()
+        );
+    }
+
+    private void removeCurrentProgress(int userId) {
+        if (currentChallenge != null && inProgressChallengeDAO != null) {
+            inProgressChallengeDAO.removeInProgress(userId, currentChallenge.getId());
+        }
     }
 
     private void showError(String message) {
