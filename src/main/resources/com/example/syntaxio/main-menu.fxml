@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -128,13 +129,34 @@
                                  <children>
                                     <VBox prefHeight="658.0" prefWidth="861.0">
                                        <children>
-                                          <VBox prefHeight="299.0" prefWidth="861.0" styleClass="in-progress-card" stylesheets="@css/main-menu.css">
+                                          <VBox prefHeight="299.0" prefWidth="861.0" spacing="16.0" styleClass="in-progress-card" stylesheets="@css/main-menu.css">
                                              <children>
-                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="In Progress">
-                                                   <font>
-                                                      <Font size="16.0" />
-                                                   </font>
-                                                </Text>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="809.0">
+                                                   <children>
+                                                      <Label styleClass="in-progress-heading" text="In Progress" />
+                                                      <Region HBox.hgrow="ALWAYS" />
+                                                      <Label fx:id="inProgressDifficultyLabel" styleClass="in-progress-difficulty" text="" />
+                                                   </children>
+                                                </HBox>
+                                                <VBox fx:id="inProgressContent" prefHeight="177.0" prefWidth="809.0" spacing="10.0">
+                                                   <children>
+                                                      <Label fx:id="inProgressTitleLabel" styleClass="in-progress-title" text="" />
+                                                      <Label fx:id="inProgressMetadataLabel" styleClass="in-progress-metadata" text="" />
+                                                      <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="809.0" spacing="12.0">
+                                                         <children>
+                                                            <Button fx:id="continueInProgressButton" mnemonicParsing="false" onAction="#handleContinueInProgress" styleClass="continue-button" text="Continue" />
+                                                            <Button mnemonicParsing="false" onAction="#handleBrowseChallenges" styleClass="secondary-action-button" text="Browse Challenges" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                                <VBox fx:id="inProgressEmptyState" prefHeight="177.0" prefWidth="809.0" spacing="12.0">
+                                                   <children>
+                                                      <Label styleClass="in-progress-title" text="No challenge in progress" />
+                                                      <Label styleClass="in-progress-description" text="Open a puzzle and come back before submitting to keep it here." wrapText="true" />
+                                                      <Button mnemonicParsing="false" onAction="#handleBrowseChallenges" styleClass="continue-button" text="Find a Challenge" />
+                                                   </children>
+                                                </VBox>
                                              </children>
                                              <VBox.margin>
                                                 <Insets bottom="10.0" />

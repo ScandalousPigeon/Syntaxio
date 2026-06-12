@@ -1,10 +1,12 @@
 package com.example.syntaxio.ui.controller;
 
+import javafx.event.ActionEvent;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -51,6 +53,23 @@ class MainMenuControllerTest {
     }
 
     @Test
+    void mainMenuFXMLKeepsInProgressCardWiredToController() throws IOException {
+        String fxml = readResource("/com/example/syntaxio/main-menu.fxml");
+
+        assertAll(
+                () -> assertTrue(fxml.contains("fx:id=\"inProgressContent\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"inProgressEmptyState\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"inProgressTitleLabel\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"inProgressDifficultyLabel\"")),
+                () -> assertTrue(!fxml.contains("fx:id=\"inProgressDescriptionLabel\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"inProgressMetadataLabel\"")),
+                () -> assertTrue(fxml.contains("<?import javafx.scene.layout.Region?>")),
+                () -> assertTrue(fxml.contains("onAction=\"#handleContinueInProgress\"")),
+                () -> assertTrue(fxml.contains("onAction=\"#handleBrowseChallenges\""))
+        );
+    }
+
+    @Test
     void mainMenuFXMLKeepsRootPaneWiredForWindowMaximize() throws IOException, NoSuchFieldException {
         String fxml = readResource("/com/example/syntaxio/main-menu.fxml");
         Field field = MainMenuController.class.getDeclaredField("rootPane");
@@ -88,6 +107,14 @@ class MainMenuControllerTest {
     }
 
     @Test
+    void mainMenuControllerKeepsInProgressHandlersAvailable() throws NoSuchMethodException {
+        assertAll(
+                () -> assertHandlerExists("handleContinueInProgress"),
+                () -> assertHandlerExists("handleBrowseChallenges")
+        );
+    }
+
+    @Test
     void mainMenuCssKeepsChatBubbleStyles() throws IOException {
         String css = readResource("/com/example/syntaxio/css/main-menu.css");
 
@@ -111,10 +138,27 @@ class MainMenuControllerTest {
         );
     }
 
+    @Test
+    void mainMenuCssKeepsInProgressCardStyles() throws IOException {
+        String css = readResource("/com/example/syntaxio/css/main-menu.css");
+
+        assertAll(
+                () -> assertTrue(css.contains(".in-progress-title")),
+                () -> assertTrue(css.contains(".in-progress-description")),
+                () -> assertTrue(css.contains(".continue-button")),
+                () -> assertTrue(css.contains(".secondary-action-button"))
+        );
+    }
+
     private String readResource(String path) throws IOException {
         try (InputStream stream = MainMenuControllerTest.class.getResourceAsStream(path)) {
             assertNotNull(stream, "Missing test resource: " + path);
             return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         }
+    }
+
+    private static void assertHandlerExists(String methodName) throws NoSuchMethodException {
+        Method method = MainMenuController.class.getDeclaredMethod(methodName, ActionEvent.class);
+        assertTrue(method.getReturnType().equals(void.class));
     }
 }

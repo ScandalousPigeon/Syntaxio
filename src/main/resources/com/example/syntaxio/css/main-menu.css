@@ -46,6 +46,64 @@
     -fx-font-size: 11px;
 }
 
+.in-progress-heading {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.in-progress-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.in-progress-difficulty {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.in-progress-description {
+    -fx-text-fill: #d6d9e8;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 2px;
+}
+
+.in-progress-metadata {
+    -fx-text-fill: #a0a7c0;
+    -fx-font-size: 12px;
+}
+
+.continue-button {
+    -fx-background-color: #f5a400;
+    -fx-background-radius: 12;
+    -fx-text-fill: #111827;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22 10 22;
+    -fx-cursor: hand;
+}
+
+.continue-button:hover {
+    -fx-background-color: #ffc04d;
+}
+
+.secondary-action-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-border-color: #5a637d;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 14px;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+}
+
+.secondary-action-button:hover {
+    -fx-border-color: #f5a400;
+}
+
 .profile-card:hover {
     -fx-border-color: #00d6ff;
     -fx-background-color: #171d33;

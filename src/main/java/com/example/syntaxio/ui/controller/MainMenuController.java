@@ -4,12 +4,15 @@ import com.example.syntaxio.ai.chat.MainMenuAssistant;
 import com.example.syntaxio.ai.client.OllamaClient;
 import com.example.syntaxio.database.SessionManager;
 import com.example.syntaxio.database.SqliteChallengeDAO;
+import com.example.syntaxio.database.SqliteInProgressChallengeDAO;
 import com.example.syntaxio.model.Challenge;
+import com.example.syntaxio.model.InProgressChallenge;
 import com.example.syntaxio.model.User;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -32,8 +35,10 @@ import javafx.util.Duration;
 import static com.example.syntaxio.ui.util.ScreenManager.switchScreen;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class MainMenuController {
 
@@ -46,6 +51,8 @@ public class MainMenuController {
     private static final double SUGGESTED_CARD_HEIGHT = 100.0;
     private static final int XP_PER_COMPLETED_CHALLENGE = 100;
     private static final int XP_PER_LEVEL = 1000;
+    private static final DateTimeFormatter UPDATED_AT_FORMATTER =
+            DateTimeFormatter.ofPattern("MMM d, h:mm a", Locale.ENGLISH);
 
     @FXML
     private VBox popoutMenu;
@@ -95,6 +102,24 @@ public class MainMenuController {
     @FXML
     private Text menuLevelText;
 
+    @FXML
+    private VBox inProgressContent;
+
+    @FXML
+    private VBox inProgressEmptyState;
+
+    @FXML
+    private Label inProgressTitleLabel;
+
+    @FXML
+    private Label inProgressDifficultyLabel;
+
+    @FXML
+    private Label inProgressMetadataLabel;
+
+    @FXML
+    private Button continueInProgressButton;
+
     //@FXML
     //private Region dimOverlay;
 
@@ -103,11 +128,16 @@ public class MainMenuController {
     private SqliteChallengeDAO challengeDAO;
     private boolean menuOpen = false;
     private TranslateTransition currentAnimation;
+    private SqliteInProgressChallengeDAO inProgressChallengeDAO;
+    private String currentInProgressChallengeId;
 
     @FXML
     private void initialize() {
-        //dimOverlay.setVisible(false);
         sessionManager = SessionManager.getInstance();
+        challengeDAO = new SqliteChallengeDAO();
+        inProgressChallengeDAO = new SqliteInProgressChallengeDAO();
+
+        //dimOverlay.setVisible(false);
         loadProfileCard();
         Platform.runLater(this::maximizeMainMenuWindow);
 
@@ -134,6 +164,7 @@ public class MainMenuController {
         );
 
         loadSuggestedPuzzles();
+        renderInProgressCard();
     }
 
     private void loadProfileCard() {
@@ -410,6 +441,22 @@ public class MainMenuController {
     }
 
     @FXML
+    private void handleContinueInProgress(ActionEvent event) throws IOException {
+        if (currentInProgressChallengeId == null || currentInProgressChallengeId.isBlank()) {
+            switchScreen(event, "/com/example/syntaxio/coding-challenge-browser.fxml", 1200, 1000);
+            return;
+        }
+
+        CodingChallengeController.setCurrentChallengeId(currentInProgressChallengeId);
+        switchScreen(event, "/com/example/syntaxio/coding-challenge.fxml", 1200, 800);
+    }
+
+    @FXML
+    private void handleBrowseChallenges(ActionEvent event) throws IOException {
+        switchScreen(event, "/com/example/syntaxio/coding-challenge-browser.fxml", 1200, 1000);
+    }
+
+    @FXML
     private void handleChallengeBrowser(MouseEvent event) throws IOException {
         switchScreen(event, "/com/example/syntaxio/coding-challenge-browser.fxml", 1200, 1000);
     }
@@ -435,5 +482,65 @@ public class MainMenuController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void renderInProgressCard() {
+        Optional<InProgressChallenge> inProgressChallenge = loadMostRecentInProgressChallenge();
+
+        if (inProgressChallenge.isEmpty()) {
+            currentInProgressChallengeId = null;
+            setVisibleManaged(inProgressContent, false);
+            setVisibleManaged(inProgressEmptyState, true);
+            setText(inProgressDifficultyLabel, "");
+            return;
+        }
+
+        InProgressChallenge progress = inProgressChallenge.get();
+        Challenge challenge = challengeDAO.getChallengeById(progress.getChallengeId());
+        if (challenge == null) {
+            currentInProgressChallengeId = null;
+            setVisibleManaged(inProgressContent, false);
+            setVisibleManaged(inProgressEmptyState, true);
+            setText(inProgressDifficultyLabel, "");
+            return;
+        }
+
+        currentInProgressChallengeId = challenge.getId();
+        setVisibleManaged(inProgressContent, true);
+        setVisibleManaged(inProgressEmptyState, false);
+        setText(inProgressTitleLabel, challenge.getTitle());
+        setText(inProgressDifficultyLabel, challenge.getDifficulty());
+        inProgressDifficultyLabel.setStyle("-fx-text-fill: " + challenge.getDifficultyColor() + ";");
+        setText(inProgressMetadataLabel, "Last open "
+                + progress.getUpdatedAt().format(UPDATED_AT_FORMATTER)
+                + " - " + challenge.getTestCases().size()
+                + " tests");
+        if (continueInProgressButton != null) {
+            continueInProgressButton.setDisable(false);
+        }
+    }
+
+    private Optional<InProgressChallenge> loadMostRecentInProgressChallenge() {
+        User currentUser = sessionManager.getCurrentUser();
+        if (currentUser == null) {
+            return Optional.empty();
+        }
+
+        List<InProgressChallenge> inProgressChallenges =
+                inProgressChallengeDAO.getInProgressForUser(currentUser.getId());
+        return inProgressChallenges.stream().findFirst();
+    }
+
+    private void setVisibleManaged(Region region, boolean visible) {
+        if (region != null) {
+            region.setVisible(visible);
+            region.setManaged(visible);
+        }
+    }
+
+    private void setText(Label label, String text) {
+        if (label != null) {
+            label.setText(text);
+        }
     }
 }
