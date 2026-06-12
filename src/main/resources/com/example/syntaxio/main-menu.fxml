@@ -96,7 +96,7 @@
                                              <children>
                                                 <HBox prefHeight="18.0" prefWidth="167.0" />
                                                 <Text fx:id="profileXpText" fill="#b9a7a7" strokeType="OUTSIDE" strokeWidth="0.0" text="0 / 1000 XP" textAlignment="CENTER" wrappingWidth="199.74399948120117" />
-                                                <ProgressBar fx:id="profileXpProgressBar" prefWidth="200.0" progress="0.0" />
+                                                <ProgressBar fx:id="profileXpProgressBar" prefHeight="12.0" prefWidth="200.0" progress="0.0" styleClass="xp-progress-bar" />
                                              </children>
                                           </VBox>
                                        </children>

@@ -120,6 +120,29 @@
     -fx-font-size: 12px;
 }
 
+.xp-progress-bar {
+    -fx-pref-height: 12px;
+    -fx-max-height: 12px;
+    -fx-padding: 0;
+}
+
+.xp-progress-bar > .track {
+    -fx-background-color: #0b1020;
+    -fx-background-radius: 999px;
+    -fx-background-insets: 0;
+
+    -fx-border-color: #263047;
+    -fx-border-radius: 999px;
+    -fx-border-width: 1px;
+}
+
+.xp-progress-bar > .bar {
+    -fx-background-color: linear-gradient(to right, #16c99a, #00d6ff);
+    -fx-background-radius: 999px;
+    -fx-background-insets: 2px;
+    -fx-padding: 4px;
+}
+
 .level-badge {
     -fx-background-color: #00d694;
     -fx-text-fill: #071022;
