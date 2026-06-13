@@ -48,8 +48,6 @@ public class DashboardController {
     @FXML private Label easyProgressLabel;
     @FXML private Label mediumProgressLabel;
     @FXML private Label hardProgressLabel;
-    @FXML private Label recentActivityLabel;
-    @FXML private Label achievementsLabel;
     @FXML private Label dashboardMessageLabel;
     @FXML private Label recentActivity1Label;
     @FXML private Label recentActivity2Label;
@@ -266,7 +264,8 @@ public class DashboardController {
             series.getData().add(new XYChart.Data<>(label, submissionsByDate.getOrDefault(date, 0L)));
         }
 
-        activityChart.getData().setAll(series);
+        activityChart.getData().clear();
+        activityChart.getData().add(series);
     }
 
     private void renderSkillProgress(DashboardStats stats) {
@@ -294,7 +293,6 @@ public class DashboardController {
                 .toList();
 
         if (recentSolutions.isEmpty()) {
-            setText(recentActivityLabel, "No submissions yet.");
             setLabelList(List.of("No submissions yet."),
                     recentActivity1Label,
                     recentActivity2Label,
@@ -312,7 +310,6 @@ public class DashboardController {
                 .map(solution -> formatActivityLine(solution, challengeTitles))
                 .toList();
 
-        setText(recentActivityLabel, String.join("\n", activityLines));
         setLabelList(activityLines,
                 recentActivity1Label,
                 recentActivity2Label,
@@ -334,7 +331,6 @@ public class DashboardController {
         String fallback = "Complete a challenge to unlock achievements.";
 
         if (achievements.isEmpty()) {
-            setText(achievementsLabel, fallback);
             setLabelList(List.of(fallback),
                     achievement1Label,
                     achievement2Label,
@@ -344,7 +340,6 @@ public class DashboardController {
             return;
         }
 
-        setText(achievementsLabel, String.join("\n", achievements));
         setLabelList(achievements,
                 achievement1Label,
                 achievement2Label,
@@ -377,9 +372,20 @@ public class DashboardController {
     private void renderSignedOutState() {
         setText(dashboardMessageLabel, "Sign in to view your dashboard.");
         setText(welcomeLabel, "Dashboard");
+        setText(usernameLabel, "Guest");
+        setText(joinDateLabel, "Track your progress and achievements");
+        setText(memberSinceLabel, "Not signed in");
         setText(statsLabel, "Sign in required");
-        setText(recentActivityLabel, "Sign in to view activity.");
-        setText(achievementsLabel, "Sign in to view achievements.");
+        setText(completedChallengesLabel, "0");
+        setText(totalChallengesLabel, "0");
+        setText(completionRateLabel, "0.0% completion rate");
+        setText(progressPercentageLabel, "0%");
+        setText(hintsUsedLabel, "0 hints used");
+        setText(submissionsLabel, "0 submissions");
+        setText(lastSubmissionLabel, "No submissions yet");
+        setText(easyProgressLabel, "Easy: 0 / 0");
+        setText(mediumProgressLabel, "Medium: 0 / 0");
+        setText(hardProgressLabel, "Hard: 0 / 0");
         setLabelList(List.of("Sign in to view activity."),
                 recentActivity1Label,
                 recentActivity2Label,

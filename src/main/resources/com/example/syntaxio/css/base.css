@@ -28,3 +28,63 @@
 
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 16, 0.2, 0, 4);
 }
+
+.dashboard-progress-bar {
+    -fx-pref-height: 12px;
+    -fx-max-height: 12px;
+    -fx-padding: 0;
+}
+
+.dashboard-progress-bar > .track {
+    -fx-background-color: #0b1020;
+    -fx-background-radius: 999px;
+    -fx-background-insets: 0;
+
+    -fx-border-color: #263047;
+    -fx-border-radius: 999px;
+    -fx-border-width: 1px;
+}
+
+.dashboard-progress-bar > .bar {
+    -fx-background-color: linear-gradient(to right, #16c99a, #00d6ff);
+    -fx-background-radius: 999px;
+    -fx-background-insets: 2px;
+    -fx-padding: 4px;
+}
+
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-title {
+    -fx-text-fill: #f8fafc;
+}
+
+.chart-plot-background {
+    -fx-background-color: #0f142b;
+}
+
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: #263047;
+}
+
+.axis {
+    -fx-tick-label-fill: #c8d6e5;
+}
+
+.axis-label {
+    -fx-text-fill: #c8d6e5;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #c8d6e5;
+}
+
+.chart-pie-label {
+    -fx-fill: #e5e7eb;
+}
