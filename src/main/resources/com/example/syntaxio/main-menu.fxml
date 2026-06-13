@@ -269,7 +269,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <Button fx:id="closeMenuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeMenu" prefHeight="25.0" prefWidth="25.0" styleClass="menu-close-button" stylesheets="@css/main-menu.css" text="X" />
+                  <Button fx:id="closeMenuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="23.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeMenu" prefHeight="23.0" prefWidth="41.0" styleClass="menu-close-button" stylesheets="@css/main-menu.css" text="x" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -317,7 +317,7 @@
                               <Font size="15.0" />
                            </font>
                         </Text>
-                        <Text fill="#abaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="View and edit your profile" />
+                        <Text fill="#abaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="Track your learning journey" />
                      </children>
                      <HBox.margin>
                         <Insets />
@@ -345,7 +345,7 @@
                               <Font size="15.0" />
                            </font>
                         </Text>
-                        <Text fill="#abaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="View and edit your profile" />
+                        <Text fill="#abaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="Browse all coding challenges" />
                      </children>
                      <HBox.margin>
                         <Insets />
@@ -373,7 +373,7 @@
                               <Font size="15.0" />
                            </font>
                         </Text>
-                        <Text fill="#abaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="View and edit your profile" />
+                        <Text fill="#abaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="Exit your account" />
                      </children>
                      <HBox.margin>
                         <Insets />
