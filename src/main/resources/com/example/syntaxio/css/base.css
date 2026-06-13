@@ -29,6 +29,30 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 16, 0.2, 0, 4);
 }
 
+Button.content-card,
+.button.content-card {
+    -fx-cursor: hand;
+}
+
+Button.content-card:hover,
+.button.content-card:hover {
+    -fx-background-color: #1a2138;
+    -fx-border-color: #ffc770;
+    -fx-text-fill: #ffc770;
+    -fx-effect: dropshadow(gaussian, rgba(255, 199, 112, 0.28), 18, 0.25, 0, 3);
+}
+
+Button.content-card:focused,
+.button.content-card:focused {
+    -fx-border-color: #00d6ff;
+}
+
+Button.content-card:pressed,
+.button.content-card:pressed {
+    -fx-background-color: #10162a;
+    -fx-translate-y: 1px;
+}
+
 .dashboard-progress-bar {
     -fx-pref-height: 12px;
     -fx-max-height: 12px;
