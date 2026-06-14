@@ -218,7 +218,7 @@
                                                 <Font size="16.0" />
                                              </font>
                                           </Text>
-                                          <Text fill="#17d0e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" />
+                                          <Text fx:id="assistantStatusText" fill="#17d0e4" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="assistant-status" text="Online" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -230,8 +230,8 @@
                               </ScrollPane>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" stylesheets="@css/main-menu.css">
                                  <children>
-                                    <TextField fx:id="chatInput" onAction="#handleSendMessage" prefHeight="40.0" prefWidth="1093.0" promptText="Ask me anything..." styleClass="chat-input" stylesheets="@css/main-menu.css" />
-                                    <Button fx:id="sendButton" maxHeight="54.0" maxWidth="47.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="54.0" prefWidth="47.0" styleClass="send-button" stylesheets="@css/main-menu.css" text="Send" />
+                                    <TextField fx:id="chatInput" onAction="#handleSendMessage" prefHeight="40.0" prefWidth="1093.0" promptText="Ask about Java, algorithms, or what to practice next..." styleClass="chat-input" stylesheets="@css/main-menu.css" />
+                                    <Button fx:id="sendButton" maxHeight="54.0" maxWidth="47.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="54.0" prefWidth="47.0" styleClass="send-button" stylesheets="@css/main-menu.css" text="➤" />
                                  </children>
                               </HBox>
                            </children>

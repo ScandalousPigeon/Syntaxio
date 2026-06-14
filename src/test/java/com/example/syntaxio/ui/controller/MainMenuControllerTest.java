@@ -37,6 +37,9 @@ class MainMenuControllerTest {
                 () -> assertTrue(fxml.contains("fx:id=\"chatContent\"")),
                 () -> assertTrue(fxml.contains("fx:id=\"chatInput\"")),
                 () -> assertTrue(fxml.contains("fx:id=\"sendButton\"")),
+                () -> assertTrue(fxml.contains("fx:id=\"assistantStatusText\"")),
+                () -> assertTrue(fxml.contains("text=\"➤\"")),
+                () -> assertTrue(fxml.contains("Ask about Java, algorithms")),
                 () -> assertTrue(fxml.contains("onAction=\"#handleSendMessage\""))
         );
     }
@@ -121,8 +124,11 @@ class MainMenuControllerTest {
         assertAll(
                 () -> assertTrue(css.contains(".bot-message-row")),
                 () -> assertTrue(css.contains(".user-message-row")),
+                () -> assertTrue(css.contains(".bot-message-meta")),
+                () -> assertTrue(css.contains(".user-message-meta")),
                 () -> assertTrue(css.contains(".bot-bubble")),
-                () -> assertTrue(css.contains(".user-bubble"))
+                () -> assertTrue(css.contains(".user-bubble")),
+                () -> assertTrue(css.contains(".send-button:disabled"))
         );
     }
 
