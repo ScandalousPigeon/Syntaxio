@@ -3,7 +3,12 @@ package com.example.syntaxio.ui.controller;
 import com.example.syntaxio.database.SqliteChallengeDAO;
 import com.example.syntaxio.model.Challenge;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.VBox;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -82,6 +87,41 @@ class CodingChallengeTest {
                 () -> assertTrue(descriptionArea.startsWith("<TextArea ")),
                 () -> assertTrue(descriptionArea.contains("editable=\"false\"")),
                 () -> assertTrue(descriptionArea.contains("wrapText=\"true\""))
+        );
+    }
+
+    @Test
+    void aiAssistantTabKeepsChatControlsWiredToController() throws Exception {
+        String fxml = readResource(CODING_CHALLENGE_FXML);
+
+        assertAll(
+                () -> assertTrue(openingTagFor(fxml, "descriptionTab").contains("onAction=\"#showDescriptionTab\"")),
+                () -> assertTrue(openingTagFor(fxml, "aiAssistantTab").contains("onAction=\"#showAssistantTab\"")),
+                () -> assertTrue(openingTagFor(fxml, "assistantInput").contains("onAction=\"#handleAssistantSend\"")),
+                () -> assertTrue(openingTagFor(fxml, "assistantSendButton").contains("onAction=\"#handleAssistantSend\"")),
+                () -> assertEquals(ToggleButton.class,
+                        CodingChallengeController.class.getDeclaredField("descriptionTab").getType()),
+                () -> assertEquals(ToggleButton.class,
+                        CodingChallengeController.class.getDeclaredField("aiAssistantTab").getType()),
+                () -> assertEquals(VBox.class,
+                        CodingChallengeController.class.getDeclaredField("assistantPane").getType()),
+                () -> assertEquals(ScrollPane.class,
+                        CodingChallengeController.class.getDeclaredField("assistantScrollPane").getType()),
+                () -> assertEquals(VBox.class,
+                        CodingChallengeController.class.getDeclaredField("assistantMessages").getType()),
+                () -> assertEquals(TextField.class,
+                        CodingChallengeController.class.getDeclaredField("assistantInput").getType()),
+                () -> assertEquals(Button.class,
+                        CodingChallengeController.class.getDeclaredField("assistantSendButton").getType())
+        );
+    }
+
+    @Test
+    void aiAssistantControllerKeepsHandlersAvailable() throws NoSuchMethodException {
+        assertAll(
+                () -> assertHandlerExists("showDescriptionTab"),
+                () -> assertHandlerExists("showAssistantTab"),
+                () -> assertHandlerExists("handleAssistantSend")
         );
     }
 

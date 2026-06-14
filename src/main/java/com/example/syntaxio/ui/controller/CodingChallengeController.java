@@ -1,5 +1,7 @@
 package com.example.syntaxio.ui.controller;
 
+import com.example.syntaxio.ai.chat.PuzzlePageAssistant;
+import com.example.syntaxio.ai.client.OllamaClient;
 import com.example.syntaxio.database.SessionManager;
 import com.example.syntaxio.database.SqliteChallengeDAO;
 import com.example.syntaxio.database.SqliteInProgressChallengeDAO;
@@ -15,9 +17,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -48,6 +54,14 @@ public class CodingChallengeController {
     @FXML private Label titleLabel;
     @FXML private Label difficultyLabel;
     @FXML private TextArea descriptionArea;
+    @FXML private ToggleButton descriptionTab;
+    @FXML private ToggleButton aiAssistantTab;
+    @FXML private VBox assistantPane;
+    @FXML private Label assistantStatusLabel;
+    @FXML private ScrollPane assistantScrollPane;
+    @FXML private VBox assistantMessages;
+    @FXML private TextField assistantInput;
+    @FXML private Button assistantSendButton;
     @FXML private TextArea codeEditor;
     @FXML private TextArea outputArea;
     @FXML private Button runButton;
@@ -63,6 +77,7 @@ public class CodingChallengeController {
     private SessionManager sessionManager;
     private Challenge currentChallenge;
     private ScreenSwitcher screenSwitcher = ScreenManager::switchScreen;
+    private final PuzzlePageAssistant assistant = new PuzzlePageAssistant(new OllamaClient());
     private Timeline stopwatch;
     private int elapsedSeconds;
 
@@ -78,6 +93,7 @@ public class CodingChallengeController {
         sessionManager = SessionManager.getInstance();
 
         loadingIndicator.setVisible(false);
+        configureAssistantControls();
 
         loadChallenge(currentChallengeId);
     }
@@ -101,7 +117,65 @@ public class CodingChallengeController {
 
         testResultsContainer.getChildren().clear();
         outputArea.clear();
+        resetAssistantMessages();
         saveCurrentProgress();
+    }
+
+    @FXML
+    private void showDescriptionTab() {
+        setAssistantVisible(false);
+    }
+
+    @FXML
+    private void showAssistantTab() {
+        setAssistantVisible(true);
+    }
+
+    @FXML
+    private void handleAssistantSend() {
+        if (assistantInput == null) {
+            return;
+        }
+
+        String userMessage = assistantInput.getText().trim();
+        if (userMessage.isEmpty()) {
+            return;
+        }
+
+        assistantInput.clear();
+        addAssistantMessage(userMessage, true);
+        Label pendingBubble = addAssistantMessage("Thinking...", false);
+        setAssistantStatus("Thinking...");
+        setAssistantControlsDisabled(true);
+
+        String currentCode = codeEditor == null ? "" : codeEditor.getText();
+        Task<String> replyTask = new Task<>() {
+            @Override
+            protected String call() {
+                return assistant.reply(userMessage, currentChallenge, currentCode);
+            }
+        };
+
+        replyTask.setOnSucceeded(event -> {
+            String reply = replyTask.getValue();
+            pendingBubble.setText(reply == null || reply.isBlank()
+                    ? "I couldn't generate a hint. Please try asking another way."
+                    : reply.trim());
+            setAssistantStatus("Ready for hints");
+            setAssistantControlsDisabled(false);
+            scrollAssistantToLatestMessage();
+        });
+
+        replyTask.setOnFailed(event -> {
+            pendingBubble.setText("I couldn't reach the AI assistant yet. Try again once Ollama is ready.");
+            setAssistantStatus("Offline");
+            setAssistantControlsDisabled(false);
+            scrollAssistantToLatestMessage();
+        });
+
+        Thread replyThread = new Thread(replyTask, "coding-challenge-assistant-reply");
+        replyThread.setDaemon(true);
+        replyThread.start();
     }
 
     private void startStopwatch() {
@@ -126,6 +200,91 @@ public class CodingChallengeController {
 
     private void updateTimerLabel() {
         timeIndicator.setText(formatElapsedTime(elapsedSeconds));
+    }
+
+    private void configureAssistantControls() {
+        if (assistantInput != null && assistantSendButton != null) {
+            assistantInput.textProperty().addListener((obs, oldValue, newValue) -> updateAssistantSendButtonState());
+            updateAssistantSendButtonState();
+        }
+
+        setAssistantVisible(false);
+    }
+
+    private void setAssistantVisible(boolean visible) {
+        if (descriptionArea != null) {
+            descriptionArea.setVisible(!visible);
+            descriptionArea.setManaged(!visible);
+        }
+        if (assistantPane != null) {
+            assistantPane.setVisible(visible);
+            assistantPane.setManaged(visible);
+        }
+        if (descriptionTab != null) {
+            descriptionTab.setSelected(!visible);
+        }
+        if (aiAssistantTab != null) {
+            aiAssistantTab.setSelected(visible);
+        }
+    }
+
+    private void resetAssistantMessages() {
+        if (assistantMessages == null) {
+            return;
+        }
+
+        assistantMessages.getChildren().clear();
+        addAssistantMessage("Ask me for hints about this puzzle. I can explain the prompt, review your approach, or help debug a failing test.", false);
+        setAssistantStatus("Ready for hints");
+    }
+
+    private Label addAssistantMessage(String message, boolean fromUser) {
+        Label bubble = new Label(message);
+        bubble.setWrapText(true);
+        bubble.setMinHeight(Region.USE_PREF_SIZE);
+        bubble.setMaxWidth(420);
+        bubble.getStyleClass().add(fromUser ? "assistant-user-bubble" : "assistant-bubble");
+
+        HBox row = new HBox(bubble);
+        row.setAlignment(fromUser ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
+        row.getStyleClass().add(fromUser ? "assistant-user-row" : "assistant-row");
+        row.setMaxWidth(Double.MAX_VALUE);
+
+        if (assistantMessages != null) {
+            assistantMessages.getChildren().add(row);
+        }
+        scrollAssistantToLatestMessage();
+
+        return bubble;
+    }
+
+    private void setAssistantControlsDisabled(boolean disabled) {
+        if (assistantInput != null) {
+            assistantInput.setDisable(disabled);
+        }
+        if (assistantSendButton != null) {
+            assistantSendButton.setDisable(disabled
+                    || assistantInput == null
+                    || assistantInput.getText().trim().isEmpty());
+        }
+    }
+
+    private void updateAssistantSendButtonState() {
+        if (assistantSendButton != null && assistantInput != null) {
+            assistantSendButton.setDisable(assistantInput.getText().trim().isEmpty());
+        }
+    }
+
+    private void setAssistantStatus(String status) {
+        if (assistantStatusLabel != null) {
+            assistantStatusLabel.setText(status);
+        }
+    }
+
+    private void scrollAssistantToLatestMessage() {
+        if (assistantScrollPane != null) {
+            Platform.runLater(() -> assistantScrollPane.setVvalue(1.0));
+        }
     }
 
     static String formatElapsedTime(int totalSeconds) {

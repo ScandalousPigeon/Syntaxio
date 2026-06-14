@@ -139,6 +139,84 @@
     -fx-border-color: transparent;
 }
 
+.assistant-pane {
+    -fx-background-color: #080d22;
+    -fx-padding: 14;
+}
+
+.assistant-status-label {
+    -fx-text-fill: #8b93a7;
+    -fx-font-size: 12px;
+}
+
+.assistant-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.assistant-scroll > .viewport {
+    -fx-background-color: #080d22;
+}
+
+.assistant-messages {
+    -fx-background-color: #080d22;
+    -fx-padding: 8;
+}
+
+.assistant-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.assistant-user-row {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.assistant-bubble {
+    -fx-background-color: #232944;
+    -fx-background-radius: 12;
+    -fx-padding: 9 13 9 13;
+    -fx-text-fill: #e5e7eb;
+    -fx-font-size: 12px;
+}
+
+.assistant-user-bubble {
+    -fx-background-color: #f59e0b;
+    -fx-background-radius: 12;
+    -fx-padding: 9 13 9 13;
+    -fx-text-fill: #050816;
+    -fx-font-size: 12px;
+}
+
+.assistant-input {
+    -fx-background-color: #101529;
+    -fx-background-radius: 12;
+    -fx-border-color: #262d46;
+    -fx-border-radius: 12;
+    -fx-text-fill: #f8fafc;
+    -fx-prompt-text-fill: #8b93a7;
+    -fx-padding: 9 12 9 12;
+}
+
+.assistant-input:focused {
+    -fx-border-color: #f59e0b;
+}
+
+.assistant-send-button {
+    -fx-background-color: #f59e0b;
+    -fx-background-radius: 12;
+    -fx-text-fill: #050816;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.assistant-send-button:disabled {
+    -fx-background-color: #263047;
+    -fx-text-fill: #8b93a7;
+    -fx-opacity: 1;
+}
+
 .code-area {
     -fx-background-color: #080d22;
     -fx-control-inner-background: #080d22;
